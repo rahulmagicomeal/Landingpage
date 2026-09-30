@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Answer engines and AI crawlers are welcome — this page is written to be
+# quoted accurately. See the JSON-LD graph in the page head.
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://magicomeal.com/sitemap.xml
