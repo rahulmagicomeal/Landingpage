@@ -1,3 +1,9 @@
 node_modules/
-data/
+
+# Lead storage written by server.js — repo root only.
+# NOTE: this pattern MUST keep its leading slash. A bare `data/` matches a
+# directory named `data` at ANY depth, which silently excluded src/data/
+# (config.js, company.js, content.js) and broke the Vercel build.
+/data/
+
 *.log
