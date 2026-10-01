@@ -133,7 +133,12 @@ h3 {
 p {
   margin: 0 0 1em;
 }
-ul {
+/* `ol` is included deliberately: the steps list stays an <ol> because the
+   order is meaningful to screen readers, but its numbers are drawn as the
+   green 01–04 badges. Without this, the browser's own markers render beside
+   them and the steps read "1. 01", "2. 02". */
+ul,
+ol {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -984,7 +989,6 @@ ul {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  counter-reset: step;
 }
 .step {
   background: #fff;
