@@ -91,7 +91,8 @@ module.exports = {
    *
    * Available: heroForm | hero | leadForm | trustBar | logos | entityGlance
    *            | services | servicesCompact | pains | why | scale | kitchens
-   *            | proofStrip | safety | menu | proof | areas | how | faq
+   *            | proofStrip | safety | menu | proof | areas | how | gallery
+   *            | faq
    *            | finalCta
    *
    * Notes:
@@ -107,6 +108,7 @@ module.exports = {
     'servicesCompact',
     'proofStrip',
     'how',
+    'gallery',
     'faq',
     'finalCta',
   ],

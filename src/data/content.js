@@ -711,6 +711,68 @@ module.exports = {
   },
 
   /* ================================================================== *
+   * GALLERY
+   *
+   * Real sites, real service, real diners. On a lead-gen page this does the
+   * job testimonials would — Magicomeal publishes none, so photographs of
+   * actual client sites are the honest substitute.
+   * ================================================================== */
+  gallery: {
+    h2: 'Magicomeal on site',
+    sub: 'Corporate cafeterias, school lunches, festival service and our own kitchens — photographed at live client sites across Mumbai.',
+    items: [
+      {
+        src: '/assets/img/gallery/magicomeal-corporate-cafeteria-lunch-rush-mumbai.webp',
+        alt: 'Lunch rush at a Magicomeal-run corporate cafeteria in Mumbai, with staff serving a full dining hall',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-school-cafeteria-independence-day-mumbai.webp',
+        alt: 'Magicomeal serving an Independence Day menu to students at a school cafeteria in Mumbai',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-school-lunch-student-mumbai.webp',
+        alt: 'A student giving a thumbs up over a Magicomeal school lunch tray',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-parent-child-school-meal-mumbai.webp',
+        alt: 'A parent and child sharing a Magicomeal school meal tray at a Mumbai school',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-service-team-jbcn-school-mumbai.webp',
+        alt: 'Magicomeal service team in uniform at JBCN International School on Independence Day',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-festival-catering-team-mumbai.webp',
+        alt: 'Magicomeal staff in festival dress behind a chafing dish counter at a corporate office',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-onam-sadya-service-mumbai.webp',
+        alt: 'Magicomeal serving an Onam sadya on banana leaves in a corporate dining hall',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-outdoor-event-catering-mumbai.webp',
+        alt: 'Magicomeal staff serving an outdoor event at a school in Mumbai',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-event-canapes-mumbai.webp',
+        alt: 'Spanish corn tart canapes labelled and plated by Magicomeal for a corporate event',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-event-salad-buffet-mumbai.webp',
+        alt: 'Magicomeal event buffet with vegetable crudites, som tum salad and paneer kadhai',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-bulk-cooking-equipment-mumbai.webp',
+        alt: 'Bulk cooking equipment including tilting pans and bratt pans in a Magicomeal production kitchen',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-office-since-2010-mumbai.webp',
+        alt: 'Magicomeal head office reception showing the Since 2010 logo and the company milestone wall',
+      },
+    ],
+  },
+
+  /* ================================================================== *
    * STICKY MOBILE CTA
    * ================================================================== */
   stickyCta: { call: 'Call', proposal: 'Get Proposal' },

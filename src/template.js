@@ -669,6 +669,25 @@ ${FORM_CARD}
   </div>
 </section>` : ''}
 
+${has('gallery') ? `<!-- ============================ GALLERY ========================== -->
+<section class="section" id="gallery" aria-labelledby="gallery-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="gallery-h">${esc(c.gallery.h2)}</h2>
+      <p>${esc(c.gallery.sub)}</p>
+    </div>
+    <ul class="gallery">
+      ${c.gallery.items
+        .map(
+          (g) => `<li><img src="${esc(g.src)}" alt="${esc(
+            g.alt
+          )}" width="600" height="600" loading="lazy" decoding="async"></li>`
+        )
+        .join('\n      ')}
+    </ul>
+  </div>
+</section>` : ''}
+
 ${has('faq') ? `<!-- ============================ FAQ =============================== -->
 <section class="section" aria-labelledby="faq-h">
   <div class="wrap">

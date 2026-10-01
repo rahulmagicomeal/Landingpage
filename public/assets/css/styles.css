@@ -1631,3 +1631,46 @@ ul {
   color: var(--ink-3);
   max-width: 70em;
 }
+
+/* --------------------------------------------------------------------------
+   Gallery
+   -------------------------------------------------------------------------- */
+/* 12 tiles, and 12 divides by 2, 3, 4 and 6 — so fixing the column count per
+   breakpoint gives a complete last row at every width. auto-fill landed on 7
+   columns at 1280px, which left a ragged row of 5. */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+@media (min-width: 600px) {
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 900px) {
+  .gallery {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+@media (min-width: 1200px) {
+  .gallery {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+.gallery li {
+  margin: 0;
+}
+.gallery img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease;
+}
+@media (hover: hover) {
+  .gallery img:hover {
+    transform: scale(1.02);
+  }
+}

@@ -58,6 +58,22 @@ const MANIFEST = [
   { from: '6.jpg', to: 'magicomeal-festival-menu-spread-mumbai.webp', width: 560, aspect: [4, 3] },
   { from: '10.jpg', to: 'magicomeal-corporate-buffet-counter-mumbai.webp', width: 560, aspect: [4, 3] },
 
+  // Gallery — square crops, small, all lazy-loaded below the fold.
+  { from: '27.jpg', to: 'gallery/magicomeal-corporate-cafeteria-lunch-rush-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '26.jpg', to: 'gallery/magicomeal-school-cafeteria-independence-day-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '22.jpg', to: 'gallery/magicomeal-outdoor-event-catering-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '24.jpg', to: 'gallery/magicomeal-festival-catering-team-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '28.jpg', to: 'gallery/magicomeal-service-team-jbcn-school-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '25.jpg', to: 'gallery/magicomeal-onam-sadya-service-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '21.jpg', to: 'gallery/magicomeal-bulk-cooking-equipment-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  // Cropped from the LEFT, not by attention: the "Since 2010" logo sits on
+  // the left edge and attention-cropping picked the timeline wall instead.
+  { from: '30.jpg', to: 'gallery/magicomeal-office-since-2010-mumbai.webp', width: 600, aspect: [1, 1], quality: 72, position: 'left' },
+  { from: '31.jpg', to: 'gallery/magicomeal-school-lunch-student-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '32.jpg', to: 'gallery/magicomeal-parent-child-school-meal-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '19.jpg', to: 'gallery/magicomeal-event-canapes-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '33.jpg', to: 'gallery/magicomeal-event-salad-buffet-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+
   // Open Graph / Twitter card — 1.91:1 is what the platforms crop to.
   { from: '12.jpg', to: 'magicomeal-corporate-catering-mumbai-og.webp', width: 1200, aspect: [1200, 630] },
 ];
@@ -70,6 +86,7 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(6) + ' KB';
     process.exit(1);
   }
   fs.mkdirSync(OUT, { recursive: true });
+  fs.mkdirSync(path.join(OUT, 'gallery'), { recursive: true });
 
   let totalIn = 0;
   let totalOut = 0;
@@ -88,7 +105,10 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(6) + ' KB';
       const height = Math.round((item.width * ah) / aw);
       // `attention` biases the crop toward faces and detail rather than the
       // geometric centre — matters a lot for the photos with people in them.
-      img = img.resize(item.width, height, { fit: 'cover', position: sharp.strategy.attention });
+      img = img.resize(item.width, height, {
+        fit: 'cover',
+        position: item.position || sharp.strategy.attention,
+      });
     } else {
       img = img.resize({ width: item.width, withoutEnlargement: true });
     }
