@@ -139,19 +139,26 @@ module.exports = function buildSchema(config) {
     })),
   };
 
+  // Google requires FAQ structured data to match what the page actually
+  // shows. The short layout renders only the `short: true` questions, so the
+  // schema has to follow the same filter — otherwise we would be marking up
+  // answers a visitor can never see, which is a manual-action risk.
+  const visibleFaqs = config.shortFaq ? content.faq.items.filter((f) => f.short) : content.faq.items;
+
   const faqPage = {
     '@type': 'FAQPage',
     '@id': `${pageUrl}#faq`,
     isPartOf: { '@id': PAGE },
-    mainEntity: content.faq.items.map((f) => ({
+    mainEntity: visibleFaqs.map((f) => ({
       '@type': 'Question',
       name: f.q,
       acceptedAnswer: { '@type': 'Answer', text: f.a },
     })),
   };
 
-  return {
-    '@context': 'https://schema.org',
-    '@graph': [organization, website, webpage, breadcrumb, ...services, offerCatalog, faqPage],
-  };
+  const graph = [organization, website, webpage, breadcrumb, ...services, offerCatalog];
+  // Only claim an FAQPage if the page renders one.
+  if (config.sections.includes('faq') && visibleFaqs.length) graph.push(faqPage);
+
+  return { '@context': 'https://schema.org', '@graph': graph };
 };

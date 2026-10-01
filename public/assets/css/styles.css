@@ -1489,3 +1489,145 @@ ul {
   color: var(--ink-3);
   max-width: 62em;
 }
+
+/* ==========================================================================
+   SHORT (lead-gen) LAYOUT
+   Hero carries the form, so the ad click is one screen from a submission.
+   ========================================================================== */
+.hero--form {
+  padding-block: clamp(24px, 3vw, 44px) clamp(32px, 4vw, 56px);
+}
+.hero__grid--form {
+  align-items: start;
+}
+@media (min-width: 980px) {
+  .hero__grid--form {
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 56px);
+  }
+}
+.hero--form h1 {
+  margin-bottom: 14px;
+}
+.hero--form .hero__sub {
+  margin-bottom: 22px;
+}
+.hero--form .hero-stats {
+  margin-bottom: 20px;
+}
+
+.hero-assure {
+  display: grid;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.hero-assure li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+.hero-assure svg {
+  flex: none;
+  color: var(--green-dark);
+}
+.hero-assure b {
+  color: var(--ink);
+}
+.hero__call {
+  display: inline-flex;
+}
+
+.hero__form-head {
+  margin-bottom: 14px;
+}
+.hero__form-head h2 {
+  font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.6rem);
+  margin-bottom: 6px;
+}
+.hero__form-head p {
+  margin: 0;
+  color: var(--ink-3);
+  font-size: 0.95rem;
+}
+.hero__form .formcard {
+  padding: clamp(18px, 2.4vw, 26px);
+}
+.hero__form-note {
+  margin: 12px 2px 0;
+  font-size: 0.8rem;
+  color: var(--ink-3);
+}
+/* Tighter rows so a 7-field form still fits beside the hero copy. */
+.hero__form .formgrid {
+  gap: 12px;
+}
+.hero__form .field input,
+.hero__form .field select,
+.hero__form .field textarea {
+  padding: 11px 13px;
+}
+.hero__form .field textarea {
+  min-height: 70px;
+}
+
+.cards--tight .card {
+  padding: 20px 18px;
+}
+.cards--tight .card h3 {
+  font-size: 1.02rem;
+}
+
+/* --------------------------------------------------------------------------
+   Proof strip
+   -------------------------------------------------------------------------- */
+.proofstrip__stats {
+  margin-bottom: clamp(22px, 3vw, 34px);
+}
+.proofstrip {
+  display: grid;
+  gap: clamp(22px, 3.5vw, 44px);
+  align-items: center;
+}
+@media (min-width: 900px) {
+  .proofstrip {
+    grid-template-columns: 1.1fr 0.9fr;
+  }
+}
+.proofstrip__points {
+  display: grid;
+  gap: 18px;
+}
+.proofstrip__points li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.proofstrip__points svg {
+  flex: none;
+  margin-top: 5px;
+  color: var(--green-dark);
+}
+.proofstrip__points h3 {
+  font-size: 1.02rem;
+  margin-bottom: 4px;
+}
+.proofstrip__points p {
+  margin: 0;
+  font-size: 0.94rem;
+  color: var(--ink-3);
+}
+.proofstrip__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.proofstrip__clients {
+  margin: clamp(22px, 3vw, 32px) 0 0;
+  font-size: 0.92rem;
+  color: var(--ink-3);
+  max-width: 70em;
+}

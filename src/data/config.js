@@ -74,5 +74,46 @@ module.exports = {
    * can segment conversions in GA4 / Looker Studio.
    * ------------------------------------------------------------------ */
   heroVariant: 'A',
+
+  /* ------------------------------------------------------------------ *
+   * 5. Page length
+   *
+   * This is a paid-traffic lead-gen page, so the default is the SHORT
+   * layout: the form sits in the hero, and the long explainer sections are
+   * compressed into two compact blocks. That takes the page from ~20,000px
+   * of scroll down to roughly a third of that, and moves the form from
+   * section 16 to section 1.
+   *
+   * Nothing was deleted. Every long section still exists in content.js and
+   * template.js — add its name back to this list to bring it back, in
+   * whatever order you list it. That makes page length an A/B test rather
+   * than a rewrite.
+   *
+   * Available: heroForm | hero | leadForm | trustBar | logos | entityGlance
+   *            | services | servicesCompact | pains | why | scale | kitchens
+   *            | proofStrip | safety | menu | proof | areas | how | faq
+   *            | finalCta
+   *
+   * Notes:
+   *   - Use EITHER `heroForm` (form in the hero) OR `hero` + `leadForm`
+   *     (image hero, form further down). Not both — build.js refuses it,
+   *     because two forms means duplicate element ids.
+   *   - `servicesCompact` replaces `services` + `pains` + `why`.
+   *   - `proofStrip` replaces `scale` + `kitchens` + `safety` + `proof`.
+   * ------------------------------------------------------------------ */
+  sections: [
+    'heroForm',
+    'logos',
+    'servicesCompact',
+    'proofStrip',
+    'how',
+    'faq',
+    'finalCta',
+  ],
+
+  // Short page shows only the FAQs flagged `short: true` in content.js.
+  // Set to false to show all of them. The JSON-LD FAQPage follows this, so
+  // the structured data never claims a question the page does not show.
+  shortFaq: true,
   ctaVariant: 'A',
 };

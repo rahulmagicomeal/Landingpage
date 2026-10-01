@@ -98,399 +98,13 @@ module.exports = function render(config, assets) {
           .join('')}</script>`
       : '';
 
-  return `<!doctype html>
-<html lang="en-IN">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${esc(c.meta.title)}</title>
-<meta name="description" content="${esc(c.meta.description)}">
-<link rel="canonical" href="${esc(pageUrl)}">
-${config.site.noindex ? '<meta name="robots" content="noindex,nofollow">' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">'}
-<meta name="theme-color" content="#4eb952">
-<meta name="geo.region" content="IN-MH">
-<meta name="geo.placename" content="Mumbai">
+  /* Which sections render, and in what order — see config.sections. */
+  const has = (n) => config.sections.includes(n);
 
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Magicomeal">
-<meta property="og:locale" content="en_IN">
-<meta property="og:url" content="${esc(pageUrl)}">
-<meta property="og:title" content="${esc(c.meta.ogTitle)}">
-<meta property="og:description" content="${esc(c.meta.ogDescription)}">
-<meta property="og:image" content="${esc(config.site.origin + c.meta.ogImage)}">
-<meta property="og:image:width" content="2000">
-<meta property="og:image:height" content="1125">
-<meta property="og:image:alt" content="Corporate cafeteria buffet counter managed by Magicomeal in Mumbai">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${esc(c.meta.ogTitle)}">
-<meta name="twitter:description" content="${esc(c.meta.ogDescription)}">
-<meta name="twitter:image" content="${esc(config.site.origin + c.meta.ogImage)}">
-
-<link rel="icon" href="/assets/img/magicomeal-logo-badge-192.png" type="image/png">
-<link rel="apple-touch-icon" href="/assets/img/magicomeal-logo-badge-192.png">
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
-<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
-<link rel="preload" as="image" href="${esc(c.hero.image.wideSrc)}" imagesrcset="${esc(
-    c.hero.image.wideSrcset
-  )}" imagesizes="${esc(c.hero.image.wideSizes)}" media="(max-width: 899px)" fetchpriority="high">
-<link rel="preload" as="image" href="${esc(c.hero.image.src)}" imagesrcset="${esc(
-    c.hero.image.srcset
-  )}" imagesizes="${esc(c.hero.image.sizes)}" media="(min-width: 900px)" fetchpriority="high">
-<link rel="stylesheet" href="/assets/css/styles.css${v.css ? '?v=' + v.css : ''}">
-
-<script type="application/ld+json">${schema}</script>
-${gtm}
-${gtag}
-</head>
-<body>
-${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${config.tracking.gtmId}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>` : ''}
-<a class="skip" href="#lead-form">Skip to the enquiry form</a>
-
-<!-- ============================ HEADER ============================ -->
-<header class="site-header">
-  <div class="wrap site-header__inner">
-    <a class="site-header__logo" href="#top" aria-label="Magicomeal home">
-      <img src="/assets/img/magicomeal-logo-badge-192.png" alt="${esc(c.header.logoAlt)}" width="48" height="48">
-      <span class="site-header__desc"><b>Corporate Catering</b><span>${esc(
-        co.serviceAreas.map((a) => a.name).join(' · ')
-      )}</span></span>
-    </a>
-    <div class="site-header__actions">
-      <a class="header-phone" href="${telHref}" data-event="phone_click" data-loc="header">
-        ${ICON.phone}<span>${esc(co.contact.phoneDisplay)}</span>
-      </a>
-      <a class="btn btn--primary" href="#lead-form" data-event="cta_click" data-loc="header">${esc(c.header.cta)}</a>
-    </div>
-  </div>
-</header>
-
-<main id="top">
-
-<!-- ============================ HERO ============================== -->
-<section class="hero">
-  <div class="wrap">
-    <div class="hero__grid">
-      <div>
-        <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
-        <h1>${h1Html}</h1>
-        <p class="hero__sub">${esc(c.hero.sub)}</p>
-        <div class="hero__cta">
-          <a class="btn btn--primary btn--lg" href="#lead-form" data-event="hero_cta_click" data-loc="hero_primary">${esc(c.hero.ctaPrimary)}</a>
-          <a class="btn btn--ghost btn--lg" href="${telHref}" data-event="phone_click" data-loc="hero_secondary">${ICON.phone}${esc(c.hero.ctaSecondary)}</a>
-        </div>
-        <p class="hero__reassure">${ICON.checkCircle}${esc(c.hero.reassurance)}</p>
-        <ul class="hero-stats">
-          ${c.hero.stats
-            .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
-            .join('\n          ')}
-        </ul>
-      </div>
-      <div class="hero__media">
-        <picture>
-          <source media="(min-width: 900px)" srcset="${esc(c.hero.image.srcset)}" sizes="${esc(
-            c.hero.image.sizes
-          )}" width="${c.hero.image.width}" height="${c.hero.image.height}">
-          <img src="${esc(c.hero.image.wideSrc)}" srcset="${esc(c.hero.image.wideSrcset)}" sizes="${esc(
-            c.hero.image.wideSizes
-          )}" alt="${esc(c.hero.image.alt)}"
-               width="${c.hero.image.wideWidth}" height="${c.hero.image.wideHeight}"
-               fetchpriority="high" decoding="async">
-        </picture>
-        <div class="hero__badge">
-          <span class="dot">${ICON.shield}</span>
-          <span><strong>ISO 22000:2018</strong><span>HACCP protocols · FSSAI compliant</span></span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ TRUST BAR ========================= -->
-<section class="trustbar" aria-labelledby="trust-h">
-  <div class="wrap">
-    <h2 id="trust-h">${esc(c.trustBar.h2)}</h2>
-    <ul>
-      ${c.trustBar.items.map((i) => `<li>${ICON.check}${esc(i)}</li>`).join('\n      ')}
-    </ul>
-  </div>
-</section>
-
-<!-- ============================ CLIENT LOGOS ====================== -->
-<section class="section" aria-labelledby="clients-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="clients-h">${esc(c.clients.h2)}</h2>
-      <p>${esc(c.clients.sub)}</p>
-    </div>
-    <ul class="logo-grid">
-      ${co.clientLogos
-        .map(
-          (l) =>
-            `<li><img src="/assets/img/clients/${l.file}" alt="${esc(l.name)} — Magicomeal corporate catering client" width="531" height="313" loading="lazy" decoding="async"></li>`
-        )
-        .join('\n      ')}
-    </ul>
-    <p class="client-more"><strong>${esc(c.clients.moreLabel)}:</strong> ${esc(
-      co.otherClients.corporate.join(', ')
-    )}. <strong>Institutions:</strong> ${esc(co.otherClients.institutions.join(', '))}.</p>
-  </div>
-</section>
-
-<!-- ============================ ENTITY + GLANCE =================== -->
-<section class="section section--tint" aria-labelledby="entity-h">
-  <div class="wrap entity__grid">
-    <div>
-      <h2 id="entity-h">${esc(c.entity.h2)}</h2>
-      <p class="entity__lead">${esc(c.entity.lead)}</p>
-      ${c.entity.body.map((p) => `<p class="lead">${esc(p)}</p>`).join('\n      ')}
-    </div>
-    <div class="glance">
-      <h2>${esc(c.glance.h2)}</h2>
-      <dl>
-        ${c.glance.rows
-          .map((r) => `<div><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`)
-          .join('\n        ')}
-      </dl>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ SERVICES ========================== -->
-<section class="section" id="services" aria-labelledby="services-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="services-h">${esc(c.services.h2)}</h2>
-      <p>${esc(c.services.intro)}</p>
-    </div>
-    ${c.services.items
-      .map(
-        (s, i) => `<article class="service${i % 2 ? ' service--flip' : ''}" id="${s.id}">
-      <div class="service__media">
-        <img src="${esc(s.image.src)}" alt="${esc(s.image.alt)}" width="${s.image.width}" height="${s.image.height}" loading="lazy" decoding="async">
-      </div>
-      <div>
-        <h3>${esc(s.h3)}</h3>
-        <p class="service__summary">${esc(s.summary)}</p>
-        <p class="service__for">${ICON.users}${esc(s.forWho)}</p>
-        ${s.body.map((p) => `<p>${esc(p)}</p>`).join('\n        ')}
-        <ul class="service__points">
-          ${s.points.map((p) => `<li>${ICON.check}<span>${esc(p)}</span></li>`).join('\n          ')}
-        </ul>
-        <a class="textlink" href="#lead-form" data-event="cta_click" data-loc="service_${s.id}">Get a proposal for ${esc(
-          s.h3.toLowerCase()
-        )} ${ICON.arrow}</a>
-      </div>
-    </article>`
-      )
-      .join('\n    ')}
-  </div>
-</section>
-
-<!-- ============================ PAIN POINTS ======================= -->
-<section class="section section--tint" aria-labelledby="pains-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="pains-h">${esc(c.pains.h2)}</h2>
-      <p>${esc(c.pains.sub)}</p>
-    </div>
-    <div class="cards">
-      ${c.pains.items
-        .map(
-          (p, i) => `<article class="card">
-        <span class="card__icon">${PAIN_ICONS[i % PAIN_ICONS.length]}</span>
-        <h3>${esc(p.title)}</h3>
-        <p>${esc(p.body)}</p>
-      </article>`
-        )
-        .join('\n      ')}
-    </div>
-  </div>
-</section>
-
-<!-- ============================ WHY MAGICOMEAL ==================== -->
-<section class="section" aria-labelledby="why-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="why-h">${esc(c.why.h2)}</h2>
-      <p>${esc(c.why.sub)}</p>
-    </div>
-    <div class="cards">
-      ${c.why.items
-        .map(
-          (w, i) => `<article class="card">
-        <span class="card__icon">${WHY_ICONS[i % WHY_ICONS.length]}</span>
-        <h3>${esc(w.title)}</h3>
-        <p>${esc(w.body)}</p>
-      </article>`
-        )
-        .join('\n      ')}
-    </div>
-  </div>
-</section>
-
-<!-- ============================ SCALE ============================= -->
-<section class="section scale" aria-labelledby="scale-h">
-  <div class="wrap scale__grid">
-    <div>
-      <h2 id="scale-h">${esc(c.scale.h2)}</h2>
-      <ul class="scale__stats">
-        ${c.scale.stats
-          .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
-          .join('\n        ')}
-      </ul>
-      <p>${esc(c.scale.body)}</p>
-    </div>
-    <div class="scale__media">
-      <img src="${esc(c.scale.image.src)}" alt="${esc(c.scale.image.alt)}" width="${c.scale.image.width}" height="${c.scale.image.height}" loading="lazy" decoding="async">
-    </div>
-  </div>
-</section>
-
-<!-- ============================ KITCHENS ========================== -->
-<section class="section section--tint" id="kitchens" aria-labelledby="kitchens-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="kitchens-h">${esc(c.kitchens.h2)}</h2>
-      <p>${esc(c.kitchens.sub)}</p>
-    </div>
-    <div class="kitchens">
-      <ul class="kitchens__list">
-        ${c.kitchens.items
-          .map(
-            (k) => `<li class="kitchen${k.primary ? ' kitchen--primary' : ''}">
-          <span class="kitchen__role">${esc(k.role)}</span>
-          <b class="kitchen__area">${esc(k.areaLabel)}</b>
-          <h3 class="kitchen__city">${ICON.pin}${esc(k.city)}</h3>
-          <p>${esc(k.body)}</p>
-        </li>`
-          )
-          .join('\n        ')}
-      </ul>
-      <div class="kitchens__media">
-        <img src="${esc(c.kitchens.image.src)}" alt="${esc(c.kitchens.image.alt)}" width="${
-          c.kitchens.image.width
-        }" height="${c.kitchens.image.height}" loading="lazy" decoding="async">
-      </div>
-    </div>
-    <p class="kitchens__foot">${esc(c.kitchens.footnote)}</p>
-  </div>
-</section>
-
-<!-- ============================ FOOD SAFETY ======================= -->
-<section class="section" aria-labelledby="safety-h">
-  <div class="wrap safety__grid">
-    <div class="safety__media">
-      ${c.safety.images
-        .map(
-          (im) =>
-            `<img src="${esc(im.src)}" alt="${esc(im.alt)}" width="640" height="640" loading="lazy" decoding="async">`
-        )
-        .join('\n      ')}
-    </div>
-    <div>
-      <h2 id="safety-h">${esc(c.safety.h2)}</h2>
-      <p>${esc(c.safety.sub)}</p>
-      <ul class="pillars">
-        ${c.safety.pillars.map((p) => `<li>${ICON.check}<span>${esc(p)}</span></li>`).join('\n        ')}
-      </ul>
-      <p class="cert-line">${esc(c.safety.certLine)}</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ MENU ============================== -->
-<section class="section section--tint" aria-labelledby="menu-h">
-  <div class="wrap menu__grid">
-    <div>
-      <h2 id="menu-h">${esc(c.menu.h2)}</h2>
-      <p class="lead">${esc(c.menu.sub)}</p>
-      <ul class="chips">
-        ${c.menu.categories.map((m) => `<li>${esc(m)}</li>`).join('\n        ')}
-      </ul>
-    </div>
-    <div class="menu__media">
-      ${c.menu.images
-        .map(
-          (im, i) =>
-            `<img class="${i === 0 ? 'menu__lead' : ''}" src="${esc(im.src)}" alt="${esc(
-              im.alt
-            )}" width="${im.width}" height="${im.height}" loading="lazy" decoding="async">`
-        )
-        .join('\n      ')}
-    </div>
-  </div>
-</section>
-
-<!-- ============================ PROOF ============================= -->
-<section class="section" aria-labelledby="proof-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="proof-h">${esc(c.proof.h2)}</h2>
-      <p>${esc(c.proof.sub)}</p>
-    </div>
-    <div class="proof-grid">
-      ${c.proof.items
-        .map(
-          (p) => `<article class="proof-card">
-        <b>${esc(p.stat)}</b>
-        <h3>${esc(p.title)}</h3>
-        <p>${esc(p.body)}</p>
-      </article>`
-        )
-        .join('\n      ')}
-    </div>
-    <p class="proof-note">${esc(c.proof.note)}</p>
-  </div>
-</section>
-
-<!-- ============================ SERVICE AREAS ===================== -->
-<section class="section section--green" aria-labelledby="areas-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="areas-h">${esc(c.areas.h2)}</h2>
-    </div>
-    ${c.areas.body.map((p) => `<p class="lead" style="max-width:62em">${esc(p)}</p>`).join('\n    ')}
-    <ul class="area-pills">
-      ${c.areas.list.map((a) => `<li>${ICON.pin}${esc(a)}</li>`).join('\n      ')}
-    </ul>
-  </div>
-</section>
-
-<!-- ============================ HOW IT WORKS ====================== -->
-<section class="section" aria-labelledby="how-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="how-h">${esc(c.how.h2)}</h2>
-    </div>
-    <ol class="steps">
-      ${c.how.steps
-        .map(
-          (s) => `<li class="step">
-        <b>${esc(s.n)}</b>
-        <h3>${esc(s.title)}</h3>
-        <p>${esc(s.body)}</p>
-      </li>`
-        )
-        .join('\n      ')}
-    </ol>
-  </div>
-</section>
-
-<!-- ============================ LEAD FORM ========================= -->
-<section class="section formsec" id="lead-form" aria-labelledby="form-h">
-  <div class="wrap formsec__grid">
-    <div class="formsec__aside">
-      <h2 id="form-h">${esc(c.form.h2)}</h2>
-      <p>${esc(c.form.sub)}</p>
-      <div class="formsec__contacts">
-        <a href="${telHref}" data-event="phone_click" data-loc="form_aside">${ICON.phone}${esc(co.contact.phoneDisplay)}</a>
-        <a href="${waHref}" target="_blank" rel="noopener" data-event="whatsapp_click" data-loc="form_aside">${ICON.whatsapp}WhatsApp our catering team</a>
-        <a href="mailto:${esc(co.contact.email)}" data-event="email_click" data-loc="form_aside">${ICON.mail}${esc(co.contact.email)}</a>
-      </div>
-      <p class="mini">${esc(c.form.scopeNote)}</p>
-    </div>
-
-    <div class="formcard">
+  /* The lead form lives in exactly one place per build: inside the hero on
+     the short page, or in its own section on the long one. Rendering it
+     twice would duplicate the element ids main.js binds to. */
+  const FORM_CARD = `    <div class="formcard">
       <div class="form-alert" id="form-alert" role="alert" aria-live="assertive"></div>
 
       <form id="lead" novalidate>
@@ -569,19 +183,500 @@ ${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.c
           <a class="btn btn--primary" href="${telHref}" data-event="phone_click" data-loc="thankyou">${ICON.phone}${esc(c.form.success.callLabel)}</a>
           <a class="btn btn--ghost" href="${waHref}" target="_blank" rel="noopener" data-event="whatsapp_click" data-loc="thankyou">${ICON.whatsapp}${esc(c.form.success.whatsappLabel)}</a>
         </div>
+      </div>`;
+
+  const faqItems = config.shortFaq ? c.faq.items.filter((f) => f.short) : c.faq.items;
+
+  return `<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>${esc(c.meta.title)}</title>
+<meta name="description" content="${esc(c.meta.description)}">
+<link rel="canonical" href="${esc(pageUrl)}">
+${config.site.noindex ? '<meta name="robots" content="noindex,nofollow">' : '<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">'}
+<meta name="theme-color" content="#4eb952">
+<meta name="geo.region" content="IN-MH">
+<meta name="geo.placename" content="Mumbai">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Magicomeal">
+<meta property="og:locale" content="en_IN">
+<meta property="og:url" content="${esc(pageUrl)}">
+<meta property="og:title" content="${esc(c.meta.ogTitle)}">
+<meta property="og:description" content="${esc(c.meta.ogDescription)}">
+<meta property="og:image" content="${esc(config.site.origin + c.meta.ogImage)}">
+<meta property="og:image:width" content="2000">
+<meta property="og:image:height" content="1125">
+<meta property="og:image:alt" content="Corporate cafeteria buffet counter managed by Magicomeal in Mumbai">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(c.meta.ogTitle)}">
+<meta name="twitter:description" content="${esc(c.meta.ogDescription)}">
+<meta name="twitter:image" content="${esc(config.site.origin + c.meta.ogImage)}">
+
+<link rel="icon" href="/assets/img/magicomeal-logo-badge-192.png" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/magicomeal-logo-badge-192.png">
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+<link rel="preload" as="image" href="${esc(c.hero.image.wideSrc)}" imagesrcset="${esc(
+    c.hero.image.wideSrcset
+  )}" imagesizes="${esc(c.hero.image.wideSizes)}" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" href="${esc(c.hero.image.src)}" imagesrcset="${esc(
+    c.hero.image.srcset
+  )}" imagesizes="${esc(c.hero.image.sizes)}" media="(min-width: 900px)" fetchpriority="high">
+<link rel="stylesheet" href="/assets/css/styles.css${v.css ? '?v=' + v.css : ''}">
+
+<script type="application/ld+json">${schema}</script>
+${gtm}
+${gtag}
+</head>
+<body>
+${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=${config.tracking.gtmId}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>` : ''}
+<a class="skip" href="#lead-form">Skip to the enquiry form</a>
+
+<!-- ============================ HEADER ============================ -->
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a class="site-header__logo" href="#top" aria-label="Magicomeal home">
+      <img src="/assets/img/magicomeal-logo-badge-192.png" alt="${esc(c.header.logoAlt)}" width="48" height="48">
+      <span class="site-header__desc"><b>Corporate Catering</b><span>${esc(
+        co.serviceAreas.map((a) => a.name).join(' · ')
+      )}</span></span>
+    </a>
+    <div class="site-header__actions">
+      <a class="header-phone" href="${telHref}" data-event="phone_click" data-loc="header">
+        ${ICON.phone}<span>${esc(co.contact.phoneDisplay)}</span>
+      </a>
+      <a class="btn btn--primary" href="#lead-form" data-event="cta_click" data-loc="header">${esc(c.header.cta)}</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+${has('heroForm') ? `<!-- ======================= HERO + FORM (short page) ============== -->
+<section class="hero hero--form">
+  <div class="wrap">
+    <div class="hero__grid hero__grid--form">
+      <div class="hero__copy">
+        <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
+        <h1>${h1Html}</h1>
+        <p class="hero__sub">${esc(c.hero.sub)}</p>
+        <ul class="hero-stats">
+          ${c.hero.stats
+            .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+            .join('\n          ')}
+        </ul>
+        <ul class="hero-assure">
+          <li>${ICON.shield}<span><b>ISO 22000:2018</b> · HACCP · FSSAI compliant</span></li>
+          <li>${ICON.checkCircle}<span>${esc(c.hero.reassurance)}</span></li>
+        </ul>
+        <a class="btn btn--ghost hero__call" href="${telHref}" data-event="phone_click" data-loc="hero_secondary">${ICON.phone}${esc(co.contact.phoneDisplay)}</a>
+      </div>
+
+      <div class="hero__form" id="lead-form">
+        <div class="hero__form-head">
+          <h2 id="form-h">${esc(c.form.h2)}</h2>
+          <p>${esc(c.form.sub)}</p>
+        </div>
+        ${FORM_CARD}
+        <p class="hero__form-note">${esc(c.form.scopeNote)}</p>
       </div>
     </div>
   </div>
-</section>
+</section>` : ''}
 
-<!-- ============================ FAQ =============================== -->
+${has('hero') ? `<!-- ============================ HERO ============================== -->
+<section class="hero">
+  <div class="wrap">
+    <div class="hero__grid">
+      <div>
+        <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
+        <h1>${h1Html}</h1>
+        <p class="hero__sub">${esc(c.hero.sub)}</p>
+        <div class="hero__cta">
+          <a class="btn btn--primary btn--lg" href="#lead-form" data-event="hero_cta_click" data-loc="hero_primary">${esc(c.hero.ctaPrimary)}</a>
+          <a class="btn btn--ghost btn--lg" href="${telHref}" data-event="phone_click" data-loc="hero_secondary">${ICON.phone}${esc(c.hero.ctaSecondary)}</a>
+        </div>
+        <p class="hero__reassure">${ICON.checkCircle}${esc(c.hero.reassurance)}</p>
+        <ul class="hero-stats">
+          ${c.hero.stats
+            .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+            .join('\n          ')}
+        </ul>
+      </div>
+      <div class="hero__media">
+        <picture>
+          <source media="(min-width: 900px)" srcset="${esc(c.hero.image.srcset)}" sizes="${esc(
+            c.hero.image.sizes
+          )}" width="${c.hero.image.width}" height="${c.hero.image.height}">
+          <img src="${esc(c.hero.image.wideSrc)}" srcset="${esc(c.hero.image.wideSrcset)}" sizes="${esc(
+            c.hero.image.wideSizes
+          )}" alt="${esc(c.hero.image.alt)}"
+               width="${c.hero.image.wideWidth}" height="${c.hero.image.wideHeight}"
+               fetchpriority="high" decoding="async">
+        </picture>
+        <div class="hero__badge">
+          <span class="dot">${ICON.shield}</span>
+          <span><strong>ISO 22000:2018</strong><span>HACCP protocols · FSSAI compliant</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>` : ''}
+
+${has('trustBar') ? `<!-- ============================ TRUST BAR ========================= -->
+<section class="trustbar" aria-labelledby="trust-h">
+  <div class="wrap">
+    <h2 id="trust-h">${esc(c.trustBar.h2)}</h2>
+    <ul>
+      ${c.trustBar.items.map((i) => `<li>${ICON.check}${esc(i)}</li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>` : ''}
+
+${has('logos') ? `<!-- ============================ CLIENT LOGOS ====================== -->
+<section class="section" aria-labelledby="clients-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="clients-h">${esc(c.clients.h2)}</h2>
+      <p>${esc(c.clients.sub)}</p>
+    </div>
+    <ul class="logo-grid">
+      ${co.clientLogos
+        .map(
+          (l) =>
+            `<li><img src="/assets/img/clients/${l.file}" alt="${esc(l.name)} — Magicomeal corporate catering client" width="531" height="313" loading="lazy" decoding="async"></li>`
+        )
+        .join('\n      ')}
+    </ul>
+    <p class="client-more"><strong>${esc(c.clients.moreLabel)}:</strong> ${esc(
+      co.otherClients.corporate.join(', ')
+    )}. <strong>Institutions:</strong> ${esc(co.otherClients.institutions.join(', '))}.</p>
+  </div>
+</section>` : ''}
+
+${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =================== -->
+<section class="section section--tint" aria-labelledby="entity-h">
+  <div class="wrap entity__grid">
+    <div>
+      <h2 id="entity-h">${esc(c.entity.h2)}</h2>
+      <p class="entity__lead">${esc(c.entity.lead)}</p>
+      ${c.entity.body.map((p) => `<p class="lead">${esc(p)}</p>`).join('\n      ')}
+    </div>
+    <div class="glance">
+      <h2>${esc(c.glance.h2)}</h2>
+      <dl>
+        ${c.glance.rows
+          .map((r) => `<div><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`)
+          .join('\n        ')}
+      </dl>
+    </div>
+  </div>
+</section>` : ''}
+
+${has('servicesCompact') ? `<!-- ================= SERVICES (compact, short page) ============== -->
+<section class="section" id="services" aria-labelledby="svccompact-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="svccompact-h">${esc(c.servicesCompact.h2)}</h2>
+      <p>${esc(c.servicesCompact.intro)}</p>
+    </div>
+    <div class="cards cards--tight">
+      ${c.servicesCompact.items
+        .map(
+          (it, i) => `<article class="card">
+        <span class="card__icon">${WHY_ICONS[i % WHY_ICONS.length]}</span>
+        <h3>${esc(it.title)}</h3>
+        <p>${esc(it.body)}</p>
+      </article>`
+        )
+        .join('\n      ')}
+    </div>
+  </div>
+</section>` : ''}
+
+${has('services') ? `<!-- ============================ SERVICES ========================== -->
+<section class="section" id="services" aria-labelledby="services-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="services-h">${esc(c.services.h2)}</h2>
+      <p>${esc(c.services.intro)}</p>
+    </div>
+    ${c.services.items
+      .map(
+        (s, i) => `<article class="service${i % 2 ? ' service--flip' : ''}" id="${s.id}">
+      <div class="service__media">
+        <img src="${esc(s.image.src)}" alt="${esc(s.image.alt)}" width="${s.image.width}" height="${s.image.height}" loading="lazy" decoding="async">
+      </div>
+      <div>
+        <h3>${esc(s.h3)}</h3>
+        <p class="service__summary">${esc(s.summary)}</p>
+        <p class="service__for">${ICON.users}${esc(s.forWho)}</p>
+        ${s.body.map((p) => `<p>${esc(p)}</p>`).join('\n        ')}
+        <ul class="service__points">
+          ${s.points.map((p) => `<li>${ICON.check}<span>${esc(p)}</span></li>`).join('\n          ')}
+        </ul>
+        <a class="textlink" href="#lead-form" data-event="cta_click" data-loc="service_${s.id}">Get a proposal for ${esc(
+          s.h3.toLowerCase()
+        )} ${ICON.arrow}</a>
+      </div>
+    </article>`
+      )
+      .join('\n    ')}
+  </div>
+</section>` : ''}
+
+${has('pains') ? `<!-- ============================ PAIN POINTS ======================= -->
+<section class="section section--tint" aria-labelledby="pains-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="pains-h">${esc(c.pains.h2)}</h2>
+      <p>${esc(c.pains.sub)}</p>
+    </div>
+    <div class="cards">
+      ${c.pains.items
+        .map(
+          (p, i) => `<article class="card">
+        <span class="card__icon">${PAIN_ICONS[i % PAIN_ICONS.length]}</span>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.body)}</p>
+      </article>`
+        )
+        .join('\n      ')}
+    </div>
+  </div>
+</section>` : ''}
+
+${has('why') ? `<!-- ============================ WHY MAGICOMEAL ==================== -->
+<section class="section" aria-labelledby="why-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="why-h">${esc(c.why.h2)}</h2>
+      <p>${esc(c.why.sub)}</p>
+    </div>
+    <div class="cards">
+      ${c.why.items
+        .map(
+          (w, i) => `<article class="card">
+        <span class="card__icon">${WHY_ICONS[i % WHY_ICONS.length]}</span>
+        <h3>${esc(w.title)}</h3>
+        <p>${esc(w.body)}</p>
+      </article>`
+        )
+        .join('\n      ')}
+    </div>
+  </div>
+</section>` : ''}
+
+${has('proofStrip') ? `<!-- ================= PROOF STRIP (short page) ==================== -->
+<section class="section section--tint" aria-labelledby="proofstrip-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="proofstrip-h">${esc(c.proofStrip.h2)}</h2>
+    </div>
+    <ul class="hero-stats proofstrip__stats">
+      ${c.proofStrip.stats
+        .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+        .join('\n      ')}
+    </ul>
+    <div class="proofstrip">
+      <ul class="proofstrip__points">
+        ${c.proofStrip.points
+          .map(
+            (pt) => `<li>
+          ${ICON.check}
+          <div><h3>${esc(pt.title)}</h3><p>${esc(pt.body)}</p></div>
+        </li>`
+          )
+          .join('\n        ')}
+      </ul>
+      <div class="proofstrip__media">
+        <img src="${esc(c.proofStrip.image.src)}" alt="${esc(c.proofStrip.image.alt)}" width="${
+          c.proofStrip.image.width
+        }" height="${c.proofStrip.image.height}" loading="lazy" decoding="async">
+      </div>
+    </div>
+    <p class="proofstrip__clients">${esc(c.proofStrip.clientLine)}</p>
+  </div>
+</section>` : ''}
+
+${has('scale') ? `<!-- ============================ SCALE ============================= -->
+<section class="section scale" aria-labelledby="scale-h">
+  <div class="wrap scale__grid">
+    <div>
+      <h2 id="scale-h">${esc(c.scale.h2)}</h2>
+      <ul class="scale__stats">
+        ${c.scale.stats
+          .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+          .join('\n        ')}
+      </ul>
+      <p>${esc(c.scale.body)}</p>
+    </div>
+    <div class="scale__media">
+      <img src="${esc(c.scale.image.src)}" alt="${esc(c.scale.image.alt)}" width="${c.scale.image.width}" height="${c.scale.image.height}" loading="lazy" decoding="async">
+    </div>
+  </div>
+</section>` : ''}
+
+${has('kitchens') ? `<!-- ============================ KITCHENS ========================== -->
+<section class="section section--tint" id="kitchens" aria-labelledby="kitchens-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="kitchens-h">${esc(c.kitchens.h2)}</h2>
+      <p>${esc(c.kitchens.sub)}</p>
+    </div>
+    <div class="kitchens">
+      <ul class="kitchens__list">
+        ${c.kitchens.items
+          .map(
+            (k) => `<li class="kitchen${k.primary ? ' kitchen--primary' : ''}">
+          <span class="kitchen__role">${esc(k.role)}</span>
+          <b class="kitchen__area">${esc(k.areaLabel)}</b>
+          <h3 class="kitchen__city">${ICON.pin}${esc(k.city)}</h3>
+          <p>${esc(k.body)}</p>
+        </li>`
+          )
+          .join('\n        ')}
+      </ul>
+      <div class="kitchens__media">
+        <img src="${esc(c.kitchens.image.src)}" alt="${esc(c.kitchens.image.alt)}" width="${
+          c.kitchens.image.width
+        }" height="${c.kitchens.image.height}" loading="lazy" decoding="async">
+      </div>
+    </div>
+    <p class="kitchens__foot">${esc(c.kitchens.footnote)}</p>
+  </div>
+</section>` : ''}
+
+${has('safety') ? `<!-- ============================ FOOD SAFETY ======================= -->
+<section class="section" aria-labelledby="safety-h">
+  <div class="wrap safety__grid">
+    <div class="safety__media">
+      ${c.safety.images
+        .map(
+          (im) =>
+            `<img src="${esc(im.src)}" alt="${esc(im.alt)}" width="640" height="640" loading="lazy" decoding="async">`
+        )
+        .join('\n      ')}
+    </div>
+    <div>
+      <h2 id="safety-h">${esc(c.safety.h2)}</h2>
+      <p>${esc(c.safety.sub)}</p>
+      <ul class="pillars">
+        ${c.safety.pillars.map((p) => `<li>${ICON.check}<span>${esc(p)}</span></li>`).join('\n        ')}
+      </ul>
+      <p class="cert-line">${esc(c.safety.certLine)}</p>
+    </div>
+  </div>
+</section>` : ''}
+
+${has('menu') ? `<!-- ============================ MENU ============================== -->
+<section class="section section--tint" aria-labelledby="menu-h">
+  <div class="wrap menu__grid">
+    <div>
+      <h2 id="menu-h">${esc(c.menu.h2)}</h2>
+      <p class="lead">${esc(c.menu.sub)}</p>
+      <ul class="chips">
+        ${c.menu.categories.map((m) => `<li>${esc(m)}</li>`).join('\n        ')}
+      </ul>
+    </div>
+    <div class="menu__media">
+      ${c.menu.images
+        .map(
+          (im, i) =>
+            `<img class="${i === 0 ? 'menu__lead' : ''}" src="${esc(im.src)}" alt="${esc(
+              im.alt
+            )}" width="${im.width}" height="${im.height}" loading="lazy" decoding="async">`
+        )
+        .join('\n      ')}
+    </div>
+  </div>
+</section>` : ''}
+
+${has('proof') ? `<!-- ============================ PROOF ============================= -->
+<section class="section" aria-labelledby="proof-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="proof-h">${esc(c.proof.h2)}</h2>
+      <p>${esc(c.proof.sub)}</p>
+    </div>
+    <div class="proof-grid">
+      ${c.proof.items
+        .map(
+          (p) => `<article class="proof-card">
+        <b>${esc(p.stat)}</b>
+        <h3>${esc(p.title)}</h3>
+        <p>${esc(p.body)}</p>
+      </article>`
+        )
+        .join('\n      ')}
+    </div>
+    <p class="proof-note">${esc(c.proof.note)}</p>
+  </div>
+</section>` : ''}
+
+${has('areas') ? `<!-- ============================ SERVICE AREAS ===================== -->
+<section class="section section--green" aria-labelledby="areas-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="areas-h">${esc(c.areas.h2)}</h2>
+    </div>
+    ${c.areas.body.map((p) => `<p class="lead" style="max-width:62em">${esc(p)}</p>`).join('\n    ')}
+    <ul class="area-pills">
+      ${c.areas.list.map((a) => `<li>${ICON.pin}${esc(a)}</li>`).join('\n      ')}
+    </ul>
+  </div>
+</section>` : ''}
+
+${has('how') ? `<!-- ============================ HOW IT WORKS ====================== -->
+<section class="section" aria-labelledby="how-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="how-h">${esc(c.how.h2)}</h2>
+    </div>
+    <ol class="steps">
+      ${c.how.steps
+        .map(
+          (s) => `<li class="step">
+        <b>${esc(s.n)}</b>
+        <h3>${esc(s.title)}</h3>
+        <p>${esc(s.body)}</p>
+      </li>`
+        )
+        .join('\n      ')}
+    </ol>
+  </div>
+</section>` : ''}
+
+${has('leadForm') ? `<!-- ============================ LEAD FORM ========================= -->
+<section class="section formsec" id="lead-form" aria-labelledby="form-h">
+  <div class="wrap formsec__grid">
+    <div class="formsec__aside">
+      <h2 id="form-h">${esc(c.form.h2)}</h2>
+      <p>${esc(c.form.sub)}</p>
+      <div class="formsec__contacts">
+        <a href="${telHref}" data-event="phone_click" data-loc="form_aside">${ICON.phone}${esc(co.contact.phoneDisplay)}</a>
+        <a href="${waHref}" target="_blank" rel="noopener" data-event="whatsapp_click" data-loc="form_aside">${ICON.whatsapp}WhatsApp our catering team</a>
+        <a href="mailto:${esc(co.contact.email)}" data-event="email_click" data-loc="form_aside">${ICON.mail}${esc(co.contact.email)}</a>
+      </div>
+      <p class="mini">${esc(c.form.scopeNote)}</p>
+    </div>
+
+${FORM_CARD}
+    </div>
+  </div>
+</section>` : ''}
+
+${has('faq') ? `<!-- ============================ FAQ =============================== -->
 <section class="section" aria-labelledby="faq-h">
   <div class="wrap">
     <div class="section-head">
       <h2 id="faq-h">${esc(c.faq.h2)}</h2>
     </div>
     <div class="faq">
-      ${c.faq.items
+      ${faqItems
         .map(
           (f, i) => `<details${i === 0 ? ' open' : ''}>
         <summary>${esc(f.q)}</summary>
@@ -591,9 +686,9 @@ ${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.c
         .join('\n      ')}
     </div>
   </div>
-</section>
+</section>` : ''}
 
-<!-- ============================ FINAL CTA ========================= -->
+${has('finalCta') ? `<!-- ============================ FINAL CTA ========================= -->
 <section class="section finalcta" aria-labelledby="final-h">
   <div class="wrap">
     <h2 id="final-h">${esc(c.finalCta.h2)}</h2>
@@ -605,7 +700,7 @@ ${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.c
   </div>
 </section>
 
-</main>
+</main>` : ''}
 
 <!-- ============================ FOOTER ============================ -->
 <footer class="site-footer">

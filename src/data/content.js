@@ -562,6 +562,7 @@ module.exports = {
     h2: 'Corporate catering in Mumbai: common questions',
     items: [
       {
+        short: true,
         q: 'What does Magicomeal provide?',
         a: `Magicomeal provides corporate catering, corporate cafeteria management, daily office meals, corporate event catering and institutional catering. Magicomeal is a contract caterer for offices, workplaces, schools and institutions, and serves ${company.stats.mealsPerDay.value} meals per day from two production kitchens in Andheri East, Mumbai and Panvel, Navi Mumbai.`,
       },
@@ -578,10 +579,12 @@ module.exports = {
         a: 'Yes. Magicomeal manages corporate cafeterias and canteens end to end, covering menu management, food production, counter service, hygiene and sanitation schedules, stock and daily operations. Trained Magicomeal service staff work on site in uniform.',
       },
       {
+        short: true,
         q: 'Which locations does Magicomeal serve?',
         a: `Magicomeal serves corporate and institutional clients across ${AREAS_PROSE}. Production runs from an 8,000 sq.ft. central production unit at Saki Naka, Andheri East, Mumbai 400072 and a 5,000 sq.ft. kitchen in Panvel, with delivery and on-site service teams sent to client sites.`,
       },
       {
+        short: true,
         q: 'Can corporate menus be customised?',
         a: 'Yes. Menu cycles are built with the client rather than picked from a fixed list. Magicomeal accommodates vegetarian, vegan, Jain and gluten-free requirements, offers regional Indian cuisines, and can provide dietician input on menu design on request.',
       },
@@ -594,10 +597,12 @@ module.exports = {
         a: 'Magicomeal operates under an ISO 22000:2018 food safety management system, follows HACCP protocols and is FSSAI compliant, working with FSSAI-approved vendors. Daily controls include time and temperature control, prevention of cross contamination, cleaning and sanitation schedules, weekly pest control, and regular water and food lab testing.',
       },
       {
+        short: true,
         q: 'What is the minimum order quantity for corporate catering?',
         a: 'Magicomeal does not publish a fixed minimum. The minimum order depends on the site, location and service model, and is confirmed during the proposal stage. Magicomeal focuses on large-scale corporate and institutional meal programmes and does not offer individual tiffin services.',
       },
       {
+        short: true,
         q: 'How can a company request a corporate catering proposal?',
         a: `Complete the enquiry form on this page with your company name, office location, approximate meals per day and requirement, or call ${company.contact.phoneDisplay}. The Magicomeal catering team responds within one working day with a written proposal covering a sample menu cycle, service model and pricing.`,
       },
@@ -625,6 +630,84 @@ module.exports = {
       { label: 'Terms', href: 'https://magicomeal.com/terms/' },
       { label: 'Main website', href: 'https://magicomeal.com/' },
     ],
+  },
+
+  /* ================================================================== *
+   * SHORT-PAGE BLOCKS
+   *
+   * Used by the lead-gen layout. They compress the long sections rather
+   * than replacing their content: the service names, the scale numbers, the
+   * kitchens and the certifications all still appear, just without five
+   * full-width image rows between the visitor and the form.
+   * ================================================================== */
+
+  // Replaces: services + pains + why
+  servicesCompact: {
+    h2: 'One partner for your whole workplace food programme',
+    // Kept deliberately factual and self-contained: this short paragraph is
+    // what AI search engines quote when asked who Magicomeal is.
+    intro: `Magicomeal is a corporate and institutional catering company in Mumbai. It runs daily meal services, cafeteria operations and event catering for offices, schools and institutions across ${AREAS_PROSE}, serving ${company.stats.mealsPerDay.value} meals a day.`,
+    items: [
+      {
+        title: 'Daily corporate meals',
+        body: 'Breakfast, lunch and evening snacks on a fixed schedule, planned against your headcount.',
+      },
+      {
+        title: 'Corporate cafeteria management',
+        body: 'We run the cafeteria end to end — menu, production, counter service, hygiene, on-site staff.',
+      },
+      {
+        title: 'Corporate event catering',
+        body: 'Meetings, townhalls, annual functions and festivals, with service staff and equipment on site.',
+      },
+      {
+        title: 'Institutional catering',
+        body: 'School and hostel cafeterias with age-appropriate menus and the same food safety controls.',
+      },
+      {
+        title: 'Customised menus',
+        body: 'Rotating menu cycles with regional Indian options. Vegetarian, vegan, Jain and gluten-free planned in.',
+      },
+      {
+        title: 'One contract, one contact',
+        body: 'Every service line from the same team, with one invoice and one named person to escalate to.',
+      },
+    ],
+  },
+
+  // Replaces: scale + kitchens + safety + proof
+  proofStrip: {
+    h2: 'Why workplaces stay with us',
+    stats: [
+      { value: company.stats.mealsPerDay.value, label: 'Meals served daily' },
+      { value: company.stats.companiesServed.value, label: 'Companies served' },
+      { value: company.stats.yearsExperience.value, label: 'Years in operation' },
+      { value: company.stats.googleRating.value, label: 'Google rating' },
+    ],
+    points: [
+      {
+        title: 'Two kitchens of our own',
+        body: `An ${company.kitchens[0].areaLabel} central production unit in ${company.kitchens[0].city} and a ${company.kitchens[1].areaLabel} kitchen in ${company.kitchens[1].city} — ${company.kitchenTotalSqFt.toLocaleString(
+          'en-IN'
+        )} sq.ft. in total, owned and run by us.`,
+      },
+      {
+        title: 'Certified food safety',
+        body: 'ISO 22000:2018 and HACCP protocols, FSSAI compliant, with time and temperature control, weekly pest control and regular water and food lab testing.',
+      },
+      {
+        title: 'Consistency that holds',
+        body: 'Standardised recipes cooked in our own kitchens, so the same dish tastes the same in week 1 and week 100 — the month-four drop-off simply does not happen.',
+      },
+    ],
+    clientLine:
+      'Trusted by ICICI Bank, SBI Life, Aditya Birla Group, Gartner, Lodha, NDTV, Trilegal and Tata Communications, and by IIT Powai, JBCN International School, Podar School and Ecole Mondiale.',
+    image: {
+      src: '/assets/img/magicomeal-corporate-catering-counter-service-mumbai.webp',
+      alt: 'Magicomeal service staff plating meals at a corporate office catering counter in Mumbai',
+      width: 1100,
+      height: 825,
+    },
   },
 
   /* ================================================================== *

@@ -34,6 +34,30 @@ const assetVersions = {
   js: hash('assets/js/main.js'),
 };
 
+/* --------------------------------------------------- validate config.sections
+ * Cheap guards against the two ways this config can silently produce a broken
+ * page: two lead forms (duplicate element ids, so main.js binds to one and the
+ * visitor fills the other), or no lead form at all on a lead-gen page.
+ */
+const sections = config.sections || [];
+const formSections = ['heroForm', 'leadForm'].filter((s) => sections.includes(s));
+
+if (formSections.length > 1) {
+  console.error(
+    '\n  config.sections lists both "heroForm" and "leadForm".\n' +
+      '  That renders the form twice and duplicates the element ids the form\n' +
+      '  script binds to. Keep one.\n'
+  );
+  process.exit(1);
+}
+if (formSections.length === 0) {
+  console.error(
+    '\n  config.sections has no lead form — add "heroForm" (form in the hero)\n' +
+      '  or "leadForm" (form in its own section further down).\n'
+  );
+  process.exit(1);
+}
+
 /* ------------------------------------------------------------- index.html */
 const html = render(config, assetVersions);
 fs.writeFileSync(path.join(OUT, 'index.html'), html, 'utf8');
