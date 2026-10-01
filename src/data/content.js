@@ -22,7 +22,7 @@ module.exports = {
       'Magicomeal provides corporate catering, office meals and cafeteria management for workplaces across Mumbai, Navi Mumbai & Thane. Request a proposal.',
     ogTitle: 'Corporate Catering Services in Mumbai | Magicomeal',
     ogDescription:
-      'Corporate catering, cafeteria management and daily office meals for workplaces and institutions across Mumbai, Navi Mumbai and Thane. 15,000+ meals cooked daily.',
+      'Corporate catering, cafeteria management and daily office meals for workplaces and institutions across Mumbai, Navi Mumbai and Thane. 18,000+ meals served daily.',
     ogImage: '/assets/img/magicomeal-corporate-catering-mumbai-og.webp',
   },
 
@@ -46,8 +46,8 @@ module.exports = {
         highlight: 'well fed',
       },
       B: {
-        h1: '15,000+ meals served daily. Corporate catering you can rely on.',
-        highlight: '15,000+ meals served daily.',
+        h1: '18,000+ meals served daily. Corporate catering you can rely on.',
+        highlight: '18,000+ meals served daily.',
       },
       C: {
         h1: 'Your workplace deserves better catering',
@@ -89,12 +89,12 @@ module.exports = {
   trustBar: {
     h2: 'Trusted to serve at scale',
     items: [
-      `${company.stats.mealsPerDay.value} meals cooked every day`,
+      `${company.stats.mealsPerDay.value} meals served every day`,
       `${company.stats.companiesServed.value} companies served since ${company.foundedYear}`,
       'ISO 22000:2018 certified',
       'HACCP protocols',
       'FSSAI compliant',
-      'Central production kitchen in Andheri East',
+      'Two production kitchens: Andheri East and Panvel',
     ],
   },
 
@@ -112,7 +112,7 @@ module.exports = {
    * ================================================================== */
   entity: {
     h2: 'What is Magicomeal?',
-    lead: `Magicomeal is a corporate and institutional catering company based in Mumbai, India. Magicomeal provides daily office meals, corporate cafeteria management, breakfast and snacks services, corporate event catering and institutional catering for schools and large organisations across ${AREAS_PROSE}. Magicomeal has been operating since ${company.foundedYear} and cooks ${company.stats.mealsPerDay.value} meals per day from its central production kitchen in Andheri East, Mumbai.`,
+    lead: `Magicomeal is a corporate and institutional catering company based in Mumbai, India. Magicomeal provides daily office meals, corporate cafeteria management, breakfast and snacks services, corporate event catering and institutional catering for schools and large organisations across ${AREAS_PROSE}. Magicomeal has been operating since ${company.foundedYear} and serves ${company.stats.mealsPerDay.value} meals per day from two production kitchens: an 8,000 sq.ft. central production unit in Andheri East, Mumbai, and a 5,000 sq.ft. kitchen in Panvel, Navi Mumbai.`,
     body: [
       `Magicomeal works with companies on contract, not on single orders. A typical engagement is a workplace that needs the same meal service delivered to the same standard every working day — an office cafeteria, a daily lunch programme, a school meal programme, or a site canteen.`,
       `Magicomeal operates under an ISO 22000:2018 food safety management system, follows HACCP protocols and works with FSSAI-approved vendors. Menu planning, procurement, production, quality checks, delivery and on-site service are managed by Magicomeal as a single operation, with one account contact for the client.`,
@@ -125,14 +125,19 @@ module.exports = {
    * ================================================================== */
   glance: {
     h2: 'Magicomeal at a glance',
+    // Company / Industry / Head office were removed at the client's request.
+    // Those three facts still reach crawlers and LLMs via the entity paragraph
+    // directly above this table and via the Organization JSON-LD, so dropping
+    // the rows costs nothing in entity clarity.
     rows: [
-      { k: 'Company', v: 'Magicomeal' },
-      { k: 'Industry', v: 'Corporate and institutional catering' },
-      { k: 'Head office', v: 'Andheri East, Mumbai, Maharashtra, India' },
       { k: 'Service areas', v: AREAS_PROSE },
       { k: 'Operating since', v: String(company.foundedYear) },
-      { k: 'Meals cooked daily', v: company.stats.mealsPerDay.value },
+      { k: 'Meals served daily', v: company.stats.mealsPerDay.value },
       { k: 'Companies served', v: company.stats.companiesServed.value },
+      {
+        k: 'Production kitchens',
+        v: company.kitchens.map((x) => `${x.city} (${x.areaLabel})`).join('; '),
+      },
       { k: 'Food safety certification', v: 'ISO 22000:2018' },
       { k: 'Food safety protocols', v: 'HACCP' },
       { k: 'Licensing', v: 'FSSAI compliant' },
@@ -160,7 +165,7 @@ module.exports = {
           'Magicomeal provides contract corporate catering for offices and workplaces in Mumbai, Navi Mumbai and Thane.',
         forWho: 'Offices of 50 to 1,000+ people that need a food partner rather than a food vendor.',
         body: [
-          'Magicomeal takes on the full food operation for a workplace: menu planning, procurement, production in its central kitchen, quality checks, delivery and service at your site.',
+          'Magicomeal takes on the full food operation for a workplace: menu planning, procurement, production in its own kitchens, quality checks, delivery and service at your site.',
           'Service is contracted and scheduled, so headcount, menu cycles and costs are agreed in advance rather than negotiated order by order.',
         ],
         points: [
@@ -285,7 +290,7 @@ module.exports = {
     items: [
       {
         title: 'Consistent quality',
-        body: 'Most caterers are good in month one and drift by month four. Magicomeal cooks to standardised recipes in one central kitchen, so the same dish tastes the same in week 1 and week 100.',
+        body: 'Most caterers are good in month one and drift by month four. Magicomeal cooks to standardised recipes in its own production kitchens, so the same dish tastes the same in week 1 and week 100.',
       },
       {
         title: 'Reliable operations',
@@ -328,17 +333,36 @@ module.exports = {
   scale: {
     h2: 'Built for high-volume corporate catering',
     stats: [
-      { value: company.stats.mealsPerDay.value, label: 'Meals cooked daily' },
+      { value: company.stats.mealsPerDay.value, label: 'Meals served daily' },
       { value: company.stats.companiesServed.value, label: 'Companies served' },
       { value: company.stats.yearsExperience.value, label: 'Years in operation' },
       { value: `Since ${company.foundedYear}`, label: 'Operating in Mumbai' },
     ],
-    body: 'From menu planning and procurement through production, quality control, delivery and on-site service, Magicomeal manages the catering operation as a single process. Volume is handled from a central production kitchen in Andheri East, Mumbai, which is what makes the same standard repeatable across 250+ companies.',
+    body: 'From menu planning and procurement through production, quality control, delivery and on-site service, Magicomeal manages the catering operation as a single process. Volume is handled from two owned production kitchens totalling 13,000 sq.ft., which is what makes the same standard repeatable across 250+ companies.',
     image: {
       src: '/assets/img/magicomeal-catering-team-site-mumbai.webp',
       alt: 'The full Magicomeal service and management team on site at a corporate cafeteria in Mumbai',
       width: 1240,
       height: 827,
+    },
+  },
+
+  /* ================================================================== *
+   * KITCHENS
+   * ================================================================== */
+  kitchens: {
+    h2: 'Two production kitchens of our own',
+    sub: `Magicomeal cooks in kitchens it owns and runs — not in rented or shared space. ${company.kitchenTotalSqFt.toLocaleString(
+      'en-IN'
+    )} sq.ft. of production capacity across Mumbai and Navi Mumbai.`,
+    items: company.kitchens,
+    footnote:
+      'Owning the kitchens is what makes the volume and the consistency possible: the same recipes, the same controls and the same team standards behind every site we serve.',
+    image: {
+      src: '/assets/img/magicomeal-central-kitchen-mumbai.webp',
+      alt: 'Magicomeal central production kitchen in Andheri East, Mumbai, with stainless steel work stations and extraction hoods',
+      width: 640,
+      height: 640,
     },
   },
 
@@ -432,7 +456,7 @@ module.exports = {
       },
       {
         stat: company.stats.mealsPerDay.value,
-        title: 'Meals cooked every day',
+        title: 'Meals served every day',
         body: 'Sustained daily volume across corporate, institutional and school sites in Mumbai.',
       },
       {
@@ -454,7 +478,7 @@ module.exports = {
   areas: {
     h2: `Corporate catering across ${AREAS_PROSE}`,
     body: [
-      `Magicomeal serves corporate offices, business parks, institutions and schools across ${AREAS_PROSE}. Production runs from a central kitchen at Saki Naka, Andheri East, Mumbai, with delivery and on-site service teams dispatched to client sites.`,
+      `Magicomeal serves corporate offices, business parks, institutions and schools across ${AREAS_PROSE}. Production runs from two kitchens — Saki Naka, Andheri East for Mumbai, and Panvel for Navi Mumbai and the surrounding region — with delivery and on-site service teams dispatched to client sites.`,
       'Service areas include the major Mumbai business districts and the surrounding metropolitan region. If your office sits outside these areas, tell us the location in the form and we will confirm whether we can serve it.',
     ],
     list: AREAS,
@@ -513,7 +537,7 @@ module.exports = {
     mealOptions: ['50–99', '100–249', '250–499', '500–999', '1,000+', 'Not sure yet'],
     // NOTE: server.js keeps its own copy of this list for server-side
     // validation. Change both together or valid submissions get rejected.
-    requirementOptions: ['Daily corporate meals', 'Institutional catering'],
+    requirementOptions: ['Daily corporate meals', 'One-time catering'],
     success: {
       h3: "Thank you — we've received your requirement.",
       body: 'Our catering team will contact you shortly, usually within one working day.',
@@ -539,7 +563,7 @@ module.exports = {
     items: [
       {
         q: 'What does Magicomeal provide?',
-        a: `Magicomeal provides corporate catering, corporate cafeteria management, daily office meals, corporate event catering and institutional catering. Magicomeal is a contract caterer for offices, workplaces, schools and institutions, and cooks ${company.stats.mealsPerDay.value} meals per day from its central kitchen in Andheri East, Mumbai.`,
+        a: `Magicomeal provides corporate catering, corporate cafeteria management, daily office meals, corporate event catering and institutional catering. Magicomeal is a contract caterer for offices, workplaces, schools and institutions, and serves ${company.stats.mealsPerDay.value} meals per day from two production kitchens in Andheri East, Mumbai and Panvel, Navi Mumbai.`,
       },
       {
         q: 'Does Magicomeal provide corporate catering in Mumbai?',
@@ -555,7 +579,7 @@ module.exports = {
       },
       {
         q: 'Which locations does Magicomeal serve?',
-        a: `Magicomeal serves corporate and institutional clients across ${AREAS_PROSE}. Production runs from a central kitchen at Saki Naka, Andheri East, Mumbai 400072, with delivery and on-site service teams sent to client sites.`,
+        a: `Magicomeal serves corporate and institutional clients across ${AREAS_PROSE}. Production runs from an 8,000 sq.ft. central production unit at Saki Naka, Andheri East, Mumbai 400072 and a 5,000 sq.ft. kitchen in Panvel, with delivery and on-site service teams sent to client sites.`,
       },
       {
         q: 'Can corporate menus be customised?',

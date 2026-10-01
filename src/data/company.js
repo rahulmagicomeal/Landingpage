@@ -8,12 +8,18 @@
  * source too. If you cannot source it, do not add it.
  *
  * Deliberately NOT included (could not be verified — see README):
- *   - "8,000 sq.ft. central kitchen"  → no mention anywhere on magicomeal.com
  *   - "100+ sites served"             → no mention anywhere on magicomeal.com
  *   - "250+ team members"             → the live counter reads
  *                                       "Companies Served Till Date: 250+",
  *                                       NOT team size. Do not re-label it.
  *   - client testimonials             → none published on magicomeal.com
+ *
+ * Supplied by the client on 1 Oct 2026 and now published (these are ahead of
+ * what magicomeal.com currently says — the site is stale and should be
+ * updated to match):
+ *   - 18,000+ meals SERVED daily      → site still shows "15,000+ cooked"
+ *   - Andheri East CPU, 8,000 sq.ft.  → not on the site
+ *   - Panvel kitchen, 5,000 sq.ft.    → not on the site
  */
 
 const FOUNDED_YEAR = 2010; // source: magicomeal.com/blog/corporate-catering-mumbai/ — "Since 2010, Magicomeal Caterers have been consistently delivering quality catering services in Mumbai."
@@ -28,12 +34,14 @@ module.exports = {
   // Derived, so it never goes stale. 2010 → 16 years in 2026.
   yearsExperience: new Date().getFullYear() - FOUNDED_YEAR,
 
-  /* --- Headline statistics (all read from the live magicomeal.com counters) --- */
+  /* --- Headline statistics --- */
   stats: {
     mealsPerDay: {
-      value: '15,000+',
-      label: 'Meals Cooked Daily',
-      source: 'magicomeal.com homepage counter — "Meals Cooked Per Day: 15,000+"',
+      value: '18,000+',
+      // "Served", not "cooked": it is the number that reaches a plate, which
+      // is both the stronger claim and the one the client stands behind.
+      label: 'Meals Served Daily',
+      source: 'Client brief, 1 Oct 2026. (magicomeal.com still shows the older "15,000+ cooked per day" — update the site to match.)',
     },
     companiesServed: {
       value: '250+',
@@ -54,6 +62,33 @@ module.exports = {
       // self-serving first-party ratings in rich results.
       inSchema: false,
     },
+  },
+
+  /* --- Production kitchens (source: client brief, 1 Oct 2026) ---
+   * Order matters: the first entry is treated as the primary CPU on the page. */
+  kitchens: [
+    {
+      name: 'Andheri East CPU',
+      city: 'Andheri East, Mumbai',
+      areaSqFt: 8000,
+      areaLabel: '8,000 sq.ft.',
+      role: 'Central Production Unit',
+      body: 'The main production kitchen. Bulk cooking, menu standardisation and quality control for sites across Mumbai run from here.',
+      primary: true,
+    },
+    {
+      name: 'Panvel kitchen',
+      city: 'Panvel, Navi Mumbai',
+      areaSqFt: 5000,
+      areaLabel: '5,000 sq.ft.',
+      role: 'Production kitchen',
+      body: 'Serves Navi Mumbai and the surrounding region, which keeps delivery times short for sites outside the Mumbai city limits.',
+      primary: false,
+    },
+  ],
+  // Derived so the two never disagree on the page.
+  get kitchenTotalSqFt() {
+    return this.kitchens.reduce((sum, k) => sum + k.areaSqFt, 0);
   },
 
   /* --- Certifications --- */

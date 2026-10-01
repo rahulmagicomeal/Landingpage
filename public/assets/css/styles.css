@@ -1411,3 +1411,81 @@ ul {
     scroll-padding-top: 76px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Kitchens
+   -------------------------------------------------------------------------- */
+.kitchens {
+  display: grid;
+  gap: clamp(22px, 3.5vw, 44px);
+  align-items: stretch;
+}
+@media (min-width: 900px) {
+  .kitchens {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+}
+.kitchens__list {
+  display: grid;
+  gap: 16px;
+  align-content: start;
+}
+.kitchen {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--line);
+  border-radius: var(--radius);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
+}
+/* The CPU carries the brand green so the primary site reads first. */
+.kitchen--primary {
+  border-left-color: var(--green);
+}
+.kitchen__role {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-dark);
+  margin-bottom: 6px;
+}
+.kitchen__area {
+  display: block;
+  font-size: clamp(1.6rem, 1.3rem + 1.1vw, 2.1rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+.kitchen__city {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 4px 0 8px;
+}
+.kitchen__city svg {
+  flex: none;
+  color: var(--green);
+}
+.kitchen p {
+  margin: 0;
+  font-size: 0.94rem;
+  color: var(--ink-3);
+}
+.kitchens__media img {
+  width: 100%;
+  height: 100%;
+  min-height: 240px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.kitchens__foot {
+  margin: 22px 0 0;
+  font-size: 0.95rem;
+  color: var(--ink-3);
+  max-width: 62em;
+}

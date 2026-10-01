@@ -346,6 +346,36 @@ ${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.c
   </div>
 </section>
 
+<!-- ============================ KITCHENS ========================== -->
+<section class="section section--tint" id="kitchens" aria-labelledby="kitchens-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="kitchens-h">${esc(c.kitchens.h2)}</h2>
+      <p>${esc(c.kitchens.sub)}</p>
+    </div>
+    <div class="kitchens">
+      <ul class="kitchens__list">
+        ${c.kitchens.items
+          .map(
+            (k) => `<li class="kitchen${k.primary ? ' kitchen--primary' : ''}">
+          <span class="kitchen__role">${esc(k.role)}</span>
+          <b class="kitchen__area">${esc(k.areaLabel)}</b>
+          <h3 class="kitchen__city">${ICON.pin}${esc(k.city)}</h3>
+          <p>${esc(k.body)}</p>
+        </li>`
+          )
+          .join('\n        ')}
+      </ul>
+      <div class="kitchens__media">
+        <img src="${esc(c.kitchens.image.src)}" alt="${esc(c.kitchens.image.alt)}" width="${
+          c.kitchens.image.width
+        }" height="${c.kitchens.image.height}" loading="lazy" decoding="async">
+      </div>
+    </div>
+    <p class="kitchens__foot">${esc(c.kitchens.footnote)}</p>
+  </div>
+</section>
+
 <!-- ============================ FOOD SAFETY ======================= -->
 <section class="section" aria-labelledby="safety-h">
   <div class="wrap safety__grid">

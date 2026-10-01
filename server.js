@@ -41,7 +41,7 @@ const MIME = {
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
 const MEAL_OPTIONS = ['50–99', '100–249', '250–499', '500–999', '1,000+', 'Not sure yet'];
 // Must match `form.requirementOptions` in src/data/content.js.
-const REQUIREMENT_OPTIONS = ['Daily corporate meals', 'Institutional catering'];
+const REQUIREMENT_OPTIONS = ['Daily corporate meals', 'One-time catering'];
 
 /**
  * The meal-range labels contain en dashes ("250–499"). Those survive the
