@@ -601,7 +601,7 @@ module.exports = {
    * FAQ — answer-first, each answer standalone
    * ================================================================== */
   faq: {
-    h2: 'Corporate catering in Mumbai: common questions',
+    h2: 'Corporate catering in Mumbai: FAQ',
     items: [
       {
         short: true,
