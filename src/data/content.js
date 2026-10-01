@@ -525,19 +525,61 @@ module.exports = {
     submitting: 'Sending…',
     privacy: 'We use your details only to prepare and discuss your catering proposal.',
     fields: {
-      name: { label: 'Your name', placeholder: 'Priya Sharma' },
+      firstName: { label: 'First name', placeholder: 'Priya' },
+      lastName: { label: 'Last name', placeholder: 'Sharma' },
       company: { label: 'Company name', placeholder: 'Acme Technologies Pvt Ltd' },
       email: { label: 'Work email', placeholder: 'priya@company.com' },
       phone: { label: 'Phone number', placeholder: '98765 43210' },
       location: { label: 'Office location', placeholder: 'e.g. BKC, Powai, Airoli, Thane West' },
       meals: { label: 'Approximate meals per day' },
       requirement: { label: 'What do you need?' },
-      message: { label: 'Anything else? (optional)', placeholder: 'Timings, existing setup, dietary mix, start date…' },
+      employees: { label: 'Number of employees' },
+      cuisine: { label: 'Cuisine preferred' },
+      dietary: { label: 'Dietary mix' },
+      rotation: { label: 'Rotating menu cycle' },
+      message: { label: 'Anything else?', placeholder: 'Timings, existing setup, start date…' },
+    },
+
+    /* --- Optional qualification block ---------------------------------
+     * Collapsed by default. The page is a paid-traffic lead-gen page, so the
+     * visible form stays at seven required fields; anyone willing to tell us
+     * more can open this and do so. Nothing in here is required, and a lead
+     * is never rejected for leaving it empty.
+     * ------------------------------------------------------------------ */
+    optional: {
+      summary: 'Tell us about your current setup',
+      hint: 'Optional — it helps us put a sharper proposal together, but you can skip it.',
     },
     mealOptions: ['50–99', '100–249', '250–499', '500–999', '1,000+', 'Not sure yet'],
     // NOTE: server.js keeps its own copy of this list for server-side
     // validation. Change both together or valid submissions get rejected.
     requirementOptions: ['Daily corporate meals', 'One-time catering'],
+    // Optional-question options. server.js validates against these too, so
+    // keep the two lists in step.
+    employeeOptions: ['Under 50', '50–100', '100–300', '300–500', '500–1,000', '1,000+'],
+    cuisineOptions: [
+      'North Indian',
+      'South Indian',
+      'Multi-cuisine',
+      'Regional / regional specials',
+      'Continental',
+      'Not decided yet',
+    ],
+    dietaryOptions: [
+      'Vegetarian only',
+      'Mostly vegetarian',
+      'Mixed veg and non-veg',
+      'Jain options needed',
+      'Vegan options needed',
+      'Not sure yet',
+    ],
+    rotationOptions: [
+      'Yes — weekly rotation',
+      'Yes — fortnightly rotation',
+      'Yes — monthly rotation',
+      'No — fixed menu is fine',
+      'Not sure yet',
+    ],
     success: {
       h3: "Thank you — we've received your requirement.",
       body: 'Our catering team will contact you shortly, usually within one working day.',

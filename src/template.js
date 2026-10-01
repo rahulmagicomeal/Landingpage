@@ -110,10 +110,16 @@ module.exports = function render(config, assets) {
       <form id="lead" novalidate>
         <div class="formgrid">
           <div class="field">
-            <label for="f-name">${esc(c.form.fields.name.label)} <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-name" name="name" type="text" autocomplete="name" required
-                   placeholder="${esc(c.form.fields.name.placeholder)}" aria-describedby="e-name">
-            <p class="err" id="e-name"></p>
+            <label for="f-firstName">${esc(c.form.fields.firstName.label)} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-firstName" name="firstName" type="text" autocomplete="given-name" required
+                   placeholder="${esc(c.form.fields.firstName.placeholder)}" aria-describedby="e-firstName">
+            <p class="err" id="e-firstName"></p>
+          </div>
+          <div class="field">
+            <label for="f-lastName">${esc(c.form.fields.lastName.label)} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-lastName" name="lastName" type="text" autocomplete="family-name" required
+                   placeholder="${esc(c.form.fields.lastName.placeholder)}" aria-describedby="e-lastName">
+            <p class="err" id="e-lastName"></p>
           </div>
           <div class="field">
             <label for="f-company">${esc(c.form.fields.company.label)} <span class="req" aria-hidden="true">*</span></label>
@@ -155,11 +161,46 @@ module.exports = function render(config, assets) {
             </select>
             <p class="err" id="e-requirement"></p>
           </div>
-          <div class="field field--full">
-            <label for="f-message">${esc(c.form.fields.message.label)}</label>
-            <textarea id="f-message" name="message" rows="3" placeholder="${esc(c.form.fields.message.placeholder)}"></textarea>
-          </div>
         </div>
+
+        <details class="optional">
+          <summary>${esc(c.form.optional.summary)}</summary>
+          <p class="optional__hint">${esc(c.form.optional.hint)}</p>
+          <div class="formgrid">
+            <div class="field">
+              <label for="f-employees">${esc(c.form.fields.employees.label)}</label>
+              <select id="f-employees" name="employees">
+                <option value="">Select a range</option>
+                ${c.form.employeeOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-cuisine">${esc(c.form.fields.cuisine.label)}</label>
+              <select id="f-cuisine" name="cuisine">
+                <option value="">Select an option</option>
+                ${c.form.cuisineOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-dietary">${esc(c.form.fields.dietary.label)}</label>
+              <select id="f-dietary" name="dietary">
+                <option value="">Select an option</option>
+                ${c.form.dietaryOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field">
+              <label for="f-rotation">${esc(c.form.fields.rotation.label)}</label>
+              <select id="f-rotation" name="rotation">
+                <option value="">Select an option</option>
+                ${c.form.rotationOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
+              </select>
+            </div>
+            <div class="field field--full">
+              <label for="f-message">${esc(c.form.fields.message.label)}</label>
+              <textarea id="f-message" name="message" rows="3" placeholder="${esc(c.form.fields.message.placeholder)}"></textarea>
+            </div>
+          </div>
+        </details>
 
         <div class="hp" aria-hidden="true">
           <label for="f-website">Do not fill this in</label>

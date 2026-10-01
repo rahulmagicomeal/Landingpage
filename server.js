@@ -43,6 +43,33 @@ const MEAL_OPTIONS = ['50–99', '100–249', '250–499', '500–999', '1,000+'
 // Must match `form.requirementOptions` in src/data/content.js.
 const REQUIREMENT_OPTIONS = ['Daily corporate meals', 'One-time catering'];
 
+// Optional qualification answers. Must match the *Options lists in
+// src/data/content.js. All four may be blank — they are never required.
+const EMPLOYEE_OPTIONS = ['Under 50', '50–100', '100–300', '300–500', '500–1,000', '1,000+'];
+const CUISINE_OPTIONS = [
+  'North Indian',
+  'South Indian',
+  'Multi-cuisine',
+  'Regional / regional specials',
+  'Continental',
+  'Not decided yet',
+];
+const DIETARY_OPTIONS = [
+  'Vegetarian only',
+  'Mostly vegetarian',
+  'Mixed veg and non-veg',
+  'Jain options needed',
+  'Vegan options needed',
+  'Not sure yet',
+];
+const ROTATION_OPTIONS = [
+  'Yes — weekly rotation',
+  'Yes — fortnightly rotation',
+  'Yes — monthly rotation',
+  'No — fixed menu is fine',
+  'Not sure yet',
+];
+
 /**
  * The meal-range labels contain en dashes ("250–499"). Those survive the
  * browser fine, but get mangled by proxies, CRMs and copy-paste. Compare on a
@@ -59,6 +86,18 @@ function normaliseChoice(s) {
 const MEAL_KEYS = MEAL_OPTIONS.map(normaliseChoice);
 const REQUIREMENT_KEYS = REQUIREMENT_OPTIONS.map(normaliseChoice);
 
+/**
+ * Optional single-choice field: blank is fine, a known value is stored in its
+ * canonical spelling, and anything unrecognised is dropped rather than
+ * rejected — a junk value in an optional field must never cost us the lead.
+ */
+function optionalChoice(raw, options) {
+  const v = String(raw == null ? '' : raw).trim();
+  if (!v) return '';
+  const i = options.map(normaliseChoice).indexOf(normaliseChoice(v));
+  return i === -1 ? '' : options[i];
+}
+
 function normalisePhone(raw) {
   let d = String(raw || '').replace(/\D/g, '');
   if (d.length > 10 && d.startsWith('91')) d = d.slice(2);
@@ -72,7 +111,8 @@ function validate(body) {
   const str = (k, max = 200) => String(body[k] == null ? '' : body[k]).trim().slice(0, max);
 
   const lead = {
-    name: str('name', 120),
+    firstName: str('firstName', 80),
+    lastName: str('lastName', 80),
     company: str('company', 160),
     email: str('email', 160).toLowerCase(),
     phone: normalisePhone(body.phone),
@@ -80,9 +120,19 @@ function validate(body) {
     meals: str('meals', 40),
     requirement: str('requirement', 60),
     message: str('message', 2000),
+
+    // Optional qualification answers.
+    employees: optionalChoice(body.employees, EMPLOYEE_OPTIONS),
+    cuisine: optionalChoice(body.cuisine, CUISINE_OPTIONS),
+    dietary: optionalChoice(body.dietary, DIETARY_OPTIONS),
+    rotation: optionalChoice(body.rotation, ROTATION_OPTIONS),
   };
 
-  if (lead.name.length < 2) errors.push('name');
+  // Kept so anything downstream that expects a single name field still works.
+  lead.name = [lead.firstName, lead.lastName].filter(Boolean).join(' ');
+
+  if (lead.firstName.length < 2) errors.push('firstName');
+  if (lead.lastName.length < 2) errors.push('lastName');
   if (lead.company.length < 2) errors.push('company');
   if (!EMAIL_RE.test(lead.email)) errors.push('email');
   if (!(lead.phone.length === 10 && /^[6-9]/.test(lead.phone))) errors.push('phone');

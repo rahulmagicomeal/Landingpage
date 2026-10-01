@@ -137,7 +137,8 @@
       setError(field, LABELS.phone);
       return false;
     }
-    if ((field.name === 'name' || field.name === 'company' || field.name === 'location') && v && v.length < 2) {
+    var MIN_2 = ['firstName', 'lastName', 'company', 'location'];
+    if (MIN_2.indexOf(field.name) !== -1 && v && v.length < 2) {
       setError(field, LABELS.required);
       return false;
     }

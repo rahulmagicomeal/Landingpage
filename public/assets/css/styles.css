@@ -1678,3 +1678,53 @@ ol {
     transform: scale(1.02);
   }
 }
+
+/* --------------------------------------------------------------------------
+   Optional qualification block inside the lead form
+   Collapsed by default so the form still reads as seven fields.
+   -------------------------------------------------------------------------- */
+.optional {
+  margin-top: 16px;
+  border: 1px dashed var(--line);
+  border-radius: 12px;
+  background: var(--paper-2);
+}
+.optional summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 13px 44px 13px 16px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--green-dark);
+  position: relative;
+}
+.optional summary::-webkit-details-marker {
+  display: none;
+}
+.optional summary::after {
+  content: '';
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  width: 9px;
+  height: 9px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-70%) rotate(45deg);
+  transition: transform 0.18s ease;
+}
+.optional[open] summary::after {
+  transform: translateY(-20%) rotate(-135deg);
+}
+.optional[open] {
+  border-style: solid;
+  border-color: var(--line);
+}
+.optional__hint {
+  margin: 0 16px 14px;
+  font-size: 0.82rem;
+  color: var(--ink-3);
+}
+.optional .formgrid {
+  padding: 0 16px 16px;
+}
