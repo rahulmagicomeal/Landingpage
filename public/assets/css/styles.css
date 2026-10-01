@@ -366,7 +366,8 @@ ol {
     font-size: 0.9rem;
   }
   .site-header__logo img {
-    height: 34px;
+    height: 40px;
+    width: 40px;
   }
 }
 
@@ -1198,8 +1199,12 @@ ol {
   position: absolute !important;
   width: 1px;
   height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
   overflow: hidden;
   clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   white-space: nowrap;
 }
 
@@ -1727,4 +1732,70 @@ ol {
 }
 .optional .formgrid {
   padding: 0 16px 16px;
+}
+
+/* ==========================================================================
+   RESPONSIVE HARDENING
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Touch targets
+   WCAG 2.2 AA (2.5.8 Target Size Minimum) asks for 24x24 CSS px; platform
+   guidance asks ~44px for primary actions. Audited at 320px: the header phone
+   CTA measured 38px and the footer links 20-23px, all relying on line-height
+   alone. These give them an explicit floor without changing how they look.
+   -------------------------------------------------------------------------- */
+.header-phone,
+.site-header__logo {
+  min-height: 44px;
+}
+.site-footer address a,
+.site-footer__links a {
+  display: inline-block;
+  padding-block: 7px;
+  min-height: 24px;
+}
+/* The address block uses <br>, so the extra padding would double the leading
+   without this compensating adjustment. */
+.site-footer address {
+  line-height: 1.35;
+}
+
+/* --------------------------------------------------------------------------
+   Short viewports (landscape phones)
+   At 740x360 the sticky CTA was eating 20% of the screen. Trim it so more of
+   the page stays visible, without dropping below a 44px tap target.
+   -------------------------------------------------------------------------- */
+@media (max-height: 460px) and (max-width: 899px) {
+  .sticky-cta {
+    padding-top: 6px;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom));
+  }
+  .sticky-cta .btn {
+    padding-block: 11px;
+  }
+  body {
+    --sticky-h: 62px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Very small phones (<=360px)
+   Trim horizontal padding so content keeps its width, and stop the two-up
+   hero stats from crowding.
+   -------------------------------------------------------------------------- */
+@media (max-width: 360px) {
+  :root {
+    --gutter: 14px;
+  }
+  .formcard,
+  .hero__form .formcard {
+    padding: 16px 14px;
+  }
+  .optional summary {
+    padding-right: 38px;
+  }
+  .hero-stats b {
+    letter-spacing: -0.03em;
+  }
 }
