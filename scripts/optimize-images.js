@@ -58,6 +58,17 @@ const MANIFEST = [
   { from: '6.jpg', to: 'magicomeal-festival-menu-spread-mumbai.webp', width: 560, aspect: [4, 3] },
   { from: '10.jpg', to: 'magicomeal-corporate-buffet-counter-mumbai.webp', width: 560, aspect: [4, 3] },
 
+  // Hero background slides. Wide crops, two widths each: the first is the LCP
+  // image so it is preloaded, the rest are lazy.
+  { from: '12.jpg', to: 'hero/hero-1-corporate-cafeteria-mumbai.webp', width: 1800, aspect: [16, 9], quality: 70 },
+  { from: '12.jpg', to: 'hero/hero-1-corporate-cafeteria-mumbai-900.webp', width: 900, aspect: [16, 9], quality: 70 },
+  { from: '6.jpg', to: 'hero/hero-2-festival-spread-mumbai.webp', width: 1800, aspect: [16, 9], quality: 70 },
+  { from: '6.jpg', to: 'hero/hero-2-festival-spread-mumbai-900.webp', width: 900, aspect: [16, 9], quality: 70 },
+  { from: '13.jpg', to: 'hero/hero-3-event-buffet-mumbai.webp', width: 1800, aspect: [16, 9], quality: 70 },
+  { from: '13.jpg', to: 'hero/hero-3-event-buffet-mumbai-900.webp', width: 900, aspect: [16, 9], quality: 70 },
+  { from: '4.webp', to: 'hero/hero-4-production-kitchen-mumbai.webp', width: 1800, aspect: [16, 9], quality: 70 },
+  { from: '4.webp', to: 'hero/hero-4-production-kitchen-mumbai-900.webp', width: 900, aspect: [16, 9], quality: 70 },
+
   // Gallery — square crops, small, all lazy-loaded below the fold.
   { from: '27.jpg', to: 'gallery/magicomeal-corporate-cafeteria-lunch-rush-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
   { from: '26.jpg', to: 'gallery/magicomeal-school-cafeteria-independence-day-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
@@ -89,6 +100,7 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(6) + ' KB';
   }
   fs.mkdirSync(OUT, { recursive: true });
   fs.mkdirSync(path.join(OUT, 'gallery'), { recursive: true });
+  fs.mkdirSync(path.join(OUT, 'hero'), { recursive: true });
 
   let totalIn = 0;
   let totalOut = 0;

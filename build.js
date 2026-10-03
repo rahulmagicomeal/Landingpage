@@ -40,11 +40,12 @@ const assetVersions = {
  * visitor fills the other), or no lead form at all on a lead-gen page.
  */
 const sections = config.sections || [];
-const formSections = ['heroForm', 'leadForm'].filter((s) => sections.includes(s));
+const formSections = ['heroMedia', 'heroForm', 'leadForm'].filter((s) => sections.includes(s));
 
 if (formSections.length > 1) {
   console.error(
-    '\n  config.sections lists both "heroForm" and "leadForm".\n' +
+    '\n  config.sections lists more than one section that renders the lead form:\n' +
+      '  ' + formSections.join(', ') + '\n' +
       '  That renders the form twice and duplicates the element ids the form\n' +
       '  script binds to. Keep one.\n'
   );
@@ -52,7 +53,8 @@ if (formSections.length > 1) {
 }
 if (formSections.length === 0) {
   console.error(
-    '\n  config.sections has no lead form — add "heroForm" (form in the hero)\n' +
+    '\n  config.sections has no lead form — add one of "heroMedia" (photo\n' +
+      '  carousel hero with the form), "heroForm" (plain hero with the form)\n' +
       '  or "leadForm" (form in its own section further down).\n'
   );
   process.exit(1);

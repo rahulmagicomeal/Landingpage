@@ -393,3 +393,84 @@
     sync();
   });
 })();
+
+/* =========================================================================
+   Hero background carousel
+   Cross-fades the photographs behind the headline. Auto-advance stops on
+   hover/focus, on tab-hide, under prefers-reduced-motion, and whenever the
+   visitor presses pause — WCAG 2.2.2 requires a way to stop moving content.
+   ========================================================================= */
+(function () {
+  'use strict';
+  var root = document.querySelector('[data-hero-carousel]');
+  if (!root) return;
+
+  var slides = root.querySelectorAll('.hero__slide');
+  var pauseBtn = root.querySelector('[data-hero-pause]');
+  if (slides.length < 2) {
+    if (pauseBtn) pauseBtn.hidden = true;
+    return;
+  }
+
+  var interval = Number(root.getAttribute('data-interval')) || 6000;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var index = 0;
+  var timer = null;
+  var pausedByUser = reduce.matches;
+
+  function show(i) {
+    slides[index].classList.remove('is-active');
+    index = (i + slides.length) % slides.length;
+    slides[index].classList.add('is-active');
+  }
+  function tick() {
+    if (!document.hidden) show(index + 1);
+  }
+  function start() {
+    if (timer || pausedByUser || reduce.matches) return;
+    timer = setInterval(tick, interval);
+  }
+  function stop() {
+    clearInterval(timer);
+    timer = null;
+  }
+  function setPressed() {
+    if (!pauseBtn) return;
+    var paused = pausedByUser;
+    pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    pauseBtn.setAttribute(
+      'aria-label',
+      paused ? 'Play background slideshow' : 'Pause background slideshow'
+    );
+  }
+
+  if (pauseBtn) {
+    pauseBtn.addEventListener('click', function () {
+      pausedByUser = !pausedByUser;
+      if (pausedByUser) stop();
+      else start();
+      setPressed();
+    });
+  }
+
+  // Pause while someone is reading or using the form over the top of it.
+  root.addEventListener('mouseenter', stop);
+  root.addEventListener('mouseleave', start);
+  root.addEventListener('focusin', stop);
+  root.addEventListener('focusout', function (e) {
+    if (!root.contains(e.relatedTarget)) start();
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) stop();
+    else start();
+  });
+  if (reduce.addEventListener) {
+    reduce.addEventListener('change', function () {
+      stop();
+      start();
+    });
+  }
+
+  setPressed();
+  start();
+})();

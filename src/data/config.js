@@ -89,21 +89,23 @@ module.exports = {
    * whatever order you list it. That makes page length an A/B test rather
    * than a rewrite.
    *
-   * Available: heroForm | hero | leadForm | trustBar | logos | entityGlance
+   * Available: heroMedia | heroForm | hero | leadForm | trustBar | logos
+   *            | entityGlance
    *            | services | servicesCompact | pains | why | scale | kitchens
    *            | proofStrip | safety | menu | proof | areas | how | gallery
    *            | faq
    *            | finalCta
    *
    * Notes:
-   *   - Use EITHER `heroForm` (form in the hero) OR `hero` + `leadForm`
-   *     (image hero, form further down). Not both — build.js refuses it,
-   *     because two forms means duplicate element ids.
+   *   - Exactly one section must carry the lead form: `heroMedia` (photo
+   *     carousel behind copy + form), `heroForm` (plain hero + form), or
+   *     `leadForm` (form in its own section lower down). build.js refuses
+   *     any other combination, because two forms means duplicate ids.
    *   - `servicesCompact` replaces `services` + `pains` + `why`.
    *   - `proofStrip` replaces `scale` + `kitchens` + `safety` + `proof`.
    * ------------------------------------------------------------------ */
   sections: [
-    'heroForm',
+    'heroMedia',
     'logos',
     'servicesCompact',
     'proofStrip',

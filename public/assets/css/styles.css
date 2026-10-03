@@ -1811,3 +1811,156 @@ ol {
     letter-spacing: -0.03em;
   }
 }
+
+/* ==========================================================================
+   HERO: photo carousel behind copy + form  (`heroMedia`)
+   ========================================================================== */
+.hero--media {
+  position: relative;
+  isolation: isolate;
+  background: var(--green-deep);
+  padding-block: clamp(32px, 4.5vw, 64px) clamp(36px, 4.5vw, 64px);
+  overflow: hidden;
+}
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.hero__slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 900ms ease;
+}
+.hero__slide.is-active {
+  opacity: 1;
+}
+
+/* The scrim is what makes white text legible over an unpredictable photo.
+   Strong and near-opaque behind the copy column, easing off to the right
+   where the white form card sits. Measured, not eyeballed: the copy side
+   stays above 4.5:1 against white on every slide. */
+.hero__scrim {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(
+      100deg,
+      rgba(8, 20, 10, 0.9) 0%,
+      rgba(8, 20, 10, 0.86) 42%,
+      rgba(8, 20, 10, 0.5) 62%,
+      rgba(8, 20, 10, 0.3) 100%
+    );
+}
+@media (max-width: 979px) {
+  /* Single column: the copy sits over the whole width, so the scrim is flat
+     and heavier rather than directional. */
+  .hero__scrim {
+    background: rgba(8, 20, 10, 0.86);
+  }
+}
+
+.hero--media .eyebrow {
+  color: #9fe3a3;
+}
+.hero--media h1 {
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+.hero--media h1 .hl {
+  color: #8fe095;
+}
+.hero--media .hero__sub {
+  color: rgba(255, 255, 255, 0.93);
+}
+
+/* Stats become translucent panels instead of white boxes. */
+.hero--media .hero-stats {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.24);
+}
+.hero--media .hero-stats li {
+  background: transparent;
+}
+.hero--media .hero-stats b {
+  color: #fff;
+}
+.hero--media .hero-stats span {
+  color: rgba(255, 255, 255, 0.86);
+}
+.hero--media .hero-assure li {
+  color: rgba(255, 255, 255, 0.94);
+}
+.hero--media .hero-assure b {
+  color: #fff;
+}
+.hero--media .hero-assure svg {
+  color: #8fe095;
+}
+.hero--media .hero__form-head h2 {
+  color: var(--ink);
+}
+.hero--media .hero__form-note {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+/* The form keeps a solid white card so it reads as a distinct surface. */
+.hero--media .hero__form .formcard {
+  background: #fff;
+  box-shadow: var(--shadow-lg);
+}
+.hero--media .hero__form-head {
+  background: #fff;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  padding: 18px 22px 0;
+  margin-bottom: 0;
+}
+.hero--media .hero__form .formcard {
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+/* Pause control — required for auto-advancing content (WCAG 2.2.2). */
+.hero__pause {
+  position: absolute;
+  left: max(16px, calc((100% - var(--max)) / 2 + var(--gutter)));
+  bottom: 14px;
+  z-index: 3;
+  /* Matches the 44px touch-target floor used elsewhere on the page. */
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(8, 20, 10, 0.55);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.hero__pause:hover {
+  background: rgba(8, 20, 10, 0.8);
+}
+.hero__pause-icon {
+  display: block;
+  width: 10px;
+  height: 12px;
+  border-left: 3px solid #fff;
+  border-right: 3px solid #fff;
+}
+.hero__pause[aria-pressed='true'] .hero__pause-icon {
+  width: 0;
+  height: 0;
+  border: 0;
+  border-left: 11px solid #fff;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero__slide {
+    transition: none;
+  }
+}

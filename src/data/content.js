@@ -75,6 +75,32 @@ module.exports = {
       wideHeight: 675,
       alt: 'Employees queuing for lunch at a Magicomeal-run corporate cafeteria counter in Mumbai, with the daily menu on screen',
     },
+    /* Background slides for the `heroMedia` layout. The first is the LCP
+       image and is preloaded; the rest load lazily and cross-fade in.
+       alt is intentionally empty — these are decorative behind the headline,
+       and the same photographs appear in the gallery with real alt text. */
+    slides: [
+      {
+        src: '/assets/img/hero/hero-1-corporate-cafeteria-mumbai.webp',
+        small: '/assets/img/hero/hero-1-corporate-cafeteria-mumbai-900.webp',
+      },
+      {
+        src: '/assets/img/hero/hero-2-festival-spread-mumbai.webp',
+        small: '/assets/img/hero/hero-2-festival-spread-mumbai-900.webp',
+      },
+      {
+        src: '/assets/img/hero/hero-3-event-buffet-mumbai.webp',
+        small: '/assets/img/hero/hero-3-event-buffet-mumbai-900.webp',
+      },
+      {
+        src: '/assets/img/hero/hero-4-production-kitchen-mumbai.webp',
+        small: '/assets/img/hero/hero-4-production-kitchen-mumbai-900.webp',
+      },
+    ],
+    slideIntervalMs: 6000,
+    pauseLabel: 'Pause background slideshow',
+    playLabel: 'Play background slideshow',
+
     stats: [
       { value: company.stats.mealsPerDay.value, label: 'Meals Daily' },
       { value: company.stats.companiesServed.value, label: 'Companies Served' },

@@ -262,12 +262,15 @@ ${config.site.noindex ? '<meta name="robots" content="noindex,nofollow">' : '<me
 <link rel="apple-touch-icon" href="/assets/img/magicomeal-logo-badge-192.png">
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-700.woff2" crossorigin>
 <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/poppins-400.woff2" crossorigin>
+${config.sections.includes('heroMedia') ? `<link rel="preload" as="image" href="${esc(c.hero.slides[0].src)}" imagesrcset="${esc(c.hero.slides[0].small)} 900w, ${esc(c.hero.slides[0].src)} 1800w" imagesizes="100vw" fetchpriority="high">` : ''}
+${has('heroForm') ? `
 <link rel="preload" as="image" href="${esc(c.hero.image.wideSrc)}" imagesrcset="${esc(
     c.hero.image.wideSrcset
   )}" imagesizes="${esc(c.hero.image.wideSizes)}" media="(max-width: 899px)" fetchpriority="high">
 <link rel="preload" as="image" href="${esc(c.hero.image.src)}" imagesrcset="${esc(
     c.hero.image.srcset
   )}" imagesizes="${esc(c.hero.image.sizes)}" media="(min-width: 900px)" fetchpriority="high">
+` : ''}
 <link rel="stylesheet" href="/assets/css/styles.css${v.css ? '?v=' + v.css : ''}">
 
 <script type="application/ld+json">${schema}</script>
@@ -297,6 +300,53 @@ ${config.tracking.gtmId ? `<noscript><iframe src="https://www.googletagmanager.c
 </header>
 
 <main id="top">
+
+${has('heroMedia') ? `<!-- =============== HERO: photo carousel + form ==================== -->
+<section class="hero hero--media" data-hero-carousel data-interval="${c.hero.slideIntervalMs}">
+  <div class="hero__bg" aria-hidden="true">
+    ${c.hero.slides
+      .map(
+        (sl, i) => `<img class="hero__slide${i === 0 ? ' is-active' : ''}" src="${esc(sl.src)}"
+           srcset="${esc(sl.small)} 900w, ${esc(sl.src)} 1800w" sizes="100vw" alt=""
+           ${i === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} decoding="async">`
+      )
+      .join('')}
+  </div>
+  <div class="hero__scrim" aria-hidden="true"></div>
+
+  <div class="wrap">
+    <div class="hero__grid hero__grid--form">
+      <div class="hero__copy">
+        <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
+        <h1>${h1Html}</h1>
+        <p class="hero__sub">${esc(c.hero.sub)}</p>
+        <ul class="hero-stats">
+          ${c.hero.stats
+            .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+            .join('')}
+        </ul>
+        <ul class="hero-assure">
+          <li>${ICON.shield}<span><b>ISO 22000:2018</b> · HACCP · FSSAI compliant</span></li>
+          <li>${ICON.checkCircle}<span>${esc(c.hero.reassurance)}</span></li>
+        </ul>
+        <a class="btn btn--on-dark hero__call" href="${telHref}" data-event="phone_click" data-loc="hero_secondary">${ICON.phone}${esc(co.contact.phoneDisplay)}</a>
+      </div>
+
+      <div class="hero__form" id="lead-form">
+        <div class="hero__form-head">
+          <h2 id="form-h">${esc(c.form.h2)}</h2>
+          <p>${esc(c.form.sub)}</p>
+        </div>
+        ${FORM_CARD}
+        <p class="hero__form-note">${esc(c.form.scopeNote)}</p>
+      </div>
+    </div>
+  </div>
+
+  <button class="hero__pause" type="button" data-hero-pause aria-label="${esc(c.hero.pauseLabel)}">
+    <span class="hero__pause-icon" aria-hidden="true"></span>
+  </button>
+</section>` : ''}
 
 ${has('heroForm') ? `<!-- ======================= HERO + FORM (short page) ============== -->
 <section class="hero hero--form">
