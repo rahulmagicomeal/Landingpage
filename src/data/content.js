@@ -800,6 +800,14 @@ module.exports = {
         alt: 'Spanish corn tart canapes labelled and plated by Magicomeal for a corporate event',
       },
       {
+        src: '/assets/img/gallery/magicomeal-corporate-event-buffet-office-mumbai.webp',
+        alt: 'Magicomeal staff running a corporate event buffet in an office lobby in Mumbai',
+      },
+      {
+        src: '/assets/img/gallery/magicomeal-corporate-event-marquee-buffet-mumbai.webp',
+        alt: 'A guest serving herself from a Magicomeal marquee buffet at a corporate event',
+      },
+      {
         src: '/assets/img/gallery/magicomeal-event-salad-buffet-mumbai.webp',
         alt: 'Magicomeal event buffet with vegetable crudites, som tum salad and paneer kadhai',
       },

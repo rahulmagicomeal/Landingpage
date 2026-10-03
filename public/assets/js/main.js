@@ -310,3 +310,86 @@
       });
   });
 })();
+
+/* =========================================================================
+   Gallery carousel
+   The track is a CSS scroll-snap strip, so swipe/trackpad/arrow-keys already
+   work with no JS. This only wires the arrow buttons and disables them at
+   the ends. If this block never runs, the carousel is still usable.
+   ========================================================================= */
+(function () {
+  'use strict';
+  var roots = document.querySelectorAll('[data-carousel]');
+  Array.prototype.forEach.call(roots, function (root) {
+    var track = root.querySelector('.carousel__track');
+    var prev = root.querySelector('[data-car-prev]');
+    var next = root.querySelector('[data-car-next]');
+    if (!track || !prev || !next) return;
+
+    // Step by a whole number of slides so the track always lands exactly on a
+    // snap point. Measured from the live DOM rather than hard-coded, because
+    // the slide width changes at four breakpoints.
+    function pitch() {
+      var a = track.children[0];
+      var b = track.children[1];
+      if (a && b && b.offsetLeft > a.offsetLeft) return b.offsetLeft - a.offsetLeft;
+      return Math.max(160, track.clientWidth * 0.8);
+    }
+    function step() {
+      var p = pitch();
+      return Math.max(1, Math.floor(track.clientWidth / p)) * p;
+    }
+    function sync() {
+      var max = track.scrollWidth - track.clientWidth;
+      // The first slide rests a few px in (the track is padded so the focus
+      // ring is not clipped), so compare with a tolerance rather than 0.
+      prev.disabled = track.scrollLeft <= 8;
+      next.disabled = track.scrollLeft >= max - 8;
+    }
+    /**
+     * Native smooth scrolling, with a guaranteed landing.
+     *
+     * The animation is skipped entirely in contexts that do not run it — a
+     * backgrounded tab, or a user who asked for reduced motion. The timeout
+     * reconciles the final position so the carousel can never be left stranded
+     * part-way between slides if the animation does not complete.
+     */
+    var settle = null;
+    function go(dir) {
+      var max = track.scrollWidth - track.clientWidth;
+      var to = Math.max(0, Math.min(max, track.scrollLeft + dir * step()));
+      if (Math.abs(to - track.scrollLeft) < 1) return;
+
+      var still =
+        document.hidden || window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (still) {
+        track.scrollLeft = to;
+        sync();
+        return;
+      }
+
+      try {
+        track.scrollTo({ left: to, behavior: 'smooth' });
+      } catch (e) {
+        track.scrollLeft = to; // older browsers without the options form
+      }
+
+      clearTimeout(settle);
+      settle = setTimeout(function () {
+        if (Math.abs(track.scrollLeft - to) > 2) track.scrollLeft = to;
+        sync();
+      }, 500);
+    }
+
+    prev.addEventListener('click', function () {
+      go(-1);
+    });
+    next.addEventListener('click', function () {
+      go(1);
+    });
+    track.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+})();

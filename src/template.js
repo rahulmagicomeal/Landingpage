@@ -48,6 +48,8 @@ const ICON = {
     '<svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M2.6 12.2l3.6-4.6 3.5.9 1.9-1.4 2.2 1.5 3.6-.9 2 4.5-2.9 4-3.3-2.6-1.6 1.3-2.2-1.7-2.4 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
   star:
     '<svg width="20" height="20" viewBox="0 0 22 22" fill="none" aria-hidden="true"><path d="M11 2.8l2.6 5.3 5.8.85-4.2 4.1 1 5.8-5.2-2.75L5.8 18.85l1-5.8-4.2-4.1 5.8-.85L11 2.8z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>',
+  chevron:
+    '<svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   tick:
     '<svg width="30" height="30" viewBox="0 0 30 30" fill="none" aria-hidden="true"><path d="M6 15.6l6 6L24 8.4" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>',
 };
@@ -717,15 +719,19 @@ ${has('gallery') ? `<!-- ============================ GALLERY ==================
       <h2 id="gallery-h">${esc(c.gallery.h2)}</h2>
       <p>${esc(c.gallery.sub)}</p>
     </div>
-    <ul class="gallery">
-      ${c.gallery.items
-        .map(
-          (g) => `<li><img src="${esc(g.src)}" alt="${esc(
-            g.alt
-          )}" width="600" height="600" loading="lazy" decoding="async"></li>`
-        )
-        .join('\n      ')}
-    </ul>
+    <div class="carousel" data-carousel>
+      <ul class="carousel__track" tabindex="0" role="group" aria-label="Magicomeal photographs — scroll or swipe for more">
+        ${c.gallery.items
+          .map(
+            (g, i) => `<li><img src="${esc(g.src)}" alt="${esc(
+              g.alt
+            )}" width="600" height="600" loading="${i < 4 ? 'eager' : 'lazy'}" decoding="async"></li>`
+          )
+          .join('')}
+      </ul>
+      <button class="carousel__btn carousel__btn--prev" type="button" data-car-prev aria-label="Previous photographs">${ICON.chevron}</button>
+      <button class="carousel__btn carousel__btn--next" type="button" data-car-next aria-label="More photographs">${ICON.chevron}</button>
+    </div>
   </div>
 </section>` : ''}
 

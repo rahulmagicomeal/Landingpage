@@ -72,6 +72,8 @@ const MANIFEST = [
   { from: '31.jpg', to: 'gallery/magicomeal-school-lunch-student-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
   { from: '32.jpg', to: 'gallery/magicomeal-parent-child-school-meal-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
   { from: '19.jpg', to: 'gallery/magicomeal-event-canapes-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '39.jpg', to: 'gallery/magicomeal-corporate-event-buffet-office-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
+  { from: '41.jpg', to: 'gallery/magicomeal-corporate-event-marquee-buffet-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
   { from: '33.jpg', to: 'gallery/magicomeal-event-salad-buffet-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
 
   // Open Graph / Twitter card — 1.91:1 is what the platforms crop to.

@@ -149,7 +149,8 @@ ol {
   border-radius: 6px;
 }
 @media (prefers-reduced-motion: reduce) {
-  html {
+  html,
+  .carousel__track {
     scroll-behavior: auto;
   }
   *,
@@ -1642,96 +1643,107 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
-   Gallery
+   Gallery carousel
+
+   CSS scroll-snap rather than a carousel library: native momentum and swipe
+   on touch, native arrow-key scrolling once the track has focus, and it still
+   works as a scrollable strip if the JS never runs. Every image stays in the
+   DOM, so nothing is hidden from crawlers.
    -------------------------------------------------------------------------- */
-/* 12 tiles, and 12 divides by 2, 3, 4 and 6 — so fixing the column count per
-   breakpoint gives a complete last row at every width. auto-fill landed on 7
-   columns at 1280px, which left a ragged row of 5. */
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+.carousel {
+  position: relative;
 }
-@media (min-width: 600px) {
-  .gallery {
-    grid-template-columns: repeat(3, 1fr);
-  }
+.carousel__track {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  /* `proximity` rather than `mandatory`. Mandatory snapping is known to
+     interfere with programmatic scrolling in some engines, and proximity
+     still snaps tidily on swipe, so it is the safer default here. */
+  scroll-snap-type: x proximity;
+  /* Left as `auto`: main.js passes behavior:'smooth' per scroll so it can fall
+     back to an instant jump where the animation would not run anyway. */
+  scroll-behavior: auto;
+  scroll-padding-left: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  /* Room for the focus ring, which would otherwise be clipped by overflow. */
+  padding: 4px;
+  margin: -4px;
 }
-@media (min-width: 900px) {
-  .gallery {
-    grid-template-columns: repeat(4, 1fr);
-  }
+.carousel__track::-webkit-scrollbar {
+  display: none;
 }
-@media (min-width: 1200px) {
-  .gallery {
-    grid-template-columns: repeat(6, 1fr);
-  }
+.carousel__track > li {
+  flex: 0 0 72%;
+  scroll-snap-align: start;
 }
-.gallery li {
-  margin: 0;
-}
-.gallery img {
+.carousel__track img {
   width: 100%;
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 12px;
   box-shadow: var(--shadow-sm);
-  transition: transform 0.18s ease;
 }
-@media (hover: hover) {
-  .gallery img:hover {
-    transform: scale(1.02);
+@media (min-width: 600px) {
+  .carousel__track > li {
+    flex-basis: 38%;
+  }
+}
+@media (min-width: 900px) {
+  .carousel__track > li {
+    flex-basis: 27%;
+  }
+}
+@media (min-width: 1200px) {
+  .carousel__track > li {
+    flex-basis: 20.5%;
   }
 }
 
-/* --------------------------------------------------------------------------
-   Optional qualification block inside the lead form
-   Collapsed by default so the form still reads as seven fields.
-   -------------------------------------------------------------------------- */
-.optional {
-  margin-top: 16px;
-  border: 1px dashed var(--line);
-  border-radius: 12px;
-  background: var(--paper-2);
-}
-.optional summary {
-  cursor: pointer;
-  list-style: none;
-  padding: 13px 44px 13px 16px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--green-dark);
-  position: relative;
-}
-.optional summary::-webkit-details-marker {
-  display: none;
-}
-.optional summary::after {
-  content: '';
+/* Arrows. Hidden from pointer-less/touch contexts is wrong — they stay, but
+   on touch the swipe is the primary interaction. */
+.carousel__btn {
   position: absolute;
-  right: 18px;
   top: 50%;
-  width: 9px;
-  height: 9px;
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: translateY(-70%) rotate(45deg);
-  transition: transform 0.18s ease;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  box-shadow: var(--shadow);
+  transition: opacity 0.16s ease, background-color 0.16s ease;
 }
-.optional[open] summary::after {
-  transform: translateY(-20%) rotate(-135deg);
+.carousel__btn:hover:not(:disabled) {
+  background: var(--green-tint);
+  color: var(--green-dark);
 }
-.optional[open] {
-  border-style: solid;
-  border-color: var(--line);
+.carousel__btn:disabled {
+  opacity: 0;
+  pointer-events: none;
 }
-.optional__hint {
-  margin: 0 16px 14px;
-  font-size: 0.82rem;
-  color: var(--ink-3);
+.carousel__btn--prev {
+  left: -10px;
+  transform: translateY(-50%) rotate(180deg);
 }
-.optional .formgrid {
-  padding: 0 16px 16px;
+.carousel__btn--next {
+  right: -10px;
+}
+@media (max-width: 760px) {
+  /* On phones the arrows sit inside the edge so they never overhang the
+     gutter, and swipe is the main interaction anyway. */
+  .carousel__btn--prev {
+    left: 2px;
+  }
+  .carousel__btn--next {
+    right: 2px;
+  }
 }
 
 /* ==========================================================================
