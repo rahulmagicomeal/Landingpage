@@ -73,6 +73,8 @@ module.exports = {
    * The active variant is pushed to the dataLayer as `hero_variant` so you
    * can segment conversions in GA4 / Looker Studio.
    * ------------------------------------------------------------------ */
+  // NOTE: with `heroMedia` active the hero carries no headline, so this only
+  // takes effect if you switch back to the `heroForm` layout.
   heroVariant: 'A',
 
   /* ------------------------------------------------------------------ *
@@ -90,7 +92,7 @@ module.exports = {
    * than a rewrite.
    *
    * Available: heroMedia | heroForm | hero | leadForm | trustBar | logos
-   *            | entityGlance
+   *            | partners | services3 | features3 | entityGlance
    *            | services | servicesCompact | pains | why | scale | kitchens
    *            | proofStrip | safety | menu | proof | areas | how | gallery
    *            | faq
@@ -105,9 +107,12 @@ module.exports = {
    *   - `proofStrip` replaces `scale` + `kitchens` + `safety` + `proof`.
    * ------------------------------------------------------------------ */
   sections: [
-    'heroMedia',
-    'logos',
-    'servicesCompact',
+    'heroMedia',    // hero: photo carousel + lead form
+    'services3',    // sheet 1: cafeteria management / events / institutional
+    'partners',     // sheet 2: "Our Partners", auto-rotating logo strip
+    // 'features3' is OFF: those three propositions now sit in the hero's left
+    // column (content.heroFeatures). Re-enable only if you move them back out
+    // of the hero — otherwise the page says the same thing twice.
     'proofStrip',
     'how',
     'gallery',

@@ -474,3 +474,91 @@
   setPressed();
   start();
 })();
+
+/* =========================================================================
+   Partner logo marquee
+   The scroll itself is a CSS animation, and it already pauses on hover and
+   focus-within. This only adds the explicit pause control that WCAG 2.2.2
+   requires for content that moves on its own.
+   ========================================================================= */
+(function () {
+  'use strict';
+  var root = document.querySelector('[data-marquee]');
+  if (!root) return;
+  var btn = root.querySelector('[data-marquee-pause]');
+  if (!btn) return;
+
+  // Under reduced motion the strip is a static grid and the button is hidden.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    btn.hidden = true;
+    return;
+  }
+
+  btn.addEventListener('click', function () {
+    var paused = root.classList.toggle('is-paused');
+    btn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+    btn.setAttribute('aria-label', paused ? 'Play the partner logos' : 'Pause the partner logos');
+  });
+})();
+
+/* =========================================================================
+   Cuisine pizza
+   Six slices and a matching name list drive one piece of state. Hover, focus,
+   click and keyboard all select. SVG has no z-index, so the chosen slice is
+   moved to the end of its parent — otherwise the slices drawn after it clip
+   its enlarged edge.
+   ========================================================================= */
+(function () {
+  'use strict';
+  var root = document.querySelector('[data-wheel]');
+  if (!root) return;
+
+  var svg = root.querySelector('svg');
+  var slices = root.querySelectorAll('[data-slice]');
+  var label = root.querySelector('[data-wheel-label]');
+  var host = root.closest('.herofeat__item') || root.parentElement;
+  var legend = host ? host.querySelectorAll('[data-legend]') : [];
+  if (!slices.length || !label || !svg) return;
+
+  var names = Array.prototype.map.call(slices, function (s) {
+    return s.getAttribute('data-name') || '';
+  });
+  var current = -1;
+
+  function select(i) {
+    if (i === current || i < 0 || i >= slices.length) return;
+    current = i;
+
+    Array.prototype.forEach.call(slices, function (s, n) {
+      s.classList.toggle('is-active', n === i);
+    });
+    Array.prototype.forEach.call(legend, function (b, n) {
+      b.setAttribute('aria-pressed', n === i ? 'true' : 'false');
+    });
+
+    // Paint the chosen slice last so its lifted edge sits above the others.
+    svg.appendChild(slices[i]);
+
+    label.textContent = names[i] || '';
+  }
+
+  // Pointer only — the slices are aria-hidden. Keyboard and screen-reader
+  // users drive the same state through the name list below.
+  Array.prototype.forEach.call(slices, function (s, i) {
+    ['mouseenter', 'click'].forEach(function (ev) {
+      s.addEventListener(ev, function () {
+        select(i);
+      });
+    });
+  });
+
+  Array.prototype.forEach.call(legend, function (b, i) {
+    ['mouseenter', 'focus', 'click'].forEach(function (ev) {
+      b.addEventListener(ev, function () {
+        select(i);
+      });
+    });
+  });
+
+  select(0);
+})();

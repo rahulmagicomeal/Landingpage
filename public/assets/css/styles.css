@@ -1964,3 +1964,380 @@ ol {
     transition: none;
   }
 }
+
+/* ==========================================================================
+   SECTION 2 — three headline services
+   ========================================================================== */
+.svc3 {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 680px) {
+  .svc3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 1000px) {
+  .svc3 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+.svc3__card {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.svc3__card img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+}
+.svc3__body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.svc3__body h3 {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+.svc3__body p {
+  font-size: 0.945rem;
+  color: var(--ink-3);
+  flex: 1;
+}
+.svc3__body .textlink {
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   SECTION 3 — Our Partners, auto-rotating logo strip
+   Two identical rows side by side; the track slides exactly 50% and loops,
+   so the seam is invisible. The second row is aria-hidden so screen readers
+   hear the client list once, not twice.
+   ========================================================================== */
+.partners {
+  position: relative;
+}
+.partners__viewport {
+  overflow: hidden;
+  /* Fade the strip into the section background at both edges. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
+}
+.partners__track {
+  display: flex;
+  width: max-content;
+  animation: partners-scroll 46s linear infinite;
+}
+.partners__row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-right: 14px;
+}
+.partners__row li {
+  flex: 0 0 auto;
+}
+.partners__row img {
+  width: 150px;
+  height: 84px;
+  object-fit: contain;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  filter: grayscale(1);
+  opacity: 0.74;
+  transition: filter 0.2s ease, opacity 0.2s ease;
+}
+.partners__row img:hover {
+  filter: none;
+  opacity: 1;
+}
+@keyframes partners-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* Stop while someone is reading or tabbing through it. */
+.partners:hover .partners__track,
+.partners:focus-within .partners__track,
+.partners.is-paused .partners__track {
+  animation-play-state: paused;
+}
+.partners__pause {
+  margin-top: 18px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  padding: 0;
+}
+.partners__pause:hover {
+  background: var(--green-tint);
+  color: var(--green-dark);
+}
+.partners__pause .hero__pause-icon {
+  border-color: currentColor;
+}
+.partners__pause[aria-pressed='true'] .hero__pause-icon {
+  border-left-color: currentColor;
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No motion at all: fall back to a static wrapped grid of the real row. */
+  .partners__viewport {
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .partners__track {
+    animation: none;
+    width: 100%;
+  }
+  .partners__row[aria-hidden='true'] {
+    display: none;
+  }
+  .partners__row {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-right: 0;
+  }
+  .partners__pause {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   SECTION 4 — three reasons, alternating image / text rows
+   ========================================================================== */
+.feat3 {
+  display: grid;
+  gap: clamp(28px, 4vw, 52px);
+}
+.feat3__item {
+  display: grid;
+  gap: clamp(18px, 3vw, 40px);
+  align-items: center;
+}
+@media (min-width: 820px) {
+  .feat3__item {
+    grid-template-columns: 0.9fr 1.1fr;
+  }
+  .feat3__item:nth-child(even) .feat3__media {
+    order: 2;
+  }
+}
+.feat3__media img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.feat3__body h3 {
+  font-size: clamp(1.15rem, 1.05rem + 0.5vw, 1.45rem);
+  margin-bottom: 10px;
+}
+.feat3__body p {
+  margin: 0;
+  color: var(--ink-2);
+  font-size: 1.0125rem;
+  max-width: 44em;
+}
+
+/* ==========================================================================
+   HERO LEFT COLUMN — three propositions, visual beside text
+   ========================================================================== */
+.hero__statline {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.95rem;
+  margin: 0 0 22px;
+}
+.hero__statline b {
+  color: #fff;
+  font-size: 1.05rem;
+}
+
+.herofeat {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+.herofeat__item {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 14px;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: var(--radius);
+  padding: 12px;
+}
+@media (min-width: 520px) {
+  .herofeat__item {
+    grid-template-columns: 132px 1fr;
+    gap: 18px;
+    padding: 14px;
+  }
+}
+.herofeat__media img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 10px;
+  display: block;
+}
+.herofeat__body h2 {
+  color: #fff;
+  font-size: 1.02rem;
+  margin-bottom: 4px;
+}
+.herofeat__body p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ==========================================================================
+   Cuisine pizza — six slices of real food, not a colour key
+
+   The subject is catering, so the slices are filled with the dishes
+   themselves. Hovering lifts a slice out of the pie the way you would take
+   one, and enlarges it. Motion only ever answers the pointer or the keyboard.
+   ========================================================================== */
+.pizza__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+.pizza__slice {
+  cursor: pointer;
+  transform-origin: 100px 100px;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), filter 0.2s ease;
+  filter: saturate(0.75) brightness(0.82);
+}
+.pizza__slice:hover,
+.pizza__slice.is-active {
+  /* Pulled out along its own bisector, then enlarged. */
+  transform: translate(var(--tx), var(--ty)) scale(1.09);
+  filter: none;
+}
+.pizza__slice.is-active {
+  /* Lift above its neighbours so the enlarged edge is not clipped. */
+  position: relative;
+}
+.pizza__slice:focus-visible {
+  outline: none;
+}
+.pizza__slice:focus-visible .pizza__edge {
+  stroke: #fff;
+  stroke-width: 4;
+}
+.pizza__edge {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.85);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+/* Slices we have no photograph for yet: a quiet tint carrying the name,
+   rather than a stock photo of someone else's food. */
+.pizza__blank {
+  fill: rgba(255, 255, 255, 0.14);
+}
+.pizza__blank-label {
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  fill: rgba(255, 255, 255, 0.92);
+  pointer-events: none;
+}
+.pizza__now {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+}
+.pizza__legend {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px 12px;
+  margin-top: 10px;
+}
+.pizza__legend button {
+  display: block;
+  width: 100%;
+  min-height: 26px;
+  padding: 3px 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.82);
+  text-align: left;
+}
+.pizza__legend button:hover {
+  color: #fff;
+}
+.pizza__legend button[aria-pressed='true'] {
+  color: #fff;
+  font-weight: 600;
+  border-bottom-color: rgba(255, 255, 255, 0.65);
+}
+@media (prefers-reduced-motion: reduce) {
+  .pizza__slice {
+    transition: none;
+  }
+}
+
+/* Text on the left, the pizza on the right. */
+.herofeat__item--wheel {
+  grid-template-columns: 1fr 168px;
+}
+.herofeat__item--wheel .herofeat__body {
+  order: 1;
+}
+.herofeat__item--wheel .herofeat__media {
+  order: 2;
+}
+
+/* The pizza needs real estate: six slices inside a 96px circle give tap
+   targets far below any reasonable minimum. Below the two-column breakpoint
+   the row stacks and the pie gets its own width. */
+@media (max-width: 560px) {
+  .herofeat__item--wheel {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .herofeat__item--wheel .herofeat__body {
+    order: 2;
+  }
+  .herofeat__item--wheel .herofeat__media {
+    order: 1;
+    width: min(230px, 72vw);
+  }
+  .pizza__legend {
+    max-width: 260px;
+    margin-inline: auto;
+  }
+  .pizza__legend button {
+    text-align: center;
+  }
+}
+}

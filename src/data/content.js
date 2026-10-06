@@ -701,6 +701,150 @@ module.exports = {
   },
 
   /* ================================================================== *
+   * HERO LEFT COLUMN — three propositions, image/visual beside text
+   * ================================================================== */
+  heroFeatures: [
+    {
+      key: 'meals',
+      title: 'Daily Corporate Meals',
+      body: 'Breakfast, lunch and evening snacks on a fixed schedule, planned against your confirmed headcount.',
+      image: {
+        src: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp',
+        alt: 'Magicomeal office breakfast of idli with coconut and tomato chutney',
+      },
+    },
+    {
+      key: 'menus',
+      title: 'Customised Menus',
+      body: 'Six cuisines on rotation. Hover a slice to see it.',
+      wheel: true, // rendered as the interactive cuisine wheel
+    },
+    {
+      key: 'contact',
+      title: 'One Contract, One Contact',
+      body: 'Every service line from one team, on one invoice, with one named person to call.',
+      image: {
+        src: '/assets/img/magicomeal-catering-team-site-mumbai.webp',
+        alt: 'The Magicomeal service and management team on site at a corporate cafeteria in Mumbai',
+      },
+    },
+  ],
+
+  /* ------------------------------------------------------------------ *
+   * Cuisine wheel
+   *
+   * This is a SELECTOR drawn as a six-part ring, not a data chart: the
+   * segments are equal because they are six choices, and no percentage is
+   * ever shown. Labelling equal slices as data would imply a menu split we
+   * have never measured.
+   *
+   * Colours are the dataviz skill's validated categorical slots 1-6. The
+   * palette passes the lightness band, chroma floor, CVD separation and
+   * normal-vision floor on both the linear and the wrap-around pair. Three
+   * slots sit under 3:1 against a light surface, so the relief rule applies
+   * — every segment carries a visible text label in the legend beside it,
+   * and identity is never carried by colour alone.
+   *
+   * `image: null` = we have no authentic Magicomeal photograph of that
+   * cuisine yet. The centre then shows a branded name panel rather than a
+   * stock photo. Drop a file in and it appears automatically.
+   * ------------------------------------------------------------------ */
+  cuisines: [
+    { name: 'Indian', color: '#2a78d6', image: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp', alt: 'South Indian idli with chutney, served by Magicomeal' },
+    { name: 'Continental', color: '#eb6834', image: '/assets/img/gallery/magicomeal-event-canapes-mumbai.webp', alt: 'Canapes plated by Magicomeal for a corporate event' },
+    { name: 'Chinese', color: '#1baf7a', image: null, alt: '' },
+    { name: 'Japanese', color: '#eda100', image: null, alt: '' },
+    { name: 'Mexican', color: '#e87ba4', image: null, alt: '' },
+    { name: 'American', color: '#008300', image: null, alt: '' },
+  ],
+  cuisineWheel: {
+    label: 'Cuisine selector',
+    hint: 'Hover or focus a slice',
+  },
+
+  /* ================================================================== *
+   * SECTION 2 — three headline services  (`services3`)
+   * ================================================================== */
+  services3: {
+    // This is the page's <h1> now that the hero carries no headline, so it
+    // has to do the message-match work: it mirrors the page title and the
+    // search terms the ads bid on.
+    h2: 'Corporate catering services in Mumbai, Navi Mumbai and Thane',
+    sub: `Three ways Magicomeal takes workplace and institutional food off your desk, across ${AREAS_PROSE}.`,
+    items: [
+      {
+        title: 'Corporate Cafeteria Management',
+        body: 'We run the cafeteria end to end — menu planning, production, counter service, hygiene routines and on-site staff. You get one operation and one point of escalation instead of a rota you manage yourself.',
+        image: {
+          src: '/assets/img/magicomeal-cafeteria-management-kitchen-mumbai.webp',
+          alt: 'Magicomeal kitchen team cooking the daily menu in a managed corporate cafeteria kitchen in Mumbai',
+        },
+      },
+      {
+        title: 'Corporate Event Catering',
+        body: 'Meetings, townhalls, annual functions and festival days, with service staff and equipment on site. Menus are built around the event rather than picked from a fixed package.',
+        image: {
+          src: '/assets/img/magicomeal-corporate-event-buffet-mumbai.webp',
+          alt: 'Labelled buffet counter set up by Magicomeal for a corporate event in Mumbai',
+        },
+      },
+      {
+        title: 'Institutional Catering',
+        body: 'Daily meal programmes for schools, hostels and institutions, with age-appropriate menus and the same ISO 22000 food safety system we run on every corporate site.',
+        image: {
+          src: '/assets/img/magicomeal-school-catering-students-mumbai.webp',
+          alt: 'School students eating a Magicomeal lunch from compartment trays in their school cafeteria in Mumbai',
+        },
+      },
+    ],
+    ctaLabel: 'Get a proposal',
+  },
+
+  /* ================================================================== *
+   * SECTION 3 — Our Partners  (`partners`)
+   * Auto-rotating logo strip. The logo list comes from company.clientLogos.
+   * ================================================================== */
+  partners: {
+    h2: 'Our Partners',
+    sub: 'Banks, technology firms, law firms, media houses, manufacturers and schools whose food operations we run.',
+    pauseLabel: 'Pause the partner logos',
+    playLabel: 'Play the partner logos',
+  },
+
+  /* ================================================================== *
+   * SECTION 4 — three reasons  (`features3`)
+   * ================================================================== */
+  features3: {
+    h2: 'Why teams stay with us',
+    items: [
+      {
+        title: 'Daily Corporate Meals',
+        body: `Breakfast, lunch and evening snacks on a fixed daily schedule, planned against your confirmed headcount. ${company.stats.mealsPerDay.value} meals a day go out across our sites, so the volume is routine rather than a stretch.`,
+        image: {
+          src: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp',
+          alt: 'Magicomeal office breakfast of plain, spinach and carrot idli served with coconut and tomato chutney',
+        },
+      },
+      {
+        title: 'Customised Menus',
+        body: 'Rotating menu cycles built with you, not handed to you. Regional Indian cuisines, and vegetarian, vegan, Jain and gluten-free requirements planned in from the start rather than worked around later.',
+        image: {
+          src: '/assets/img/magicomeal-corporate-catering-counter-service-mumbai.webp',
+          alt: 'Magicomeal service staff plating meals at a corporate office catering counter in Mumbai',
+        },
+      },
+      {
+        title: 'One Contract, One Contact',
+        body: 'Every service line from the same team — daily meals, cafeteria, events, institutional — on one contract, one invoice, and one named person to call when something needs changing.',
+        image: {
+          src: '/assets/img/magicomeal-catering-team-site-mumbai.webp',
+          alt: 'The Magicomeal service and management team on site at a corporate cafeteria in Mumbai',
+        },
+      },
+    ],
+  },
+
+  /* ================================================================== *
    * SHORT-PAGE BLOCKS
    *
    * Used by the lead-gen layout. They compress the long sections rather

@@ -228,6 +228,89 @@ module.exports = function render(config, assets) {
         </div>
       </div>`;
 
+  /* ---------------------------------------------------------------- *
+   * Cuisine wheel
+   *
+   * A six-part ring used as a SELECTOR, not a data chart — equal slices
+   * because there are six choices, and no percentage is ever printed.
+   * Each slice is a focusable control; the legend beside it carries the
+   * names so identity never rests on colour alone (the dataviz relief rule,
+   * which three of these six slots require against a light surface).
+   * ---------------------------------------------------------------- */
+  /* Wedge geometry for the cuisine pizza. Full slices, not a donut: the
+     subject is food, so each slice is filled with the dish itself rather
+     than a colour swatch. */
+  const R = 94;
+  const GAP = 0.022; // radians — the cut between slices
+
+  const pt = (r, a) => [
+    (100 + r * Math.cos(a)).toFixed(2),
+    (100 + r * Math.sin(a)).toFixed(2),
+  ];
+  const bisector = (i, total) => -Math.PI / 2 + ((i + 0.5) * (Math.PI * 2)) / total;
+
+  const wedgePath = (i, total) => {
+    const step = (Math.PI * 2) / total;
+    const a0 = -Math.PI / 2 + i * step + GAP / 2;
+    const a1 = -Math.PI / 2 + (i + 1) * step - GAP / 2;
+    const [x0, y0] = pt(R, a0);
+    const [x1, y1] = pt(R, a1);
+    return `M100 100L${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}Z`;
+  };
+
+  const CUISINE_WHEEL = `<div class="pizza" data-wheel>
+      <!-- Decorative: the name list below is the real control. The chosen
+           slice gets moved to the end of the SVG so its lifted edge paints
+           above its neighbours, which would otherwise scramble tab order if
+           these were focusable. -->
+      <svg class="pizza__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <defs>
+          ${c.cuisines
+            .map(
+              (cu, i) =>
+                `<clipPath id="wedge${i}"><path d="${wedgePath(i, c.cuisines.length)}"/></clipPath>`
+            )
+            .join('')}
+        </defs>
+        ${c.cuisines
+          .map((cu, i) => {
+            const b = bisector(i, c.cuisines.length);
+            const cxp = (100 + Math.cos(b) * 48).toFixed(1);
+            const cyp = (100 + Math.sin(b) * 48).toFixed(1);
+            const tx = (Math.cos(b) * 7).toFixed(1);
+            const ty = (Math.sin(b) * 7).toFixed(1);
+            const fill = cu.image
+              ? `<image href="${esc(cu.image)}" x="${(cxp - 62).toFixed(1)}" y="${(
+                  cyp - 62
+                ).toFixed(1)}" width="124" height="124" preserveAspectRatio="xMidYMid slice"
+                   clip-path="url(#wedge${i})"></image>`
+              : `<path d="${wedgePath(i, c.cuisines.length)}" class="pizza__blank"></path>
+                 <text class="pizza__blank-label" x="${cxp}" y="${(+cyp + 4).toFixed(
+                  1
+                )}" text-anchor="middle">${esc(cu.name)}</text>`;
+            return `<g class="pizza__slice" data-slice="${i}" data-name="${esc(
+              cu.name
+            )}" style="--tx:${tx}px;--ty:${ty}px">
+              ${fill}
+              <path d="${wedgePath(i, c.cuisines.length)}" class="pizza__edge"></path>
+            </g>`;
+          })
+          .join('')}
+      </svg>
+      <p class="pizza__now"><span data-wheel-label>${esc(c.cuisines[0].name)}</span></p>
+    </div>`;
+
+  const CUISINE_LEGEND = `<ul class="pizza__legend">
+            ${c.cuisines
+              .map(
+                (cu, i) =>
+                  `<li><button type="button" data-legend="${i}" aria-pressed="${
+                    i === 0 ? 'true' : 'false'
+                  }">${esc(cu.name)}</button></li>`
+              )
+              .join('')}
+          </ul>`;
+
   const faqItems = config.shortFaq ? c.faq.items.filter((f) => f.short) : c.faq.items;
 
   return `<!doctype html>
@@ -316,20 +399,26 @@ ${has('heroMedia') ? `<!-- =============== HERO: photo carousel + form =========
 
   <div class="wrap">
     <div class="hero__grid hero__grid--form">
+      <!-- Three propositions only. The headline block was removed at the
+           client's request; the page's single top-level heading now sits on
+           the services section immediately below, so the page still has one. -->
       <div class="hero__copy">
-        <p class="eyebrow">${esc(c.hero.eyebrow)}</p>
-        <h1>${h1Html}</h1>
-        <p class="hero__sub">${esc(c.hero.sub)}</p>
-        <ul class="hero-stats">
-          ${c.hero.stats
-            .map((s) => `<li><b>${esc(s.value)}</b><span>${esc(s.label)}</span></li>`)
+        <ul class="herofeat">
+          ${c.heroFeatures
+            .map(
+              (f) => `<li class="herofeat__item${f.wheel ? ' herofeat__item--wheel' : ''}">
+            <div class="herofeat__media">${
+              f.wheel ? CUISINE_WHEEL : `<img src="${esc(f.image.src)}" alt="${esc(f.image.alt)}" width="1100" height="825" loading="lazy" decoding="async">`
+            }</div>
+            <div class="herofeat__body">
+              <h2>${esc(f.title)}</h2>
+              <p>${esc(f.body)}</p>
+              ${f.wheel ? CUISINE_LEGEND : ''}
+            </div>
+          </li>`
+            )
             .join('')}
         </ul>
-        <ul class="hero-assure">
-          <li>${ICON.shield}<span><b>ISO 22000:2018</b> · HACCP · FSSAI compliant</span></li>
-          <li>${ICON.checkCircle}<span>${esc(c.hero.reassurance)}</span></li>
-        </ul>
-        <a class="btn btn--on-dark hero__call" href="${telHref}" data-event="phone_click" data-loc="hero_secondary">${ICON.phone}${esc(co.contact.phoneDisplay)}</a>
       </div>
 
       <div class="hero__form" id="lead-form">
@@ -466,6 +555,93 @@ ${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =====
           .join('\n        ')}
       </dl>
     </div>
+  </div>
+</section>` : ''}
+
+${has('services3') ? `<!-- ============ SECTION 2: three headline services =============== -->
+<section class="section" id="services" aria-labelledby="svc3-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h1 id="svc3-h">${esc(c.services3.h2)}</h1>
+      <p>${esc(c.services3.sub)}</p>
+    </div>
+    <ul class="svc3">
+      ${c.services3.items
+        .map(
+          (it) => `<li class="svc3__card">
+        <img src="${esc(it.image.src)}" alt="${esc(it.image.alt)}" width="1100" height="825" loading="lazy" decoding="async">
+        <div class="svc3__body">
+          <h3>${esc(it.title)}</h3>
+          <p>${esc(it.body)}</p>
+          <a class="textlink" href="#lead-form" data-event="cta_click" data-loc="svc3_${esc(
+            it.title.toLowerCase().replace(/[^a-z]+/g, '-')
+          )}">${esc(c.services3.ctaLabel)} ${ICON.arrow}</a>
+        </div>
+      </li>`
+        )
+        .join('')}
+    </ul>
+  </div>
+</section>` : ''}
+
+${has('partners') ? `<!-- ============ SECTION 3: Our Partners (auto-rotating) ========== -->
+<section class="section section--tint" aria-labelledby="partners-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="partners-h">${esc(c.partners.h2)}</h2>
+      <p>${esc(c.partners.sub)}</p>
+    </div>
+  </div>
+  <div class="partners" data-marquee>
+    <div class="partners__viewport">
+      <div class="partners__track">
+        <ul class="partners__row">
+          ${co.clientLogos
+            .map(
+              (l) => `<li><img src="/assets/img/clients/${l.file}" alt="${esc(
+                l.name
+              )} — Magicomeal corporate catering client" width="531" height="313" loading="lazy" decoding="async"></li>`
+            )
+            .join('')}
+        </ul>
+        <ul class="partners__row" aria-hidden="true">
+          ${co.clientLogos
+            .map(
+              (l) => `<li><img src="/assets/img/clients/${l.file}" alt="" width="531" height="313" loading="lazy" decoding="async"></li>`
+            )
+            .join('')}
+        </ul>
+      </div>
+    </div>
+    <div class="wrap">
+      <button class="partners__pause" type="button" data-marquee-pause aria-pressed="false" aria-label="${esc(
+        c.partners.pauseLabel
+      )}"><span class="hero__pause-icon" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</section>` : ''}
+
+${has('features3') ? `<!-- ============ SECTION 4: three reasons ========================= -->
+<section class="section" aria-labelledby="feat3-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h2 id="feat3-h">${esc(c.features3.h2)}</h2>
+    </div>
+    <ul class="feat3">
+      ${c.features3.items
+        .map(
+          (it) => `<li class="feat3__item">
+        <div class="feat3__media"><img src="${esc(it.image.src)}" alt="${esc(
+            it.image.alt
+          )}" width="1100" height="825" loading="lazy" decoding="async"></div>
+        <div class="feat3__body">
+          <h3>${esc(it.title)}</h3>
+          <p>${esc(it.body)}</p>
+        </div>
+      </li>`
+        )
+        .join('')}
+    </ul>
   </div>
 </section>` : ''}
 
