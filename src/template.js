@@ -258,40 +258,46 @@ module.exports = function render(config, assets) {
     return `M100 100L${x0} ${y0}A${R} ${R} 0 0 1 ${x1} ${y1}Z`;
   };
 
+  /* Food drawn, not photographed. Stock photography would be claiming to be
+     Magicomeal's own food, and the two real cuisine photographs we do have
+     already appear elsewhere on the page. Six flat motifs in one baked-dough
+     palette keep the pie coherent at 168px. Each is drawn in a 24x24 box and
+     translated to its wedge centroid. */
+  const FOOD = {
+    samosa:
+      '<path d="M12 3 21.5 20H2.5Z"/><path d="M12 3v17" stroke="#f7ecd8" stroke-width="1.4" fill="none"/>',
+    croissant:
+      '<path d="M3 15c3-9 15-9 18 0-3.2-3-5.6-1.6-6.4.6-1 2.7-4.2 2.7-5.2 0C8.6 13.4 6.2 12 3 15Z"/>',
+    noodles:
+      '<path d="M3.5 11h17a8.5 8.5 0 0 1-17 0Z"/><path d="M7 9c1-3 3-4.5 5-4.5S16 6 17 9" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>',
+    nigiri:
+      '<rect x="4" y="12" width="16" height="7" rx="3.2"/><path d="M4.4 12c1-3.4 4-5.2 7.6-5.2S18.6 8.6 19.6 12Z" opacity=".72"/>',
+    taco:
+      '<path d="M2.5 19a9.5 9.5 0 0 1 19 0Z"/><path d="M6 19a6 6 0 0 1 12 0Z" fill="#f7ecd8"/>',
+    burger:
+      '<path d="M3 8.5c0-3 4-5.5 9-5.5s9 2.5 9 5.5Z"/><rect x="3" y="10.4" width="18" height="2.6" rx="1.3"/><path d="M3 15.5h18c0 3-4 5-9 5s-9-2-9-5Z"/>',
+  };
+
   const CUISINE_WHEEL = `<div class="pizza" data-wheel>
       <!-- Decorative: the name list below is the real control. The chosen
            slice gets moved to the end of the SVG so its lifted edge paints
            above its neighbours, which would otherwise scramble tab order if
            these were focusable. -->
       <svg class="pizza__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-        <defs>
-          ${c.cuisines
-            .map(
-              (cu, i) =>
-                `<clipPath id="wedge${i}"><path d="${wedgePath(i, c.cuisines.length)}"/></clipPath>`
-            )
-            .join('')}
-        </defs>
         ${c.cuisines
           .map((cu, i) => {
             const b = bisector(i, c.cuisines.length);
-            const cxp = (100 + Math.cos(b) * 48).toFixed(1);
-            const cyp = (100 + Math.sin(b) * 48).toFixed(1);
+            const cxp = 100 + Math.cos(b) * 52;
+            const cyp = 100 + Math.sin(b) * 52;
             const tx = (Math.cos(b) * 7).toFixed(1);
             const ty = (Math.sin(b) * 7).toFixed(1);
-            const fill = cu.image
-              ? `<image href="${esc(cu.image)}" x="${(cxp - 62).toFixed(1)}" y="${(
-                  cyp - 62
-                ).toFixed(1)}" width="124" height="124" preserveAspectRatio="xMidYMid slice"
-                   clip-path="url(#wedge${i})"></image>`
-              : `<path d="${wedgePath(i, c.cuisines.length)}" class="pizza__blank"></path>
-                 <text class="pizza__blank-label" x="${cxp}" y="${(+cyp + 4).toFixed(
-                  1
-                )}" text-anchor="middle">${esc(cu.name)}</text>`;
             return `<g class="pizza__slice" data-slice="${i}" data-name="${esc(
               cu.name
             )}" style="--tx:${tx}px;--ty:${ty}px">
-              ${fill}
+              <path d="${wedgePath(i, c.cuisines.length)}" fill="${cu.dough}"></path>
+              <g class="pizza__food" transform="translate(${(cxp - 15).toFixed(1)} ${(
+              cyp - 15
+            ).toFixed(1)}) scale(1.25)">${FOOD[cu.icon] || ''}</g>
               <path d="${wedgePath(i, c.cuisines.length)}" class="pizza__edge"></path>
             </g>`;
           })

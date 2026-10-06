@@ -2226,7 +2226,8 @@ ol {
   cursor: pointer;
   transform-origin: 100px 100px;
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.3, 1), filter 0.2s ease;
-  filter: saturate(0.75) brightness(0.82);
+  /* Resting slices sit back; the chosen one comes forward to full strength. */
+  filter: brightness(0.86);
 }
 .pizza__slice:hover,
 .pizza__slice.is-active {
@@ -2252,16 +2253,10 @@ ol {
   stroke-linejoin: round;
   pointer-events: none;
 }
-/* Slices we have no photograph for yet: a quiet tint carrying the name,
-   rather than a stock photo of someone else's food. */
-.pizza__blank {
-  fill: rgba(255, 255, 255, 0.14);
-}
-.pizza__blank-label {
-  font-family: var(--font);
-  font-size: 11px;
-  font-weight: 600;
-  fill: rgba(255, 255, 255, 0.92);
+/* The drawn dish inside each wedge. One warm ink on the dough tones. */
+.pizza__food {
+  fill: #5c3c1d;
+  color: #5c3c1d;
   pointer-events: none;
 }
 .pizza__now {

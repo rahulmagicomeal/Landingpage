@@ -716,7 +716,7 @@ module.exports = {
     {
       key: 'menus',
       title: 'Customised Menus',
-      body: 'Six cuisines on rotation. Hover a slice to see it.',
+      body: 'Menu cycles built around what your team actually eats.',
       wheel: true, // rendered as the interactive cuisine wheel
     },
     {
@@ -750,12 +750,12 @@ module.exports = {
    * stock photo. Drop a file in and it appears automatically.
    * ------------------------------------------------------------------ */
   cuisines: [
-    { name: 'Indian', color: '#2a78d6', image: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp', alt: 'South Indian idli with chutney, served by Magicomeal' },
-    { name: 'Continental', color: '#eb6834', image: '/assets/img/gallery/magicomeal-event-canapes-mumbai.webp', alt: 'Canapes plated by Magicomeal for a corporate event' },
-    { name: 'Chinese', color: '#1baf7a', image: null, alt: '' },
-    { name: 'Japanese', color: '#eda100', image: null, alt: '' },
-    { name: 'Mexican', color: '#e87ba4', image: null, alt: '' },
-    { name: 'American', color: '#008300', image: null, alt: '' },
+    { name: 'Indian', icon: 'samosa', dough: '#f3e3c7' },
+    { name: 'Continental', icon: 'croissant', dough: '#efdcbb' },
+    { name: 'Chinese', icon: 'noodles', dough: '#f5e8d2' },
+    { name: 'Japanese', icon: 'nigiri', dough: '#ecd8b4' },
+    { name: 'Mexican', icon: 'taco', dough: '#f1e0c2' },
+    { name: 'American', icon: 'burger', dough: '#e9d4ae' },
   ],
   cuisineWheel: {
     label: 'Cuisine selector',
