@@ -1228,8 +1228,12 @@ ol {
   place-items: center;
   margin: 0 auto 18px;
 }
-.success h3 {
+.success__title {
   font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  margin: 0 0 1em;
 }
 .success p {
   color: var(--ink-3);
@@ -1552,9 +1556,13 @@ ol {
 .hero__form-head {
   margin-bottom: 14px;
 }
-.hero__form-head h2 {
+.hero__form-title {
   font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.6rem);
-  margin-bottom: 6px;
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  margin: 0 0 6px;
 }
 .hero__form-head p {
   margin: 0;
@@ -2003,7 +2011,7 @@ ol {
   flex-direction: column;
   flex: 1;
 }
-.svc3__body h3 {
+.svc3__body h2 {
   font-size: 1.1rem;
   margin-bottom: 8px;
 }
@@ -2198,10 +2206,13 @@ ol {
   border-radius: 10px;
   display: block;
 }
-.herofeat__body h2 {
+.herofeat__title {
   color: #fff;
   font-size: 1.02rem;
-  margin-bottom: 4px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  margin: 0 0 4px;
 }
 .herofeat__body p {
   margin: 0;

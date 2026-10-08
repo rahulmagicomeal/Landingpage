@@ -87,9 +87,10 @@ module.exports = {
    * section 16 to section 1.
    *
    * Nothing was deleted. Every long section still exists in content.js and
-   * template.js — add its name back to this list to bring it back, in
-   * whatever order you list it. That makes page length an A/B test rather
-   * than a rewrite.
+   * template.js — add its name back to this list to bring it back. NOTE: this
+   * list controls which sections render, NOT the order they render in; the
+   * order is fixed by where each block sits in src/template.js. To reorder,
+   * move the block there.
    *
    * Available: heroMedia | heroForm | hero | leadForm | trustBar | logos
    *            | partners | services3 | features3 | entityGlance
@@ -109,11 +110,14 @@ module.exports = {
   sections: [
     'heroMedia',    // hero: photo carousel + lead form
     'services3',    // sheet 1: cafeteria management / events / institutional
+    'entityGlance', // the "What is Magicomeal?" paragraph + fact table: the
+                    // single most quotable block for AI answer engines
     'partners',     // sheet 2: "Our Partners", auto-rotating logo strip
     // 'features3' is OFF: those three propositions now sit in the hero's left
     // column (content.heroFeatures). Re-enable only if you move them back out
     // of the hero — otherwise the page says the same thing twice.
     'proofStrip',
+    'areas',        // geographic entity signal for Mumbai / Navi Mumbai / Thane
     'how',
     'gallery',
     'faq',
@@ -123,6 +127,9 @@ module.exports = {
   // Short page shows only the FAQs flagged `short: true` in content.js.
   // Set to false to show all of them. The JSON-LD FAQPage follows this, so
   // the structured data never claims a question the page does not show.
-  shortFaq: true,
+  // All ten questions. They sit in an accordion so the page stays short
+  // visually, while every answer remains in the HTML for crawlers and answer
+  // engines. The FAQPage JSON-LD follows this flag automatically.
+  shortFaq: false,
   ctaVariant: 'A',
 };

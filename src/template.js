@@ -220,7 +220,7 @@ module.exports = function render(config, assets) {
 
       <div class="success" id="form-success" role="status" aria-live="polite">
         <div class="success__tick">${ICON.tick}</div>
-        <h3>${esc(c.form.success.h3)}</h3>
+        <p class="success__title">${esc(c.form.success.h3)}</p>
         <p>${esc(c.form.success.body)}</p>
         <div class="success__actions">
           <a class="btn btn--primary" href="${telHref}" data-event="phone_click" data-loc="thankyou">${ICON.phone}${esc(c.form.success.callLabel)}</a>
@@ -433,7 +433,7 @@ ${has('heroMedia') ? `<!-- =============== HERO: photo carousel + form =========
               f.wheel ? CUISINE_WHEEL : `<img src="${esc(f.image.src)}" alt="${esc(f.image.alt)}" width="1100" height="825" loading="lazy" decoding="async">`
             }</div>
             <div class="herofeat__body">
-              <h2>${esc(f.title)}</h2>
+              <p class="herofeat__title">${esc(f.title)}</p>
               <p>${esc(f.body)}</p>
               ${f.wheel ? CUISINE_LEGEND : ''}
             </div>
@@ -445,7 +445,7 @@ ${has('heroMedia') ? `<!-- =============== HERO: photo carousel + form =========
 
       <div class="hero__form" id="lead-form">
         <div class="hero__form-head">
-          <h2 id="form-h">${esc(c.form.h2)}</h2>
+          <p class="hero__form-title" id="form-h">${esc(c.form.h2)}</p>
           <p>${esc(c.form.sub)}</p>
         </div>
         ${FORM_CARD}
@@ -481,7 +481,7 @@ ${has('heroForm') ? `<!-- ======================= HERO + FORM (short page) =====
 
       <div class="hero__form" id="lead-form">
         <div class="hero__form-head">
-          <h2 id="form-h">${esc(c.form.h2)}</h2>
+          <p class="hero__form-title" id="form-h">${esc(c.form.h2)}</p>
           <p>${esc(c.form.sub)}</p>
         </div>
         ${FORM_CARD}
@@ -561,6 +561,32 @@ ${has('logos') ? `<!-- ============================ CLIENT LOGOS ===============
   </div>
 </section>` : ''}
 
+${has('services3') ? `<!-- ============ SECTION 2: three headline services =============== -->
+<section class="section" id="services" aria-labelledby="svc3-h">
+  <div class="wrap">
+    <div class="section-head">
+      <h1 id="svc3-h">${esc(c.services3.h2)}</h1>
+      <p>${esc(c.services3.sub)}</p>
+    </div>
+    <ul class="svc3">
+      ${c.services3.items
+        .map(
+          (it) => `<li class="svc3__card">
+        <img src="${esc(it.image.src)}" alt="${esc(it.image.alt)}" width="1100" height="825" loading="lazy" decoding="async">
+        <div class="svc3__body">
+          <h2>${esc(it.title)}</h2>
+          <p>${esc(it.body)}</p>
+          <a class="textlink" href="#lead-form" data-event="cta_click" data-loc="svc3_${esc(
+            it.title.toLowerCase().replace(/[^a-z]+/g, '-')
+          )}">${esc(c.services3.ctaLabel)} ${ICON.arrow}</a>
+        </div>
+      </li>`
+        )
+        .join('')}
+    </ul>
+  </div>
+</section>` : ''}
+
 ${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =================== -->
 <section class="section section--tint" aria-labelledby="entity-h">
   <div class="wrap entity__grid">
@@ -577,32 +603,6 @@ ${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =====
           .join('\n        ')}
       </dl>
     </div>
-  </div>
-</section>` : ''}
-
-${has('services3') ? `<!-- ============ SECTION 2: three headline services =============== -->
-<section class="section" id="services" aria-labelledby="svc3-h">
-  <div class="wrap">
-    <div class="section-head">
-      <h1 id="svc3-h">${esc(c.services3.h2)}</h1>
-      <p>${esc(c.services3.sub)}</p>
-    </div>
-    <ul class="svc3">
-      ${c.services3.items
-        .map(
-          (it) => `<li class="svc3__card">
-        <img src="${esc(it.image.src)}" alt="${esc(it.image.alt)}" width="1100" height="825" loading="lazy" decoding="async">
-        <div class="svc3__body">
-          <h3>${esc(it.title)}</h3>
-          <p>${esc(it.body)}</p>
-          <a class="textlink" href="#lead-form" data-event="cta_click" data-loc="svc3_${esc(
-            it.title.toLowerCase().replace(/[^a-z]+/g, '-')
-          )}">${esc(c.services3.ctaLabel)} ${ICON.arrow}</a>
-        </div>
-      </li>`
-        )
-        .join('')}
-    </ul>
   </div>
 </section>` : ''}
 

@@ -102,6 +102,14 @@ module.exports = function buildSchema(config) {
     primaryImageOfPage: { '@type': 'ImageObject', url: base + content.meta.ogImage },
     inLanguage: 'en-IN',
     breadcrumb: { '@id': `${pageUrl}#breadcrumb` },
+    // Tells voice and answer engines which parts of the page are worth
+    // reading aloud: the entity paragraph that defines who Magicomeal is,
+    // and the FAQ answers. Both are real, visible page content.
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['.entity__lead', '.faq .answer'],
+    },
+    significantLink: [`${pageUrl}#lead-form`, `${pageUrl}#services`],
   };
 
   const breadcrumb = {
