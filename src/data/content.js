@@ -98,8 +98,8 @@ module.exports = {
       },
     ],
     slideIntervalMs: 6000,
-    pauseLabel: 'Pause background slideshow',
-    playLabel: 'Play background slideshow',
+    pauseLabel: 'Pause the moving parts of this banner',
+    playLabel: 'Play the moving parts of this banner',
 
     stats: [
       { value: company.stats.mealsPerDay.value, label: 'Meals Daily' },

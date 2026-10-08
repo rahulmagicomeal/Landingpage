@@ -2232,6 +2232,29 @@ ol {
   height: auto;
   display: block;
   overflow: visible;
+  /* Turns like a lazy susan. Slow enough to read as presentation rather than
+     animation, and it stops the moment anyone reaches for it. */
+  transform-origin: 50% 50%;
+  animation: pizza-spin 54s linear infinite;
+}
+@keyframes pizza-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Stop while someone is choosing, and whenever the hero's pause control is
+   engaged — that one button governs every bit of motion in the hero. */
+/* Scoped to the whole feature row, not `.pizza`: the name list is a sibling
+   of the wheel, so `.pizza:focus-within` never saw a focused legend button. */
+.herofeat__item--wheel:hover .pizza__svg,
+.herofeat__item--wheel:focus-within .pizza__svg,
+.hero--media.is-paused .pizza__svg {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pizza__svg {
+    animation: none;
+  }
 }
 .pizza__slice {
   cursor: pointer;

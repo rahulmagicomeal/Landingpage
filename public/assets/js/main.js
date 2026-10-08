@@ -440,7 +440,7 @@
     pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
     pauseBtn.setAttribute(
       'aria-label',
-      paused ? 'Play background slideshow' : 'Pause background slideshow'
+      paused ? 'Play the moving parts of this banner' : 'Pause the moving parts of this banner'
     );
   }
 
@@ -449,6 +449,10 @@
       pausedByUser = !pausedByUser;
       if (pausedByUser) stop();
       else start();
+      // One control for every moving thing in the hero: the background
+      // slideshow (timer, above) and the cuisine wheel (CSS animation,
+      // paused by this class).
+      root.classList.toggle('is-paused', pausedByUser);
       setPressed();
     });
   }
@@ -471,6 +475,7 @@
     });
   }
 
+  if (pausedByUser) root.classList.add('is-paused');
   setPressed();
   start();
 })();
