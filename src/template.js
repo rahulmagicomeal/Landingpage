@@ -284,6 +284,15 @@ module.exports = function render(config, assets) {
            above its neighbours, which would otherwise scramble tab order if
            these were focusable. -->
       <svg class="pizza__svg" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <defs>
+          ${c.cuisines
+            .map((cu, i) =>
+              cu.image
+                ? `<clipPath id="wedge${i}"><path d="${wedgePath(i, c.cuisines.length)}"/></clipPath>`
+                : ''
+            )
+            .join('')}
+        </defs>
         ${c.cuisines
           .map((cu, i) => {
             const b = bisector(i, c.cuisines.length);
@@ -295,9 +304,16 @@ module.exports = function render(config, assets) {
               cu.name
             )}" style="--tx:${tx}px;--ty:${ty}px">
               <path d="${wedgePath(i, c.cuisines.length)}" fill="${cu.dough}"></path>
-              <g class="pizza__food" transform="translate(${(cxp - 15).toFixed(1)} ${(
-              cyp - 15
-            ).toFixed(1)}) scale(1.25)">${FOOD[cu.icon] || ''}</g>
+              ${
+                cu.image
+                  ? `<image href="${esc(cu.image)}" x="${(cxp - 46).toFixed(1)}" y="${(
+                      cyp - 46
+                    ).toFixed(1)}" width="92" height="92" preserveAspectRatio="xMidYMid slice"
+                     clip-path="url(#wedge${i})"></image>`
+                  : `<g class="pizza__food" transform="translate(${(cxp - 15).toFixed(1)} ${(
+                      cyp - 15
+                    ).toFixed(1)}) scale(1.25)">${FOOD[cu.icon] || ''}</g>`
+              }
               <path d="${wedgePath(i, c.cuisines.length)}" class="pizza__edge"></path>
             </g>`;
           })
@@ -1033,6 +1049,14 @@ ${has('finalCta') ? `<!-- ============================ FINAL CTA ===============
     <div class="site-footer__bottom">
       <span>&copy; ${new Date().getFullYear()} Magicomeal. ${esc(co.tagline)}.</span>
       <span>ISO 22000:2018 · HACCP · FSSAI compliant</span>
+      ${
+        c.cuisines.filter((x) => x.credit).length
+          ? `<span class="site-footer__credits">${c.cuisines
+              .filter((x) => x.credit)
+              .map((x) => esc(x.credit))
+              .join(' · ')}</span>`
+          : ''
+      }
     </div>
   </div>
 </footer>

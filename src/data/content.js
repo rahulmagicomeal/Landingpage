@@ -749,13 +749,55 @@ module.exports = {
    * cuisine yet. The centre then shows a branded name panel rather than a
    * stock photo. Drop a file in and it appears automatically.
    * ------------------------------------------------------------------ */
+  /* Each slice shows the real dish where we have a usable image of it.
+     `image: null` falls back to the drawn motif named in `icon`.
+     `credit` is rendered in the footer for licences that require it. */
   cuisines: [
-    { name: 'Indian', icon: 'samosa', dough: '#f3e3c7' },
-    { name: 'Continental', icon: 'croissant', dough: '#efdcbb' },
-    { name: 'Chinese', icon: 'noodles', dough: '#f5e8d2' },
-    { name: 'Japanese', icon: 'nigiri', dough: '#ecd8b4' },
-    { name: 'Mexican', icon: 'taco', dough: '#f1e0c2' },
-    { name: 'American', icon: 'burger', dough: '#e9d4ae' },
+    {
+      name: 'Indian',
+      icon: 'samosa',
+      dough: '#f3e3c7',
+      image: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp',
+      source: "Magicomeal's own photograph",
+    },
+    {
+      name: 'Continental',
+      icon: 'croissant',
+      dough: '#efdcbb',
+      image: '/assets/img/gallery/magicomeal-event-canapes-mumbai.webp',
+      source: "Magicomeal's own photograph",
+    },
+    {
+      name: 'Chinese',
+      icon: 'noodles',
+      dough: '#f5e8d2',
+      image: '/assets/img/cuisine/cuisine-chinese.webp',
+      source: 'Wikimedia Commons',
+      credit: 'Chinese slice: “Chicken Chow mein 1” via Wikimedia Commons, CC BY-SA 4.0',
+    },
+    {
+      name: 'Japanese',
+      icon: 'nigiri',
+      dough: '#ecd8b4',
+      image: '/assets/img/cuisine/cuisine-japanese.webp',
+      source: 'Wikimedia Commons',
+      credit: 'Japanese slice: “Sushi mini set 01” via Wikimedia Commons, CC BY-SA 4.0',
+    },
+    {
+      name: 'Mexican',
+      icon: 'taco',
+      dough: '#f1e0c2',
+      image: '/assets/img/cuisine/cuisine-mexican.webp',
+      source: 'Wikimedia Commons',
+      credit: 'Mexican slice: “Tacos al pastor con piña” via Wikimedia Commons, CC BY-SA 4.0',
+    },
+    {
+      name: 'American',
+      icon: 'burger',
+      dough: '#e9d4ae',
+      image: '/assets/img/cuisine/cuisine-american.webp',
+      source: 'Wikimedia Commons, public domain',
+    },
   ],
   cuisineWheel: {
     label: 'Cuisine selector',

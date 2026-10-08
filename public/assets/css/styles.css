@@ -2336,3 +2336,12 @@ ol {
   }
 }
 }
+
+/* Image credits for the freely-licensed cuisine photographs that require
+   attribution. Quiet, but present — the licence asks for it. */
+.site-footer__credits {
+  flex-basis: 100%;
+  font-size: 0.72rem;
+  opacity: 0.6;
+  line-height: 1.5;
+}

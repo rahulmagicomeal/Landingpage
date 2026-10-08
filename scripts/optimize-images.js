@@ -87,6 +87,15 @@ const MANIFEST = [
   { from: '41.jpg', to: 'gallery/magicomeal-corporate-event-marquee-buffet-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
   { from: '33.jpg', to: 'gallery/magicomeal-event-salad-buffet-mumbai.webp', width: 600, aspect: [1, 1], quality: 72 },
 
+  // Cuisine slices. The Indian and Continental wedges use Magicomeal's own
+  // photographs (declared in content.js); these three are freely-licensed
+  // stock for cuisines we have no in-house photography of. Licences are
+  // recorded in content.cuisines and credited in the footer where required.
+  { from: 'stock/cuisine-japanese.jpg', to: 'cuisine/cuisine-japanese.webp', width: 420, aspect: [1, 1], quality: 74 },
+  { from: 'stock/cuisine-chinese.jpg', to: 'cuisine/cuisine-chinese.webp', width: 420, aspect: [1, 1], quality: 74 },
+  { from: 'stock/cuisine-american.jpg', to: 'cuisine/cuisine-american.webp', width: 420, aspect: [1, 1], quality: 74 },
+  { from: 'stock/cuisine-mexican.jpg', to: 'cuisine/cuisine-mexican.webp', width: 420, aspect: [1, 1], quality: 76 },
+
   // Open Graph / Twitter card — 1.91:1 is what the platforms crop to.
   { from: '12.jpg', to: 'magicomeal-corporate-catering-mumbai-og.webp', width: 1200, aspect: [1200, 630] },
 ];
@@ -101,6 +110,7 @@ const kb = (n) => (n / 1024).toFixed(1).padStart(6) + ' KB';
   fs.mkdirSync(OUT, { recursive: true });
   fs.mkdirSync(path.join(OUT, 'gallery'), { recursive: true });
   fs.mkdirSync(path.join(OUT, 'hero'), { recursive: true });
+  fs.mkdirSync(path.join(OUT, 'cuisine'), { recursive: true });
 
   let totalIn = 0;
   let totalOut = 0;
