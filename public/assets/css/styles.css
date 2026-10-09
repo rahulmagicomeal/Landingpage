@@ -2244,10 +2244,10 @@ ol {
 }
 /* Stop while someone is choosing, and whenever the hero's pause control is
    engaged — that one button governs every bit of motion in the hero. */
-/* Scoped to the whole feature row, not `.pizza`: the name list is a sibling
-   of the wheel, so `.pizza:focus-within` never saw a focused legend button. */
-.herofeat__item--wheel:hover .pizza__svg,
-.herofeat__item--wheel:focus-within .pizza__svg,
+/* The wheel keeps turning while someone picks: hovering, focusing or clicking
+   a slice only changes the selection. The explicit pause control below is the
+   one thing that stops it — which is also what keeps this WCAG 2.2.2 compliant
+   now that interaction no longer pauses it. */
 .hero--media.is-paused .pizza__svg {
   animation-play-state: paused;
 }
