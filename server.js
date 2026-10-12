@@ -6,9 +6,16 @@
  *   npm start            → http://localhost:3000
  *   PORT=8080 npm start
  *
- * Leads are appended to data/leads.jsonl (one JSON object per line) and,
- * if LEAD_WEBHOOK_URL is set, forwarded to that URL as JSON. Point it at
- * your CRM, Zapier/Make, or a WordPress endpoint when you deploy.
+ * Leads go to up to two sinks, and at least one must be configured:
+ *
+ *   data/leads.jsonl   one JSON object per line. Local dev and ordinary
+ *                      servers only — serverless hosts are read-only.
+ *   LEAD_WEBHOOK_URL   POSTed the record as JSON. This is the sink that
+ *                      actually works in production. Point it at a Google
+ *                      Apps Script web app, Zapier/Make, or your CRM.
+ *
+ * Every lead is also printed as a [lead-record] JSON line so it can be
+ * recovered from the host's runtime logs if both sinks fail.
  */
 const http = require('http');
 const fs = require('fs');
@@ -244,24 +251,78 @@ async function handleLead(req, res) {
     userAgent: String(req.headers['user-agent'] || '').slice(0, 300),
   };
 
+  /* --------------------------------------------------------- persistence
+   * Two independent sinks, because they fail in different places:
+   *
+   *   1. data/leads.jsonl — works in local dev and on any ordinary server.
+   *      Serverless hosts (Vercel, Netlify, Lambda) mount a READ-ONLY
+   *      filesystem, so this write throws EROFS there. That is expected on
+   *      those hosts and must NOT fail the request: returning 500 here is
+   *      exactly what silently binned every lead on the Vercel deploy.
+   *   2. LEAD_WEBHOOK_URL — the durable sink in production. Point it at a
+   *      Google Apps Script web app, Zapier/Make, or the CRM directly.
+   *
+   * Before either is attempted the whole record goes to stdout as one JSON
+   * line tagged [lead-record], so a lead stays recoverable from the host's
+   * runtime logs even when both sinks are down. */
+  console.log('[lead-record] ' + JSON.stringify(record));
+
+  const stored = [];
+  const failed = [];
+
   try {
     fs.mkdirSync(DATA_DIR, { recursive: true });
     fs.appendFileSync(LEADS_FILE, JSON.stringify(record) + '\n', 'utf8');
+    stored.push('file');
   } catch (err) {
-    console.error('[lead] failed to write leads.jsonl:', err.message);
-    return json(res, 500, { ok: false, error: 'Could not store the enquiry.' });
+    failed.push('file:' + (err.code || err.message));
+  }
+
+  if (WEBHOOK) {
+    try {
+      // Awaited on purpose. An unawaited fetch is killed the moment a
+      // serverless invocation returns, which drops the lead with no trace.
+      const resp = await fetch(WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(record),
+        signal: AbortSignal.timeout(8000),
+      });
+      // A Google Apps Script web app cannot return a non-2xx status, so a
+      // failed append still arrives as 200. Trust the body over the status
+      // whenever the body is JSON that says ok:false.
+      const text = (await resp.text()).slice(0, 500);
+      let declined = null;
+      try {
+        const parsed = JSON.parse(text);
+        if (parsed && parsed.ok === false) declined = parsed.error || 'ok:false';
+      } catch {
+        /* Not JSON. Fall back to the HTTP status alone. */
+      }
+      if (!resp.ok) failed.push('webhook:' + resp.status);
+      else if (declined) failed.push('webhook:' + declined);
+      else stored.push('webhook');
+    } catch (err) {
+      failed.push('webhook:' + err.message);
+    }
   }
 
   console.log(
-    `[lead] ${record.leadId}  ${record.company}  ${record.meals} meals/day  ${record.requirement}  ${record.location}`
+    `[lead] ${record.leadId}  ${record.company}  ${record.pax} pax  ` +
+      `${record.requirement}  ${record.location}  ` +
+      `stored=[${stored.join(',') || 'none'}]` +
+      (failed.length ? ` failed=[${failed.join(',')}]` : '')
   );
 
-  if (WEBHOOK) {
-    fetch(WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(record),
-    }).catch((err) => console.error('[lead] webhook failed:', err.message));
+  if (!stored.length) {
+    // The visitor has already done the work of filling the form. Turning
+    // them away loses the lead AND the visitor, so acknowledge it — the
+    // full record is in the [lead-record] line above, and make the gap
+    // impossible to miss in the logs.
+    console.error(
+      '[lead] NO DURABLE SINK ACCEPTED THIS LEAD. Set LEAD_WEBHOOK_URL. ' +
+        'Recoverable only from runtime logs: leadId=' + record.leadId
+    );
   }
 
   return json(res, 200, { ok: true, leadId: record.leadId });

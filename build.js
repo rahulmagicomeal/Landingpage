@@ -106,11 +106,24 @@ const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 fs.writeFileSync(path.join(OUT, 'sitemap.xml'), sitemap, 'utf8');
 
 /* ------------------------------------------------------------------ report */
+const NL = String.fromCharCode(10);
+const EMPTY = NL;
 const kb = (n) => (n / 1024).toFixed(1) + ' KB';
 console.log('Built public/index.html      ' + kb(Buffer.byteLength(html)));
 console.log('Built public/robots.txt      ' + kb(Buffer.byteLength(robots)));
 console.log('Built public/sitemap.xml     ' + kb(Buffer.byteLength(sitemap)));
 console.log('Hero variant: ' + config.heroVariant + '   Canonical: ' + config.site.origin + config.site.path);
+// A build is the last moment before this goes live, so both of the
+// settings that silently destroy value get shouted about here.
+if (!process.env.LEAD_WEBHOOK_URL) {
+  console.warn(
+    EMPTY +
+      '  !  LEAD_WEBHOOK_URL is not set. On a serverless host (Vercel,' + NL +
+      '     Netlify) the filesystem is read only, so data/leads.jsonl cannot' + NL +
+      '     be written and every lead survives only in the runtime log.' + NL +
+     '     Deploy scripts/google-sheet-webhook.gs and set the variable.' + NL
+  );
+}
 if (!config.tracking.adsConversionLabel) {
   console.warn(
     '\n  !  Google Ads conversion label is empty — form submissions will NOT\n' +

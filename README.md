@@ -42,11 +42,32 @@ GTM `GTM-3XPQZ56W`, GA4 `G-TBTYERXS59`, Google Ads `AW-935324887`.
 Until the label is set, GA4 and the dataLayer receive every event but Google
 Ads records no conversion. `npm run build` prints a warning while it is empty.
 
-**2. Point the form somewhere permanent.**
-`config.form.endpoint` defaults to `/api/lead`, implemented in `server.js`
-(server-side validation → `data/leads.jsonl`, plus optional
-`LEAD_WEBHOOK_URL` forwarding). Swap it for your CRM endpoint if you are
-deploying the page as static files.
+**2. Give the form a durable place to store leads.** This one bites
+silently, so it is worth reading twice.
+
+`config.form.endpoint` defaults to `/api/lead`, implemented in `server.js`.
+It writes each lead to two independent sinks:
+
+| Sink | Works where |
+| --- | --- |
+| `data/leads.jsonl` | local dev, VPS, any ordinary server |
+| `LEAD_WEBHOOK_URL` | everywhere, including serverless |
+
+**Serverless hosts (Vercel, Netlify, Lambda) mount a read-only
+filesystem.** The `leads.jsonl` write cannot succeed there, so on those
+hosts `LEAD_WEBHOOK_URL` is not optional — without it a lead survives only
+in the host's runtime log, which rotates.
+
+The quickest durable sink that costs nothing and needs no third-party
+account is a Google Sheet: deploy `scripts/google-sheet-webhook.gs` as an
+Apps Script web app (setup steps are in the file's header), then set its
+`/exec` URL as `LEAD_WEBHOOK_URL` in the host's environment variables and
+redeploy. A Zapier/Make hook or a CRM endpoint works the same way.
+
+`npm run build` warns while the variable is unset. After deploying, submit
+the form once and confirm the row actually lands — the endpoint answers
+`{"ok":true}` to the visitor either way, because turning away someone who
+has already filled the form loses the lead *and* the visitor.
 
 **3. Confirm three facts** (see "Unverified" below).
 
@@ -195,6 +216,10 @@ highlighted words in the H1.
   rebuild so the canonical, OG tags and schema all follow.
 - **With the bundled Node server:** `npm start`, optionally with
   `LEAD_WEBHOOK_URL` set.
+
+Whichever route you take, set `LEAD_WEBHOOK_URL` on a serverless host —
+see point 2 above. Vercel runs `server.js` for `/api/lead` but cannot let
+it write a file, so the webhook is the only sink that works there.
 
 If you deploy this page at a URL other than
 `/corporate-catering-mumbai/`, update `config.site.path` and rebuild —
