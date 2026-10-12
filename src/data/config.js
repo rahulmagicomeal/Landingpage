@@ -55,10 +55,17 @@ module.exports = {
    * 3. Lead form
    * ------------------------------------------------------------------ */
   form: {
-    // POST target. The bundled server.js implements this endpoint with
-    // server-side validation + JSONL storage. Swap for your CRM / webhook
-    // / WordPress endpoint when you deploy.
-    endpoint: '/api/lead',
+    // POST target.
+    //
+    // 'lead.php'  — production. A relative URL, so it resolves against
+    //               whatever directory the page is served from and cannot
+    //               drift out of sync with `site.path`. magicomeal.com runs
+    //               PHP 8.2 on LiteSpeed, which can both store a lead on
+    //               disk and email it. See public/lead.php.
+    // '/api/lead' — the bundled server.js, for `npm start` locally. Note
+    //               that it cannot store anything on a serverless host
+    //               (Vercel, Netlify): their filesystem is read-only.
+    endpoint: 'lead.php',
     // Minimum meals/day Magicomeal will quote for. Magicomeal's published
     // position is that minimums vary by requirement, so we do not gate the
     // form — we qualify with the volume dropdown instead.

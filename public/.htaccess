@@ -1,0 +1,74 @@
+# .htaccess — for /corporate-catering-mumbai/ on magicomeal.com
+#
+# This folder is a plain static page plus one PHP endpoint, living inside a
+# WordPress install. The rules below keep WordPress out of the way, keep the
+# lead store unreachable over HTTP, and let the host compress and cache.
+
+# ---------------------------------------------------------------- routing
+DirectoryIndex index.html index.php
+
+# WordPress's root .htaccess rewrites every path that is not a real file or
+# directory to index.php. This IS a real directory of real files, so those
+# rules should never fire here — but inheriting them has a habit of turning
+# a missing asset into a WordPress 404 page rendered with a 200 status,
+# which is far harder to diagnose. Switch the inherited rules off.
+<IfModule mod_rewrite.c>
+  RewriteEngine Off
+</IfModule>
+
+# -------------------------------------------------------------- lead store
+# public/lead.php prefers a directory above the web root. When the host
+# confines it to the web root it falls back to ./_leads/ and writes its own
+# deny-all .htaccess — this is the outer guard for that case. The lead file
+# is the entire sales pipeline; it must never be fetchable.
+<FilesMatch "\.(jsonl|log)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
+RedirectMatch 404 (?i)/_leads(/|$)
+
+# -------------------------------------------------------------- compression
+# The HTML is around 65 KB uncompressed and roughly a fifth of that gzipped.
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/xml image/svg+xml
+</IfModule>
+
+# ------------------------------------------------------------------ caching
+# CSS and JS are requested with a ?v=<content hash>, so a long max-age is
+# safe: a changed file arrives under a new URL. HTML carries those hashed
+# links, so a stale copy would pin visitors to stale assets — never cache it.
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType text/css                "access plus 1 year"
+  ExpiresByType text/javascript         "access plus 1 year"
+  ExpiresByType application/javascript  "access plus 1 year"
+  ExpiresByType image/webp              "access plus 1 year"
+  ExpiresByType image/png               "access plus 1 year"
+  ExpiresByType image/jpeg              "access plus 1 year"
+  ExpiresByType image/svg+xml           "access plus 1 year"
+  ExpiresByType font/woff2              "access plus 1 year"
+  ExpiresByType text/html               "access plus 0 seconds"
+</IfModule>
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|webp|png|jpe?g|svg|woff2|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+</IfModule>
+
+# -------------------------------------------------------------------- types
+<IfModule mod_mime.c>
+  AddType image/webp  .webp
+  AddType font/woff2  .woff2
+</IfModule>

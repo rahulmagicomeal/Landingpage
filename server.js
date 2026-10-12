@@ -375,7 +375,13 @@ function serveStatic(req, res) {
 /* ------------------------------------------------------------------ serve */
 http
   .createServer((req, res) => {
-    if (req.method === 'POST' && req.url.split('?')[0] === '/api/lead') {
+    // In production the form posts to the relative URL `lead.php`, served by
+    // PHP on magicomeal.com. This dev server has no PHP, so it answers that
+    // path too — otherwise `npm start` could not exercise the real endpoint
+    // the built page actually points at.
+    const route = req.url.split('?')[0];
+    const isLeadRoute = route === '/api/lead' || /(^|\/)lead\.php$/.test(route);
+    if (req.method === 'POST' && isLeadRoute) {
       handleLead(req, res).catch((err) => {
         console.error('[lead] unhandled:', err);
         json(res, 500, { ok: false, error: 'Server error.' });
