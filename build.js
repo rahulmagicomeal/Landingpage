@@ -61,7 +61,48 @@ if (formSections.length === 0) {
 }
 
 /* ------------------------------------------------------------- index.html */
-const html = render(config, assetVersions);
+let html = render(config, assetVersions);
+
+/* ------------------------------------------------------- asset path rewrite
+ * The template and src/data/content.js write asset paths as "/assets/…",
+ * which only resolves when the page sits at the domain root. In production
+ * it sits at /corporate-catering-mumbai/, where "/assets/…" resolves against
+ * magicomeal.com itself — every stylesheet, script and image 301s to the
+ * WordPress homepage and the page renders as unstyled text.
+ *
+ * Rewriting here rather than in the 70-odd call sites means a new image
+ * cannot reintroduce the bug by being added with a leading slash.
+ *
+ *   in-page refs  -> relative, so they work wherever the folder is mounted.
+ *                    Safe because the page is always served from a URL
+ *                    ending in "/" (a request without it is 301'd by the
+ *                    server to add one).
+ *   absolute URLs -> og:image and the JSON-LD logo must stay absolute for
+ *                    crawlers and social scrapers, so they get site.path
+ *                    spliced in instead.
+ */
+const absoluteBefore = html.split(config.site.origin + '/assets/').length - 1;
+
+// Absolute URLs first, so that after this step nothing legitimate still
+// contains a bare "/assets/" for the delimiter pass below to catch.
+html = html
+  .split(config.site.origin + '/assets/')
+  .join(config.site.origin + config.site.path + 'assets/');
+
+// Match on any delimiter, not just a quote. A srcset holds several
+// candidates — `a.webp 900w, /assets/b.webp 1800w` — and every URL after
+// the first is preceded by a comma and a space. Matching only `"/assets/`
+// silently left those absolute, which is how four hero images went on
+// 404ing after the rest of the page was fixed.
+const inPageBefore = (html.match(/["'(\s,]\/assets\//g) || []).length;
+html = html.replace(/(["'(\s,])\/assets\//g, '$1assets/');
+
+const leftover = html.match(/["'(\s,]\/assets\/[^"'\s,)]*/g);
+if (leftover) {
+  console.error('\n  Asset rewrite missed:\n    ' + [...new Set(leftover)].join('\n    ') + '\n');
+  process.exit(1);
+}
+
 fs.writeFileSync(path.join(OUT, 'index.html'), html, 'utf8');
 
 /* ------------------------------------------------------------ thankyou.php
@@ -119,6 +160,9 @@ const NL = String.fromCharCode(10);
 const EMPTY = NL;
 const kb = (n) => (n / 1024).toFixed(1) + ' KB';
 console.log('Built public/index.html      ' + kb(Buffer.byteLength(html)));
+console.log(
+  '  asset paths: ' + inPageBefore + ' made relative, ' + absoluteBefore + ' absolute moved under ' + config.site.path
+);
 if (config.form.thankYouUrl) {
   console.log('Built public/thankyou.php    ' + kb(fs.statSync(path.join(OUT, 'thankyou.php')).size));
 }
