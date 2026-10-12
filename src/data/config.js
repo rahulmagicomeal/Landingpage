@@ -129,9 +129,9 @@ module.exports = {
   sections: [
     'heroMedia',    // hero: photo carousel + lead form
     'services3',    // sheet 1: cafeteria management / events / institutional
+    'partners',     // sheet 2: "Our Partners", auto-rotating logo strip
     'entityGlance', // the "What is Magicomeal?" paragraph + fact table: the
                     // single most quotable block for AI answer engines
-    'partners',     // sheet 2: "Our Partners", auto-rotating logo strip
     // 'features3' is OFF: those three propositions now sit in the hero's left
     // column (content.heroFeatures). Re-enable only if you move them back out
     // of the hero — otherwise the page says the same thing twice.

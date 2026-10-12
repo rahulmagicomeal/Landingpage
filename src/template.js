@@ -593,25 +593,6 @@ ${has('services3') ? `<!-- ============ SECTION 2: three headline services =====
   </div>
 </section>` : ''}
 
-${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =================== -->
-<section class="section section--tint" aria-labelledby="entity-h">
-  <div class="wrap entity__grid">
-    <div>
-      <h2 id="entity-h">${esc(c.entity.h2)}</h2>
-      <p class="entity__lead">${esc(c.entity.lead)}</p>
-      ${c.entity.body.map((p) => `<p class="lead">${esc(p)}</p>`).join('\n      ')}
-    </div>
-    <div class="glance">
-      <h2>${esc(c.glance.h2)}</h2>
-      <dl>
-        ${c.glance.rows
-          .map((r) => `<div><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`)
-          .join('\n        ')}
-      </dl>
-    </div>
-  </div>
-</section>` : ''}
-
 ${has('partners') ? `<!-- ============ SECTION 3: Our Partners (auto-rotating) ========== -->
 <section class="section section--tint" aria-labelledby="partners-h">
   <div class="wrap">
@@ -645,6 +626,25 @@ ${has('partners') ? `<!-- ============ SECTION 3: Our Partners (auto-rotating) =
       <button class="partners__pause" type="button" data-marquee-pause aria-pressed="false" aria-label="${esc(
         c.partners.pauseLabel
       )}"><span class="hero__pause-icon" aria-hidden="true"></span></button>
+    </div>
+  </div>
+</section>` : ''}
+
+${has('entityGlance') ? `<!-- ============================ ENTITY + GLANCE =================== -->
+<section class="section section--tint" aria-labelledby="entity-h">
+  <div class="wrap entity__grid">
+    <div>
+      <h2 id="entity-h">${esc(c.entity.h2)}</h2>
+      <p class="entity__lead">${esc(c.entity.lead)}</p>
+      ${c.entity.body.map((p) => `<p class="lead">${esc(p)}</p>`).join('\n      ')}
+    </div>
+    <div class="glance">
+      <h2>${esc(c.glance.h2)}</h2>
+      <dl>
+        ${c.glance.rows
+          .map((r) => `<div><dt>${esc(r.k)}</dt><dd>${esc(r.v)}</dd></div>`)
+          .join('\n        ')}
+      </dl>
     </div>
   </div>
 </section>` : ''}
