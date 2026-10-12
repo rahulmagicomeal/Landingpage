@@ -825,8 +825,8 @@ module.exports = {
         title: 'Corporate Event Catering',
         body: 'Meetings, townhalls, annual functions and festival days, with service staff and equipment on site. Menus are built around the event rather than picked from a fixed package.',
         image: {
-          src: '/assets/img/magicomeal-corporate-event-buffet-mumbai.webp',
-          alt: 'Labelled buffet counter set up by Magicomeal for a corporate event in Mumbai',
+          src: '/assets/img/magicomeal-corporate-event-festival-buffet-mumbai.webp',
+          alt: 'Employees collecting lunch from a Magicomeal festival buffet, with banana leaf and marigold decor, at a corporate office in Mumbai',
         },
       },
       {

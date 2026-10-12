@@ -57,6 +57,11 @@ const MANIFEST = [
   { from: '9.jpg', to: 'magicomeal-onam-sadya-corporate-dining-mumbai.webp', width: 900, aspect: [1, 1], quality: 68 },
   { from: '6.jpg', to: 'magicomeal-festival-menu-spread-mumbai.webp', width: 560, aspect: [4, 3] },
   { from: '10.jpg', to: 'magicomeal-corporate-buffet-counter-mumbai.webp', width: 560, aspect: [4, 3] },
+  // Card-sized crop of the same festival buffet for the Corporate Event
+  // Catering card in the services section.
+  // Centre crop, not attention: attention locked onto the floor tiles and cut
+  // every face out of the top of the frame.
+  { from: '10.jpg', to: 'magicomeal-corporate-event-festival-buffet-mumbai.webp', width: 1100, aspect: [4, 3], quality: 76, position: 'center' },
 
   // Hero background slides. Wide crops, two widths each: the first is the LCP
   // image so it is preloaded, the rest are lazy.
