@@ -54,14 +54,14 @@ const MANIFEST = [
   // run of chafing dishes and the uniformed staff, which are the shapes
   // that still say "managed buffet service" at 132px.
   { from: '43.jpg', to: 'magicomeal-daily-corporate-meals-buffet-service-mumbai.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
-  // Hero card "One Contract, One Contact" — NOT ENABLED.
+  // Hero card "One Contract, One Contact".
   //
-  // source-images/44.webp is the AI-generated chef-and-client handshake.
-  // Unlike every other photograph here it does not show Magicomeal's own
-  // people or sites, and it would replace a real photograph of the team.
-  // Left switched off pending that call; uncomment this line and point
-  // content.heroFeatures[2].image at it to enable.
-  // { from: '44.webp', to: 'corporate-client-manager-and-chef-handshake.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
+  // AI-generated, and the only such image on the page — every other
+  // photograph here is Magicomeal's own people and sites. Named without a
+  // "magicomeal-" prefix and without a place name so the filename does not
+  // itself assert it documents a real Magicomeal site. See README
+  // "Photography" for the provenance note.
+  { from: '44.webp', to: 'corporate-client-manager-and-chef-handshake.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
   { from: '13.jpg', to: 'magicomeal-corporate-event-buffet-mumbai.webp', width: 1100, aspect: [4, 3] },
   { from: '8.jpg', to: 'magicomeal-school-catering-students-mumbai.webp', width: 1100, aspect: [4, 3] },
 

@@ -723,8 +723,18 @@ module.exports = {
       title: 'One Contract, One Contact',
       body: 'Every service line from one team, on one invoice, with one named person to call.',
       image: {
-        src: '/assets/img/magicomeal-catering-team-site-mumbai.webp',
-        alt: 'The Magicomeal service and management team on site at a corporate cafeteria in Mumbai',
+        // AI-generated illustration — the only image on the page that is not
+        // a photograph of Magicomeal's own people and sites. The alt text
+        // describes what is depicted without asserting it documents real
+        // staff at a real site, which is the part that would be a claim.
+        //
+        // This displaced magicomeal-catering-team-site-mumbai.webp, whose
+        // only remaining references are in `scale` and `features3` — both
+        // currently switched off in config.sections. So that photograph now
+        // ships in assets/img without appearing anywhere on the live page.
+        // Re-enable either section, or point this card back at it, to use it.
+        src: '/assets/img/corporate-client-manager-and-chef-handshake.webp',
+        alt: 'A workplace client manager and a head chef shaking hands in a corporate cafeteria',
       },
     },
   ],

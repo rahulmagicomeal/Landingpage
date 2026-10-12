@@ -78,9 +78,29 @@ uncompressed and compresses to roughly a fifth of that.
 
 ## Photography
 
-Every photo on the page is Magicomeal's own, supplied by you — client
+Almost every photo on the page is Magicomeal's own, supplied by you — client
 cafeterias in service, the central kitchen, the production line, the team, a
-school lunch, festival menus. None of it is stock.
+school lunch, festival menus.
+
+Five images are not, and it is worth keeping that list short and honest,
+because the page's whole position is that its claims can be checked:
+
+| Image | Provenance |
+| --- | --- |
+| `assets/img/cuisine/cuisine-chinese.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
+| `assets/img/cuisine/cuisine-japanese.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
+| `assets/img/cuisine/cuisine-mexican.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
+| `assets/img/cuisine/cuisine-american.webp` | Wikimedia Commons, public domain |
+| `assets/img/corporate-client-manager-and-chef-handshake.webp` | **AI-generated.** Not a photograph of Magicomeal staff or a real site |
+
+The handshake sits on the "One Contract, One Contact" card. Its alt text
+describes what is depicted without asserting that it documents real people,
+and its filename carries neither `magicomeal-` nor a place name, so nothing
+about it claims to be documentary. The CC BY-SA images require attribution;
+if the footer credits are ever removed, those three must be removed too.
+
+Replacing the handshake with a real photograph of a client meeting would be
+a straight upgrade whenever one exists.
 
 The originals live in `source-images/`. `npm run images` crops and re-encodes
 them into `public/assets/img/` via `scripts/optimize-images.js`, which is the
