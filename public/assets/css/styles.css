@@ -1636,12 +1636,29 @@ ol {
   font-size: 0.94rem;
   color: var(--ink-3);
 }
+/* Mosaic: the first image spans the column, the rest share the row beneath.
+   The three points beside it claim owned kitchens, certified food safety and
+   consistency, and one photo evidenced none of them. */
+.proofstrip__media {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
 .proofstrip__media img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
+}
+/* Wide lead image, and the 4:3 single-image case the section started with,
+   so dropping back to one photo needs no CSS change. */
+.proofstrip__media img:first-child {
+  grid-column: 1 / -1;
+  aspect-ratio: 16 / 9;
+}
+.proofstrip__media--1 img:first-child {
+  aspect-ratio: 4 / 3;
 }
 .proofstrip__clients {
   margin: clamp(22px, 3vw, 32px) 0 0;

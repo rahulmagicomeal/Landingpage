@@ -53,7 +53,19 @@ const MANIFEST = [
   // thumbnail size his dark suit reads as one unlit blob. Centre keeps the
   // run of chafing dishes and the uniformed staff, which are the shapes
   // that still say "managed buffet service" at 132px.
-  { from: '43.jpg', to: 'magicomeal-daily-corporate-meals-buffet-service-mumbai.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
+  { from: '45.jpg', to: 'magicomeal-corporate-cafeteria-lunch-service-mumbai.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
+
+  // Proof strip kitchen mosaic: one wide image spanning the column, two
+  // squares beneath it. Sized for a ~480px media column at 2x, not for the
+  // 1100px the full-width service images use.
+  //
+  // Named and described without naming a site. Magicomeal runs two kitchens
+  // (Andheri East and Panvel) and nothing in these photographs says which is
+  // which, so claiming one would be inventing a fact on a page whose whole
+  // position is that its claims can be checked.
+  { from: '47.webp', to: 'magicomeal-production-kitchen-corridor-mumbai.webp', width: 900, aspect: [16, 9], quality: 76, position: 'center' },
+  { from: '46.jpg', to: 'magicomeal-production-kitchen-floor-mumbai.webp', width: 500, aspect: [1, 1], quality: 76, position: 'center' },
+  { from: '48.jpg', to: 'magicomeal-kitchen-team-veg-section-mumbai.webp', width: 500, aspect: [1, 1], quality: 76, position: 'center' },
   // Hero card "One Contract, One Contact".
   //
   // AI-generated, and the only such image on the page — every other

@@ -21,7 +21,7 @@ $ref = isset($_GET['id']) ? substr(preg_replace('/[^A-Za-z0-9-]/', '', (string)$
 <meta name="robots" content="noindex, nofollow">
 <title>Thank you — Magicomeal</title>
 <link rel="icon" href="assets/img/magicomeal-logo-badge.png">
-<link rel="stylesheet" href="assets/css/styles.css?v=bd8853d0">
+<link rel="stylesheet" href="assets/css/styles.css?v=a392c6db">
 <style>
   /* This page is a single centred card, so it carries the few rules it
      needs rather than adding dead weight to the landing page stylesheet. */

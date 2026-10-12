@@ -708,8 +708,8 @@ module.exports = {
       title: 'Daily Corporate Meals',
       body: 'Breakfast, lunch and evening snacks on a fixed schedule, planned against your confirmed headcount.',
       image: {
-        src: '/assets/img/magicomeal-daily-corporate-meals-buffet-service-mumbai.webp',
-        alt: 'An employee serving herself from a Magicomeal buffet counter at a Mumbai workplace',
+        src: '/assets/img/magicomeal-corporate-cafeteria-lunch-service-mumbai.webp',
+        alt: 'Magicomeal staff serving the lunch rush at a busy corporate cafeteria counter in Mumbai',
       },
     },
     {
@@ -965,12 +965,34 @@ module.exports = {
     ],
     clientLine:
       'Trusted by ICICI Bank, SBI Life, Aditya Birla Group, Gartner, Lodha, NDTV, Trilegal and Tata Communications, and by IIT Powai, JBCN International School, Podar School and Ecole Mondiale.',
-    image: {
-      src: '/assets/img/magicomeal-corporate-catering-counter-service-mumbai.webp',
-      alt: 'Magicomeal service staff plating meals at a corporate office catering counter in Mumbai',
-      width: 1100,
-      height: 825,
-    },
+    // A set, not one photo: the three points beside it are about owning the
+    // kitchens, food safety and consistency, and a single counter shot
+    // evidenced none of them. The first image spans the column, the other
+    // two sit beneath it. Two or one still render — the layout adapts.
+    //
+    // None of these name a kitchen. Magicomeal runs two (Andheri East and
+    // Panvel) and nothing visible in the photographs identifies which is
+    // which, so the alt text stays at what can actually be seen.
+    images: [
+      {
+        src: '/assets/img/magicomeal-production-kitchen-corridor-mumbai.webp',
+        alt: 'A Magicomeal production kitchen, with stainless steel prep stations, extraction hoods and insulated food transport containers',
+        width: 900,
+        height: 506,
+      },
+      {
+        src: '/assets/img/magicomeal-production-kitchen-floor-mumbai.webp',
+        alt: 'Chefs at work on the production floor of a Magicomeal kitchen',
+        width: 500,
+        height: 500,
+      },
+      {
+        src: '/assets/img/magicomeal-kitchen-team-veg-section-mumbai.webp',
+        alt: 'The Magicomeal kitchen team in the vegetarian section of one of its production kitchens',
+        width: 500,
+        height: 500,
+      },
+    ],
   },
 
   /* ================================================================== *

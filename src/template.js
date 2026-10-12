@@ -789,10 +789,14 @@ ${has('proofStrip') ? `<!-- ================= PROOF STRIP (short page) =========
           )
           .join('\n        ')}
       </ul>
-      <div class="proofstrip__media">
-        <img src="${esc(c.proofStrip.image.src)}" alt="${esc(c.proofStrip.image.alt)}" width="${
-          c.proofStrip.image.width
-        }" height="${c.proofStrip.image.height}" loading="lazy" decoding="async">
+      <div class="proofstrip__media proofstrip__media--${c.proofStrip.images.length}">
+        ${c.proofStrip.images
+          .map(
+            (im) => `<img src="${esc(im.src)}" alt="${esc(im.alt)}" width="${im.width}" height="${
+              im.height
+            }" loading="lazy" decoding="async">`
+          )
+          .join('\n        ')}
       </div>
     </div>
     <p class="proofstrip__clients">${esc(c.proofStrip.clientLine)}</p>
