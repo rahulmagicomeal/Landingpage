@@ -10,3 +10,4 @@ node_modules/
 
 # The upload bundle is a build artefact, rebuilt by scripts, not source.
 upload-to-corporate-catering-mumbai.zip
+upload-changed-files.zip
