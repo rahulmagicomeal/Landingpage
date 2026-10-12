@@ -1069,4 +1069,17 @@ module.exports = {
    * STICKY MOBILE CTA
    * ================================================================== */
   stickyCta: { call: 'Call', proposal: 'Get Proposal' },
+
+  /* Floating WhatsApp button, bottom-left on every screen size. Set
+   * `enabled: false` to remove it without touching the template. */
+  whatsappFab: {
+    enabled: true,
+    // The accessible name. "Opens WhatsApp" matters: the control leaves the
+    // site for another app, and a screen reader user should know that before
+    // activating it rather than after.
+    label: 'Chat with us on WhatsApp (opens WhatsApp)',
+    // Prefilled first message. Different from the thank-you page's text,
+    // which assumes the form has already been submitted.
+    text: 'Hi Magicomeal, I would like to discuss corporate catering for my office.',
+  },
 };

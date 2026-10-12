@@ -1390,6 +1390,94 @@ ol {
 }
 
 /* --------------------------------------------------------------------------
+   Floating WhatsApp button
+   -------------------------------------------------------------------------- */
+.wa-fab {
+  position: fixed;
+  left: 16px;
+  /* Clears the sticky CTA bar, which is 76px on phones and 0 on desktop via
+     --sticky-h. The bar adds the safe-area inset to its own padding on top
+     of that flat value, so the inset is added here too or the button sits
+     under the bar on a notched phone. */
+  bottom: calc(var(--sticky-h, 0px) + env(safe-area-inset-bottom, 0px) + 16px);
+  z-index: 65; /* under the sticky bar (70), which it never overlaps anyway */
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+
+  /* WhatsApp's darker brand green, not the familiar #25D366. A white glyph
+     on #25D366 measures 1.98:1, well under the 3:1 WCAG 1.4.11 asks of a
+     graphical object; this is 4.14:1. The glyph carries the recognition. */
+  background: #128c7e;
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(18, 140, 126, 0.42);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+}
+.wa-fab svg {
+  width: 30px;
+  height: 30px;
+}
+.wa-fab:hover,
+.wa-fab:focus-visible {
+  background: #0f7569;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 26px rgba(18, 140, 126, 0.5);
+}
+.wa-fab:focus-visible {
+  outline: 3px solid var(--green-dark);
+  outline-offset: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .wa-fab {
+    transition: none;
+  }
+  .wa-fab:hover,
+  .wa-fab:focus-visible {
+    transform: none;
+  }
+}
+/* Phones: a 56px circle at left:16 occupies x 16–72, and the cuisine
+   legend's left column starts at x≈58, so the leading edge of the Indian,
+   Chinese and Mexican buttons sat under the FAB and could not be tapped.
+   48px at left:8 occupies x 8–56.
+
+   Measured overlap of those buttons after the change, by viewport width:
+     414px  0px covered    375px  0px     360px  6px     320px 26px
+   The legend shifts further left as the viewport narrows, so a bottom-left
+   FAB cannot clear it at 320 — anything fixed there overlaps what scrolls
+   under it. 98px of a 124px button is still tappable at the worst width,
+   well above the 44px floor, so this is as far as it is worth taking. */
+@media (max-width: 899px) {
+  .wa-fab {
+    left: 8px;
+    width: 48px;
+    height: 48px;
+  }
+  .wa-fab svg {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Landscape phones: the sticky bar is already trimmed there and vertical
+   space is the scarce thing, so shrink to the 44px tap-target floor. */
+@media (max-height: 460px) and (max-width: 899px) {
+  .wa-fab {
+    width: 46px;
+    height: 46px;
+    bottom: calc(var(--sticky-h, 0px) + env(safe-area-inset-bottom, 0px) + 10px);
+  }
+  .wa-fab svg {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+/* --------------------------------------------------------------------------
    Sticky mobile CTA
    -------------------------------------------------------------------------- */
 .sticky-cta {

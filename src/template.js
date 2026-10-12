@@ -1071,6 +1071,17 @@ ${has('finalCta') ? `<!-- ============================ FINAL CTA ===============
   </div>
 </footer>
 
+${
+  c.whatsappFab && c.whatsappFab.enabled && co.contact.whatsapp
+    ? `<!-- ============================ WHATSAPP FAB ====================== -->
+<a class="wa-fab" href="https://wa.me/${co.contact.whatsapp}?text=${encodeURIComponent(
+        c.whatsappFab.text
+      )}" target="_blank" rel="noopener" data-event="whatsapp_click" data-loc="floating" aria-label="${esc(
+        c.whatsappFab.label
+      )}">${ICON.whatsapp}</a>`
+    : ''
+}
+
 <!-- ============================ STICKY MOBILE CTA ================= -->
 <div class="sticky-cta" role="group" aria-label="Quick contact">
   <a class="btn btn--ghost" href="${telHref}" data-event="phone_click" data-loc="sticky">${ICON.phone}${esc(
