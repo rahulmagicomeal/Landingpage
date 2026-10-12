@@ -1,29 +1,37 @@
 /**
- * google-sheet-webhook.gs — durable lead storage for the landing page.
+ * google-sheet-webhook.gs — writes each website lead into a Google Sheet.
  *
- * Serverless hosts (Vercel, Netlify) have a read-only filesystem, so the
- * server cannot keep data/leads.jsonl in production. This Apps Script takes
- * its place: it receives each lead as JSON and appends a row to a Google
- * Sheet you already own. No third-party service, no monthly cost.
+ * public/lead.php POSTs every enquiry here as JSON and this appends a row.
+ * The sheet is an extra copy, not the only one: lead.php also writes
+ * leads.jsonl on the server and emails sales@magicomeal.com, and it still
+ * does both if this script is down.
  *
- * SETUP (about five minutes)
- *   1. Create a new Google Sheet. Name the first tab "Leads".
- *   2. Extensions -> Apps Script. Delete the sample code, paste this file.
- *   3. Deploy -> New deployment -> type "Web app".
- *        Execute as:        Me
- *        Who has access:    Anyone                 <-- required; the server
- *                                                      posts without a login
- *   4. Authorise when prompted, then copy the /exec web app URL.
- *   5. Put that URL in the host's environment as LEAD_WEBHOOK_URL
- *      (Vercel: Project -> Settings -> Environment Variables), then redeploy.
- *   6. Submit the form once and confirm a row appears.
+ * ---------------------------------------------------------------- SETUP
+ *  1. Create a Google Sheet. Name the first tab exactly: Leads
+ *       (or don't — the script creates it on the first lead.)
+ *  2. Extensions -> Apps Script. Delete the sample code, paste this file,
+ *     and save.
+ *  3. Deploy -> New deployment -> gear icon -> Web app.
+ *       Description     : anything
+ *       Execute as      : Me
+ *       Who has access  : Anyone          <-- required
+ *  4. Deploy, then Authorize access and accept the Google warning screen
+ *     ("Go to <project> (unsafe)" — it says that for every personal script).
+ *  5. Copy the Web app URL. It ends in /exec.
+ *  6. Paste it into public/lead.php as SHEET_WEBHOOK_URL, re-upload
+ *     lead.php, and submit the form once to confirm a row appears.
  *
- * NOTE ON "Anyone": the URL is unguessable, and this script only ever
- * appends. It never reads or returns sheet contents, so a leaked URL means
- * someone could add junk rows — not read your leads.
+ * On "Who has access: Anyone" — the server posts without a Google login, so
+ * there is no alternative. The URL is unguessable and this script only ever
+ * appends: it never reads the sheet and never returns its contents. A
+ * leaked URL would let someone add junk rows, not read your leads.
+ *
+ * IMPORTANT: editing this file does not change what is live. Deploy ->
+ * Manage deployments -> edit -> Version: New version -> Deploy.
  */
 
-/* Column order. Add new fields at the END so existing rows stay aligned. */
+/* Column order. Add new fields at the END so existing rows stay aligned
+ * with their headers. Names must match the JSON keys lead.php sends. */
 var HEADERS = [
   'receivedAt',
   'leadId',
@@ -54,36 +62,52 @@ var HEADERS = [
   'userAgent',
 ];
 
-function doPost(e) {
-  try {
-    var lead = JSON.parse(e.postData.contents);
-    var sheet = getSheet_();
+var SHEET_NAME = 'Leads';
 
-    var row = HEADERS.map(function (key) {
-      var v = lead[key];
-      return v === undefined || v === null ? '' : String(v);
-    });
-    sheet.appendRow(row);
+function doPost(e) {
+  // Two forms submitted in the same second would otherwise both read the
+  // same last row and one would overwrite the other.
+  var lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(20000);
+  } catch (err) {
+    return reply_({ ok: false, error: 'busy' });
+  }
+
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return reply_({ ok: false, error: 'no body' });
+    }
+    var lead = JSON.parse(e.postData.contents);
+
+    var sheet = getSheet_();
+    sheet.appendRow(
+      HEADERS.map(function (key) {
+        var v = lead[key];
+        return v === undefined || v === null ? '' : String(v);
+      })
+    );
 
     return reply_({ ok: true });
   } catch (err) {
-    // Returning a non-2xx is not possible from Apps Script, so the server
-    // treats any body it cannot parse as a failure. Log it here too: the
-    // execution log is the only place this is visible.
+    // lead.php treats ok:false as a failure and logs it, so this is visible
+    // on the server as well as in View -> Executions here.
     console.error('lead append failed: ' + err);
     return reply_({ ok: false, error: String(err) });
+  } finally {
+    lock.releaseLock();
   }
 }
 
-/* A GET is handy for checking the deployment is live from a browser. */
+/* Opening the /exec URL in a browser should say the deployment is live.
+ * Handy for checking step 5 before touching lead.php. */
 function doGet() {
   return reply_({ ok: true, note: 'Lead webhook is deployed. POST JSON to store a lead.' });
 }
 
 function getSheet_() {
   var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName('Leads') || ss.insertSheet('Leads');
-  // Write the header row once, and freeze it so the sheet stays readable.
+  var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
   if (sheet.getLastRow() === 0) {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
@@ -95,5 +119,22 @@ function getSheet_() {
 function reply_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(
     ContentService.MimeType.JSON
+  );
+}
+
+/**
+ * Run this once from the Apps Script editor (Run -> testAppend) to prove
+ * the sheet side works before involving the website at all. It writes one
+ * obvious dummy row for you to delete.
+ */
+function testAppend() {
+  getSheet_().appendRow(
+    HEADERS.map(function (k) {
+      if (k === 'company') return 'TEST ROW - delete me';
+      if (k === 'receivedAt') return new Date().toISOString();
+      if (k === 'firstName') return 'Test';
+      if (k === 'lastName') return 'Row';
+      return '';
+    })
   );
 }

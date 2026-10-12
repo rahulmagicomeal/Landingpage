@@ -89,6 +89,39 @@ the recipient to drop the message. Either create the alias, or change
 The lead is still saved to `leads.jsonl` even when mail fails, so nothing
 is lost while you sort this out.
 
+## 2a. Google Sheet (optional third copy)
+
+`lead.php` can also append every enquiry to a Google Sheet. It is an extra
+copy, never the only one — the lead still goes to disk and to
+`sales@magicomeal.com` whether or not this is set up, and a broken Sheet
+never silently swallows a lead.
+
+1. Create a Google Sheet.
+2. **Extensions → Apps Script**, delete the sample code, paste
+   `scripts/google-sheet-webhook.gs`, save.
+3. **Run → `testAppend`** to prove the sheet side works on its own. It
+   writes one obvious dummy row — delete it afterwards.
+4. **Deploy → New deployment → Web app**
+   - Execute as: **Me**
+   - Who has access: **Anyone** (required — the server posts with no Google
+     login)
+5. Authorise, then copy the **Web app URL**, ending in `/exec`.
+6. Open that URL in a browser. It should answer
+   `{"ok":true,"note":"Lead webhook is deployed..."}`.
+7. Put it in `public/lead.php`:
+   ```php
+   const SHEET_WEBHOOK_URL = 'https://script.google.com/macros/s/AKfy…/exec';
+   ```
+8. Re-upload `lead.php` and submit the form once.
+
+On **"Who has access: Anyone"** — the URL is unguessable and the script
+only ever appends. It never reads the sheet and never returns its
+contents, so a leaked URL means someone could add junk rows, not read your
+leads.
+
+**Editing the script does not change what is live.** After any change:
+Deploy → Manage deployments → edit → Version: **New version** → Deploy.
+
 ## 2b. Check the thank-you page
 
 After a successful submit the form now sends the visitor to

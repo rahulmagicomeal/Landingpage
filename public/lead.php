@@ -22,6 +22,16 @@ const NOTIFY_TO   = 'sales@magicomeal.com';
 const MAIL_FROM   = 'no-reply@magicomeal.com';   // must be on this domain
 const DEDUPE_SECS = 300;
 
+/**
+ * Google Sheet. Paste the Apps Script web app URL here — the one ending
+ * /exec, from Deploy -> New deployment -> Web app. Setup steps are in the
+ * header of scripts/google-sheet-webhook.gs.
+ *
+ * Leave it empty and nothing breaks: the lead still goes to disk and to
+ * NOTIFY_TO. The sheet is an extra copy, never the only one.
+ */
+const SHEET_WEBHOOK_URL = '';
+
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
 header('X-Content-Type-Options: nosniff');
@@ -131,6 +141,71 @@ function to_count($raw): ?int {
 
 function field(array $body, string $key, int $max): string {
     return mb_substr(trim((string)($body[$key] ?? '')), 0, $max, 'UTF-8');
+}
+
+/**
+ * POST JSON to a URL. Returns true only if the destination both answered
+ * 2xx and did not say ok:false in the body.
+ *
+ * That second condition is not belt-and-braces. A Google Apps Script web
+ * app cannot return a non-2xx status, so a failed append still arrives as
+ * 200 — trusting the status alone would record a lost lead as stored.
+ *
+ * Redirects must be followed: /exec answers 302 to script.googleusercontent.com.
+ */
+function post_json(string $url, array $payload, int $timeout = 10): bool {
+    $json = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    $body = null;
+    $code = 0;
+
+    if (function_exists('curl_init')) {
+        $ch = curl_init($url);
+        curl_setopt_array($ch, [
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $json,
+            CURLOPT_HTTPHEADER     => ['Content-Type: application/json'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_MAXREDIRS      => 5,
+            CURLOPT_TIMEOUT        => $timeout,
+            CURLOPT_CONNECTTIMEOUT => 5,
+        ]);
+        $body = curl_exec($ch);
+        $code = (int)curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+        curl_close($ch);
+        if ($body === false) {
+            return false;
+        }
+    } else {
+        // Shared hosts sometimes ship without cURL. allow_url_fopen covers it.
+        $ctx = stream_context_create(['http' => [
+            'method'        => 'POST',
+            'header'        => "Content-Type: application/json\r\n",
+            'content'       => $json,
+            'timeout'       => $timeout,
+            'ignore_errors' => true,
+            'follow_location' => 1,
+            'max_redirects' => 5,
+        ]]);
+        $body = @file_get_contents($url, false, $ctx);
+        if ($body === false) {
+            return false;
+        }
+        foreach (($http_response_header ?? []) as $h) {
+            if (preg_match('#^HTTP/\S+\s+(\d{3})#', $h, $m)) {
+                $code = (int)$m[1];   // last status wins, after redirects
+            }
+        }
+    }
+
+    if ($code < 200 || $code >= 300) {
+        return false;
+    }
+    $parsed = json_decode((string)$body, true);
+    if (is_array($parsed) && array_key_exists('ok', $parsed) && $parsed['ok'] === false) {
+        return false;
+    }
+    return true;
 }
 
 $lead = [
@@ -285,6 +360,16 @@ if ($dir !== null) {
     $bytes = @file_put_contents($dir . '/leads.jsonl', $line, FILE_APPEND | LOCK_EX);
     if ($bytes !== false) {
         $stored[] = 'file';
+    }
+}
+
+/* ---------------------------------------------------------- google sheet */
+
+if (SHEET_WEBHOOK_URL !== '') {
+    if (post_json(SHEET_WEBHOOK_URL, $record)) {
+        $stored[] = 'sheet';
+    } else {
+        error_log('[lead] sheet append failed for leadId=' . $leadId);
     }
 }
 
