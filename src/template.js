@@ -124,10 +124,10 @@ module.exports = function render(config, assets) {
             <p class="err" id="e-lastName"></p>
           </div>
           <div class="field">
-            <label for="f-company">${esc(c.form.fields.company.label)} <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-company" name="company" type="text" autocomplete="organization" required
-                   placeholder="${esc(c.form.fields.company.placeholder)}" aria-describedby="e-company">
-            <p class="err" id="e-company"></p>
+            <label for="f-phone">${esc(c.form.fields.phone.label)} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
+                   placeholder="${esc(c.form.fields.phone.placeholder)}" aria-describedby="e-phone">
+            <p class="err" id="e-phone"></p>
           </div>
           <div class="field">
             <label for="f-email">${esc(c.form.fields.email.label)} <span class="req" aria-hidden="true">*</span></label>
@@ -135,33 +135,45 @@ module.exports = function render(config, assets) {
                    placeholder="${esc(c.form.fields.email.placeholder)}" aria-describedby="e-email">
             <p class="err" id="e-email"></p>
           </div>
-          <div class="field">
-            <label for="f-phone">${esc(c.form.fields.phone.label)} <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required
-                   placeholder="${esc(c.form.fields.phone.placeholder)}" aria-describedby="e-phone">
-            <p class="err" id="e-phone"></p>
+          <div class="field field--full">
+            <label for="f-company">${esc(c.form.fields.company.label)} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-company" name="company" type="text" autocomplete="organization" required
+                   placeholder="${esc(c.form.fields.company.placeholder)}" aria-describedby="e-company">
+            <p class="err" id="e-company"></p>
           </div>
           <div class="field">
             <label for="f-location">${esc(c.form.fields.location.label)} <span class="req" aria-hidden="true">*</span></label>
-            <input id="f-location" name="location" type="text" required
+            <input id="f-location" name="location" type="text" autocomplete="address-level2" required
                    placeholder="${esc(c.form.fields.location.placeholder)}" aria-describedby="e-location">
             <p class="err" id="e-location"></p>
           </div>
           <div class="field">
-            <label for="f-meals">${esc(c.form.fields.meals.label)} <span class="req" aria-hidden="true">*</span></label>
-            <select id="f-meals" name="meals" required aria-describedby="e-meals">
-              <option value="">Select a range</option>
-              ${c.form.mealOptions.map((o) => `<option>${esc(o)}</option>`).join('\n              ')}
-            </select>
-            <p class="err" id="e-meals"></p>
+            <label for="f-pincode">${esc(c.form.fields.pincode.label)} <span class="req" aria-hidden="true">*</span></label>
+            <input id="f-pincode" name="pincode" type="text" inputmode="numeric" autocomplete="postal-code"
+                   maxlength="6" required placeholder="${esc(c.form.fields.pincode.placeholder)}" aria-describedby="e-pincode">
+            <p class="err" id="e-pincode"></p>
           </div>
           <div class="field field--full">
             <label for="f-requirement">${esc(c.form.fields.requirement.label)} <span class="req" aria-hidden="true">*</span></label>
             <select id="f-requirement" name="requirement" required aria-describedby="e-requirement">
               <option value="">Select a requirement</option>
-              ${c.form.requirementOptions.map((o) => `<option>${esc(o)}</option>`).join('\n              ')}
+              ${c.form.requirementOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
             </select>
             <p class="err" id="e-requirement"></p>
+          </div>
+          <div class="field">
+            <label for="f-pax">${esc(c.form.fields.pax.label)} <span class="req" aria-hidden="true">*</span>
+              <span class="field__hint">${esc(c.form.fields.pax.hint)}</span></label>
+            <input id="f-pax" name="pax" type="number" inputmode="numeric" min="1" max="100000" step="1" required
+                   placeholder="${esc(c.form.fields.pax.placeholder)}" aria-describedby="e-pax">
+            <p class="err" id="e-pax"></p>
+          </div>
+          <div class="field">
+            <label for="f-headcount">${esc(c.form.fields.headcount.label)} <span class="req" aria-hidden="true">*</span>
+              <span class="field__hint">${esc(c.form.fields.headcount.hint)}</span></label>
+            <input id="f-headcount" name="headcount" type="number" inputmode="numeric" min="1" max="100000" step="1" required
+                   placeholder="${esc(c.form.fields.headcount.placeholder)}" aria-describedby="e-headcount">
+            <p class="err" id="e-headcount"></p>
           </div>
         </div>
 
@@ -169,13 +181,6 @@ module.exports = function render(config, assets) {
           <summary>${esc(c.form.optional.summary)}</summary>
           <p class="optional__hint">${esc(c.form.optional.hint)}</p>
           <div class="formgrid">
-            <div class="field">
-              <label for="f-employees">${esc(c.form.fields.employees.label)}</label>
-              <select id="f-employees" name="employees">
-                <option value="">Select a range</option>
-                ${c.form.employeeOptions.map((o) => `<option>${esc(o)}</option>`).join('')}
-              </select>
-            </div>
             <div class="field">
               <label for="f-cuisine">${esc(c.form.fields.cuisine.label)}</label>
               <select id="f-cuisine" name="cuisine">

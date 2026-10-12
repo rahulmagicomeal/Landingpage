@@ -39,13 +39,11 @@ const MIME = {
 
 /* ------------------------------------------------------------ validation */
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
-const MEAL_OPTIONS = ['50–99', '100–249', '250–499', '500–999', '1,000+', 'Not sure yet'];
 // Must match `form.requirementOptions` in src/data/content.js.
-const REQUIREMENT_OPTIONS = ['Daily corporate meals', 'One-time catering'];
+const REQUIREMENT_OPTIONS = ['One-time catering', 'Daily meals'];
 
 // Optional qualification answers. Must match the *Options lists in
 // src/data/content.js. All four may be blank — they are never required.
-const EMPLOYEE_OPTIONS = ['Under 50', '50–100', '100–300', '300–500', '500–1,000', '1,000+'];
 const CUISINE_OPTIONS = [
   'North Indian',
   'South Indian',
@@ -83,7 +81,6 @@ function normaliseChoice(s) {
     .trim()
     .toLowerCase();
 }
-const MEAL_KEYS = MEAL_OPTIONS.map(normaliseChoice);
 const REQUIREMENT_KEYS = REQUIREMENT_OPTIONS.map(normaliseChoice);
 
 /**
@@ -96,6 +93,14 @@ function optionalChoice(raw, options) {
   if (!v) return '';
   const i = options.map(normaliseChoice).indexOf(normaliseChoice(v));
   return i === -1 ? '' : options[i];
+}
+
+const PINCODE_RE = /^[1-9][0-9]{5}$/;
+
+/** Positive whole number within a sane range, or null if it is not one. */
+function toCount(raw) {
+  const n = Number(String(raw == null ? '' : raw).replace(/[^\d]/g, ''));
+  return Number.isInteger(n) && n >= 1 && n <= 100000 ? n : null;
 }
 
 function normalisePhone(raw) {
@@ -117,12 +122,15 @@ function validate(body) {
     email: str('email', 160).toLowerCase(),
     phone: normalisePhone(body.phone),
     location: str('location', 160),
-    meals: str('meals', 40),
+    pincode: String(body.pincode == null ? '' : body.pincode).replace(/[^\d]/g, '').slice(0, 6),
     requirement: str('requirement', 60),
     message: str('message', 2000),
 
+    // Headcounts: PAX is people served per meal, headcount is the whole site.
+    pax: toCount(body.pax),
+    headcount: toCount(body.headcount),
+
     // Optional qualification answers.
-    employees: optionalChoice(body.employees, EMPLOYEE_OPTIONS),
     cuisine: optionalChoice(body.cuisine, CUISINE_OPTIONS),
     dietary: optionalChoice(body.dietary, DIETARY_OPTIONS),
     rotation: optionalChoice(body.rotation, ROTATION_OPTIONS),
@@ -137,11 +145,11 @@ function validate(body) {
   if (!EMAIL_RE.test(lead.email)) errors.push('email');
   if (!(lead.phone.length === 10 && /^[6-9]/.test(lead.phone))) errors.push('phone');
   if (lead.location.length < 2) errors.push('location');
-  // Store the canonical label, not whatever spelling arrived.
-  const mealIdx = MEAL_KEYS.indexOf(normaliseChoice(lead.meals));
-  if (mealIdx === -1) errors.push('meals');
-  else lead.meals = MEAL_OPTIONS[mealIdx];
+  if (!PINCODE_RE.test(lead.pincode)) errors.push('pincode');
+  if (lead.pax === null) errors.push('pax');
+  if (lead.headcount === null) errors.push('headcount');
 
+  // Store the canonical label, not whatever spelling arrived.
   const reqIdx = REQUIREMENT_KEYS.indexOf(normaliseChoice(lead.requirement));
   if (reqIdx === -1) errors.push('requirement');
   else lead.requirement = REQUIREMENT_OPTIONS[reqIdx];

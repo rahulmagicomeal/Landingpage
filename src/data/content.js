@@ -553,13 +553,14 @@ module.exports = {
     fields: {
       firstName: { label: 'First name', placeholder: 'Priya' },
       lastName: { label: 'Last name', placeholder: 'Sharma' },
+      phone: { label: 'Mobile number', placeholder: '98765 43210' },
+      email: { label: 'Email ID', placeholder: 'priya@company.com' },
       company: { label: 'Company name', placeholder: 'Acme Technologies Pvt Ltd' },
-      email: { label: 'Work email', placeholder: 'priya@company.com' },
-      phone: { label: 'Phone number', placeholder: '98765 43210' },
-      location: { label: 'Office location', placeholder: 'e.g. BKC, Powai, Airoli, Thane West' },
-      meals: { label: 'Approximate meals per day' },
-      requirement: { label: 'What do you need?' },
-      employees: { label: 'Number of employees' },
+      location: { label: 'Company location', placeholder: 'e.g. BKC, Powai, Airoli, Thane West' },
+      pincode: { label: 'PIN code', placeholder: '400072' },
+      requirement: { label: 'Requirement' },
+      pax: { label: 'No. of PAX', hint: 'People served per meal', placeholder: '250' },
+      headcount: { label: 'Total headcount', hint: 'People at the site', placeholder: '400' },
       cuisine: { label: 'Cuisine preferred' },
       dietary: { label: 'Dietary mix' },
       rotation: { label: 'Rotating menu cycle' },
@@ -576,13 +577,11 @@ module.exports = {
       summary: 'Tell us about your current setup',
       hint: 'Optional — it helps us put a sharper proposal together, but you can skip it.',
     },
-    mealOptions: ['50–99', '100–249', '250–499', '500–999', '1,000+', 'Not sure yet'],
     // NOTE: server.js keeps its own copy of this list for server-side
     // validation. Change both together or valid submissions get rejected.
-    requirementOptions: ['Daily corporate meals', 'One-time catering'],
+    requirementOptions: ['One-time catering', 'Daily meals'],
     // Optional-question options. server.js validates against these too, so
     // keep the two lists in step.
-    employeeOptions: ['Under 50', '50–100', '100–300', '300–500', '500–1,000', '1,000+'],
     cuisineOptions: [
       'North Indian',
       'South Indian',

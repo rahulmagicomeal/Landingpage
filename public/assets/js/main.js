@@ -90,10 +90,14 @@
 
   var LABELS = {
     required: 'This field is required.',
-    email: 'Enter a valid work email address.',
+    email: 'Enter a valid email address.',
     phone: 'Enter a valid 10-digit Indian mobile number.',
+    pincode: 'Enter a valid 6-digit PIN code.',
+    count: 'Enter a number of people.',
     select: 'Please choose an option.',
   };
+  var PINCODE_RE = /^[1-9][0-9]{5}$/;
+  var COUNT_FIELDS = ['pax', 'headcount'];
 
   // Deliberately permissive: rejects obvious typos, never a real address.
   var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i;
@@ -136,6 +140,17 @@
     if (field.name === 'phone' && v && !validPhone(v)) {
       setError(field, LABELS.phone);
       return false;
+    }
+    if (field.name === 'pincode' && v && !PINCODE_RE.test(v.replace(/\s/g, ''))) {
+      setError(field, LABELS.pincode);
+      return false;
+    }
+    if (COUNT_FIELDS.indexOf(field.name) !== -1 && v) {
+      var n = Number(v);
+      if (!(n >= 1 && n <= 100000 && Math.floor(n) === n)) {
+        setError(field, LABELS.count);
+        return false;
+      }
     }
     var MIN_2 = ['firstName', 'lastName', 'company', 'location'];
     if (MIN_2.indexOf(field.name) !== -1 && v && v.length < 2) {
@@ -243,7 +258,8 @@
 
     track('form_submit', {
       form_name: 'corporate_catering_proposal',
-      meals_per_day: data.meals,
+      pax: data.pax,
+      headcount: data.headcount,
       requirement: data.requirement,
     });
 
@@ -283,14 +299,17 @@
 
         track('form_success', {
           form_name: 'corporate_catering_proposal',
-          meals_per_day: data.meals,
+          pax: data.pax,
+          headcount: data.headcount,
           requirement: data.requirement,
           lead_id: body.leadId || '',
         });
         track('proposal_request', {
-          meals_per_day: data.meals,
+          pax: data.pax,
+          headcount: data.headcount,
           requirement: data.requirement,
           office_location: data.location,
+          pincode: data.pincode,
         });
         reportAdsConversion({ leadId: body.leadId });
       })

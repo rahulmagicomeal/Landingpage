@@ -2379,3 +2379,12 @@ ol {
   opacity: 0.6;
   line-height: 1.5;
 }
+
+/* Short clarifier beside a field label — "People served per meal" etc. */
+.field__hint {
+  display: block;
+  font-weight: 400;
+  font-size: 0.74rem;
+  color: var(--ink-3);
+  margin-top: 1px;
+}
