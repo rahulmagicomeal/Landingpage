@@ -222,6 +222,33 @@
     }
   }
 
+  /**
+   * Hand the visitor to the thank-you page once the analytics have actually
+   * gone out.
+   *
+   * Navigating away cancels in-flight beacons, so redirecting straight after
+   * the dataLayer push loses the GA4 event and the Ads conversion on slower
+   * connections — the exact leads you most want to attribute. GTM calls
+   * `eventCallback` when every tag for that push has finished; the timer is
+   * the fallback for when GTM is blocked, failed to load, or never calls back.
+   */
+  function goToThankYou(leadId) {
+    if (!CFG.thankYouUrl) return;
+    var url = CFG.thankYouUrl + (CFG.thankYouUrl.indexOf('?') === -1 ? '?' : '&') + 'id=' + encodeURIComponent(leadId || '');
+    var gone = false;
+    function go() {
+      if (gone) return;
+      gone = true;
+      location.href = url;
+    }
+    try {
+      window.dataLayer.push({ event: 'lead_tags_sent', eventCallback: go, eventTimeout: 1500 });
+    } catch (e) {
+      /* no dataLayer — the timer below still gets them there */
+    }
+    setTimeout(go, 1600);
+  }
+
   form.addEventListener('submit', function (ev) {
     ev.preventDefault();
     if (inFlight || submitted) return;
@@ -312,6 +339,11 @@
           pincode: data.pincode,
         });
         reportAdsConversion({ leadId: body.leadId });
+
+        // The success panel above stays visible for the moment this takes,
+        // so a visitor whose redirect is blocked still sees a confirmation
+        // rather than a form that appears to have done nothing.
+        goToThankYou(body.leadId);
       })
       .catch(function (err) {
         clearTimeout(timeout);

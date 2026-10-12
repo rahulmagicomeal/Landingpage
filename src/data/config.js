@@ -66,6 +66,18 @@ module.exports = {
     //               that it cannot store anything on a serverless host
     //               (Vercel, Netlify): their filesystem is read-only.
     endpoint: 'lead.php',
+
+    // Where to send the visitor after a successful submit. A real URL gives
+    // Google Ads a destination to use as a conversion, gives you somewhere
+    // to link from an auto-reply, and makes "did it work?" answerable by
+    // looking at the address bar. Relative, for the same reason as above.
+    //
+    // Set to '' to keep the visitor on the page with the inline success
+    // panel and no navigation at all.
+    //
+    // Note: if you set up a Google Ads conversion on this URL, remove the
+    // event-based one, or every lead is counted twice.
+    thankYouUrl: 'thankyou.php',
     // Minimum meals/day Magicomeal will quote for. Magicomeal's published
     // position is that minimums vary by requirement, so we do not gate the
     // form — we qualify with the volume dropdown instead.

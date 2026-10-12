@@ -42,6 +42,13 @@ const MIME = {
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
   '.woff2': 'font/woff2',
+  // This dev server does NOT execute PHP — production is LiteSpeed/PHP 8.2.
+  // Serving .php as text/html is purely so the post-submit redirect to
+  // thankyou.php can be followed locally; without a type the browser gets
+  // application/octet-stream + nosniff and silently downloads the file
+  // instead of navigating, which makes the redirect look broken when it is
+  // not. Never run this server as a public host: it would serve PHP source.
+  '.php': 'text/html; charset=utf-8',
 };
 
 /* ------------------------------------------------------------ validation */

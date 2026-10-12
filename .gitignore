@@ -7,3 +7,6 @@ node_modules/
 /data/
 
 *.log
+
+# The upload bundle is a build artefact, rebuilt by scripts, not source.
+upload-to-corporate-catering-mumbai.zip

@@ -19,32 +19,35 @@ it to sales. No webhook, no Google Sheet, no reverse proxy, no third party.
 
 ## 1. Upload
 
-Upload the **contents of `public/`** (not the folder itself) into a new
-directory `corporate-catering-mumbai/` in the web root — the same directory
-that contains `wp-content/` and `wp-includes/`, usually `public_html/`.
+`upload-to-corporate-catering-mumbai.zip` in the repo root holds exactly
+what to upload — 73 files, 3.3 MB. Extract it and drag the **contents**
+into `/public_html/corporate-catering-mumbai/`, which you have already
+created.
 
 ```
 public_html/
 └── corporate-catering-mumbai/
-    ├── .htaccess          <- easy to miss: WinSCP hides dotfiles by default
-    ├── index.html
-    ├── lead.php
+    ├── .htaccess        <- easy to miss: WinSCP hides dotfiles by default
+    ├── index.html       <- the landing page
+    ├── lead.php         <- form endpoint: stores + emails each lead
+    ├── thankyou.php     <- post-submit page, also the Ads conversion URL
     ├── sitemap.xml
-    └── assets/
+    └── assets/          <- css, js, fonts, img (68 files)
 ```
 
-Two things to watch:
+Three things to watch:
 
 - **`.htaccess` is a hidden file.** In WinSCP turn on
   Options → Preferences → Panels → "Show hidden files" (Ctrl+Alt+H) before
-  you drag, or it will be silently skipped and caching, compression and the
-  lead-store protection all go with it.
-- **Do not upload `robots.txt`.** It only has any effect at a domain root,
-  and the root one already allows crawling. Uploading it here does nothing;
-  overwriting the root one would drop the existing
-  `sitemap_index.xml` reference.
+  you drag, or it is silently skipped — and caching, compression and the
+  lead-store protection go with it. It *is* inside the zip.
+- **`robots.txt` is deliberately not in the zip.** It only has any effect at
+  a domain root. A copy here would do nothing, and overwriting the root one
+  would drop its existing `sitemap_index.xml` reference.
+- Transfer mode **Binary** (the default). ASCII mode corrupts `.webp` files.
 
-Transfer mode: **Binary** (the default). ASCII mode corrupts `.webp` files.
+If you extract the zip on the server instead (hPanel → File Manager), the
+paths inside use forward slashes, so it unpacks correctly on Linux.
 
 ## 2. Test `lead.php` before you tell anyone the page exists
 
@@ -85,6 +88,37 @@ the recipient to drop the message. Either create the alias, or change
 
 The lead is still saved to `leads.jsonl` even when mail fails, so nothing
 is lost while you sort this out.
+
+## 2b. Check the thank-you page
+
+After a successful submit the form now sends the visitor to
+`thankyou.php?id=<leadId>`. Open it directly once:
+
+```bash
+curl -sS -o /dev/null -w "%{http_code}\n" -D - "https://magicomeal.com/corporate-catering-mumbai/thankyou.php" | grep -iE "^HTTP|X-Robots-Tag"
+```
+
+Expected: `200` and `X-Robots-Tag: noindex, nofollow`.
+
+That header matters more than it looks. An indexed thank-you page turns up
+in search results, so people reach it **without ever filling the form** —
+and if you have a conversion set on that URL, every one of them is counted
+as a lead. The page sends the header itself and carries a `noindex` meta
+tag as well.
+
+The `?id=` value is printed as a reference number and nothing else. It is
+never used to look a lead up: an endpoint that returned lead details for an
+id would let anyone walk your entire pipeline by guessing ids.
+
+**On Google Ads conversions, pick one — not both:**
+
+| Approach | Set up as |
+| --- | --- |
+| Event-based (what is wired today) | fires `conversion` in gtag on submit, needs `adsConversionLabel` |
+| Destination URL | a conversion on `/corporate-catering-mumbai/thankyou.php` |
+
+Doing both counts every lead twice and makes your cost-per-lead look half
+what it is.
 
 ## 3. Confirm the page is actually reachable
 

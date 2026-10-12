@@ -64,6 +64,15 @@ if (formSections.length === 0) {
 const html = render(config, assetVersions);
 fs.writeFileSync(path.join(OUT, 'index.html'), html, 'utf8');
 
+/* ------------------------------------------------------------ thankyou.php
+ * Generated rather than hand-written so its stylesheet link carries the same
+ * content hash as index.html. The .htaccess caches CSS as immutable for a
+ * year, so an unhashed link here would pin this page to a stale stylesheet. */
+if (config.form.thankYouUrl) {
+  const renderThankYou = fresh('./src/thankyou');
+  fs.writeFileSync(path.join(OUT, 'thankyou.php'), renderThankYou(config, assetVersions), 'utf8');
+}
+
 /* ------------------------------------------------------------- robots.txt */
 const robots = config.site.noindex
   ? `User-agent: *\nDisallow: ${config.site.path}\n`
@@ -110,6 +119,9 @@ const NL = String.fromCharCode(10);
 const EMPTY = NL;
 const kb = (n) => (n / 1024).toFixed(1) + ' KB';
 console.log('Built public/index.html      ' + kb(Buffer.byteLength(html)));
+if (config.form.thankYouUrl) {
+  console.log('Built public/thankyou.php    ' + kb(fs.statSync(path.join(OUT, 'thankyou.php')).size));
+}
 console.log('Built public/robots.txt      ' + kb(Buffer.byteLength(robots)));
 console.log('Built public/sitemap.xml     ' + kb(Buffer.byteLength(sitemap)));
 console.log('Hero variant: ' + config.heroVariant + '   Canonical: ' + config.site.origin + config.site.path);

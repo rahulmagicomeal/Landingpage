@@ -78,6 +78,7 @@ module.exports = function render(config, assets) {
 
   const runtimeConfig = JSON.stringify({
     endpoint: config.form.endpoint,
+    thankYouUrl: config.form.thankYouUrl || '',
     ga4Id: config.tracking.ga4Id,
     adsConversionId: config.tracking.adsConversionId,
     adsConversionLabel: config.tracking.adsConversionLabel,
