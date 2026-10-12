@@ -708,8 +708,8 @@ module.exports = {
       title: 'Daily Corporate Meals',
       body: 'Breakfast, lunch and evening snacks on a fixed schedule, planned against your confirmed headcount.',
       image: {
-        src: '/assets/img/magicomeal-office-breakfast-idli-chutney-mumbai.webp',
-        alt: 'Magicomeal office breakfast of idli with coconut and tomato chutney',
+        src: '/assets/img/magicomeal-daily-corporate-meals-buffet-counter-mumbai.webp',
+        alt: 'Magicomeal staff serving an employee at a corporate buffet counter in a Mumbai office',
       },
     },
     {

@@ -41,6 +41,19 @@ const MANIFEST = [
   { from: '11.jpg', to: 'magicomeal-corporate-catering-counter-service-mumbai.webp', width: 1100, aspect: [4, 3] },
   { from: '4.webp', to: 'magicomeal-cafeteria-management-kitchen-mumbai.webp', width: 1100, aspect: [4, 3] },
   { from: '14.webp', to: 'magicomeal-office-breakfast-idli-chutney-mumbai.webp', width: 1100, aspect: [4, 3], quality: 72 },
+  // Hero card "Daily Corporate Meals".
+  //
+  // Square, not the 4:3 the other service images use: the card renders this
+  // at 132x132 with object-fit:cover, so a 4:3 file would just be cropped
+  // to a square again by the browser — with the sides chosen for it rather
+  // than for us. 600px covers 132 CSS px at dpr 3 with room to spare.
+  //
+  // Centre, not 'attention': attention locked onto the marble wall and left
+  // a third of the frame as bare tile. 'east' framed the guest well but at
+  // thumbnail size his dark suit reads as one unlit blob. Centre keeps the
+  // run of chafing dishes and the uniformed staff, which are the shapes
+  // that still say "managed buffet service" at 132px.
+  { from: '42.jpg', to: 'magicomeal-daily-corporate-meals-buffet-counter-mumbai.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
   { from: '13.jpg', to: 'magicomeal-corporate-event-buffet-mumbai.webp', width: 1100, aspect: [4, 3] },
   { from: '8.jpg', to: 'magicomeal-school-catering-students-mumbai.webp', width: 1100, aspect: [4, 3] },
 
