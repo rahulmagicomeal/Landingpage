@@ -55,6 +55,18 @@ const MANIFEST = [
   // that still say "managed buffet service" at 132px.
   { from: '45.jpg', to: 'magicomeal-corporate-cafeteria-lunch-service-mumbai.webp', width: 600, aspect: [1, 1], quality: 76, position: 'center' },
 
+  // "Corporate Cafeteria Management" card.
+  //
+  // 16:10, not the 4:3 the other service images use: .svc3__card img renders
+  // at 16:10 with object-fit:cover, so a 4:3 file is re-cropped by the
+  // browser and loses its top and bottom to a crop we did not choose.
+  //
+  // East, not attention: attention settled on the marble wall, keeping a
+  // third of the frame as bare tile and cutting the guest off the right
+  // edge. East keeps the chef, the server, the full counter line and the
+  // guest being served, and gives up only empty wall.
+  { from: '42.jpg', to: 'magicomeal-cafeteria-management-counter-service-mumbai.webp', width: 1100, aspect: [16, 10], quality: 76, position: 'east' },
+
   // Proof strip kitchen mosaic: one wide image spanning the column, two
   // squares beneath it. Sized for a ~480px media column at 2x, not for the
   // 1100px the full-width service images use.

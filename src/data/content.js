@@ -827,8 +827,17 @@ module.exports = {
         title: 'Corporate Cafeteria Management',
         body: 'We run the cafeteria end to end — menu planning, production, counter service, hygiene routines and on-site staff. You get one operation and one point of escalation instead of a rota you manage yourself.',
         image: {
-          src: '/assets/img/magicomeal-cafeteria-management-kitchen-mumbai.webp',
-          alt: 'Magicomeal kitchen team cooking the daily menu in a managed corporate cafeteria kitchen in Mumbai',
+          // Counter service rather than the kitchen shot that was here: the
+          // copy beside it is about running the cafeteria front of house —
+          // counter service, on-site staff, one point of escalation — and a
+          // photograph of staff serving a guest shows that, where chefs at a
+          // range showed production instead.
+          //
+          // That kitchen photograph is still referenced by `services`, which
+          // is switched off in config.sections, so it now ships in
+          // assets/img without appearing anywhere on the live page.
+          src: '/assets/img/magicomeal-cafeteria-management-counter-service-mumbai.webp',
+          alt: 'Magicomeal staff serving an employee at a managed corporate cafeteria counter in Mumbai',
         },
       },
       {
