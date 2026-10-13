@@ -96,8 +96,15 @@ because the page's whole position is that its claims can be checked:
 The handshake sits on the "One Contract, One Contact" card. Its alt text
 describes what is depicted without asserting that it documents real people,
 and its filename carries neither `magicomeal-` nor a place name, so nothing
-about it claims to be documentary. The CC BY-SA images require attribution;
-if the footer credits are ever removed, those three must be removed too.
+about it claims to be documentary.
+
+**The three CC BY-SA images must stay credited for as long as they are
+used.** The footer carries that credit in a collapsed "Image credits"
+disclosure — one line until someone opens it, rather than three lines of
+small print. It renders only for cuisines that carry a `credit` field, so
+replacing those three slices with Magicomeal's own photography removes the
+whole block automatically. Deleting the credit while keeping the images is
+the one thing that is not an option.
 
 Replacing the handshake with a real photograph of a client meeting would be
 a straight upgrade whenever one exists.

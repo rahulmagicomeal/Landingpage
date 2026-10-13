@@ -2478,11 +2478,46 @@ ol {
 
 /* Image credits for the freely-licensed cuisine photographs that require
    attribution. Quiet, but present — the licence asks for it. */
+/* Collapsed by default. The three CC BY-SA cuisine images have to be
+   credited, but the credit does not have to be three lines of the footer. */
 .site-footer__credits {
   flex-basis: 100%;
   font-size: 0.72rem;
-  opacity: 0.6;
   line-height: 1.5;
+}
+.site-footer__credits > summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px; /* WCAG 2.5.8 target size */
+  opacity: 0.55;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.site-footer__credits > summary::-webkit-details-marker {
+  display: none;
+}
+.site-footer__credits > summary::after {
+  content: '＋';
+  margin-left: 6px;
+  font-size: 0.82em;
+}
+.site-footer__credits[open] > summary::after {
+  content: '－';
+}
+.site-footer__credits > summary:hover,
+.site-footer__credits > summary:focus-visible {
+  opacity: 0.9;
+  text-decoration: underline;
+}
+.site-footer__credits > summary:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+.site-footer__credits > p {
+  margin: 6px 0 0;
+  opacity: 0.6;
+  max-width: 70em;
 }
 
 /* Short clarifier beside a field label — "People served per meal" etc. */

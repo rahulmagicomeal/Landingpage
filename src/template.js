@@ -1060,11 +1060,23 @@ ${has('finalCta') ? `<!-- ============================ FINAL CTA ===============
       <span>&copy; ${new Date().getFullYear()} Magicomeal. ${esc(co.tagline)}.</span>
       <span>ISO 22000:2018 · HACCP · FSSAI compliant</span>
       ${
+        /* Three cuisine-wheel images are CC BY-SA 4.0, which requires
+         * attribution — so this cannot simply be deleted while those images
+         * are in use. Collapsed into a disclosure instead: the wall of text
+         * is gone from the footer, the credit is still on the page and one
+         * click away, which is the "reasonable manner" the licence asks for.
+         *
+         * Replace those three slices with Magicomeal's own photography and
+         * this block disappears on its own — it only renders for cuisines
+         * that carry a `credit`. */
         c.cuisines.filter((x) => x.credit).length
-          ? `<span class="site-footer__credits">${c.cuisines
-              .filter((x) => x.credit)
-              .map((x) => esc(x.credit))
-              .join(' · ')}</span>`
+          ? `<details class="site-footer__credits">
+        <summary>Image credits</summary>
+        <p>${c.cuisines
+          .filter((x) => x.credit)
+          .map((x) => esc(x.credit))
+          .join(' · ')}</p>
+      </details>`
           : ''
       }
     </div>
