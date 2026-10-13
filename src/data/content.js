@@ -1082,7 +1082,10 @@ module.exports = {
   /* Floating WhatsApp button, bottom-left on every screen size. Set
    * `enabled: false` to remove it without touching the template. */
   whatsappFab: {
-    enabled: true,
+    // OFF on the CMO's call, 13 Oct 2026. Flip back to true and rebuild to
+    // restore it — the markup, the CSS and the whatsapp_click / floating
+    // tracking are all still in place, so nothing needs rebuilding by hand.
+    enabled: false,
     // The accessible name. "Opens WhatsApp" matters: the control leaves the
     // site for another app, and a screen reader user should know that before
     // activating it rather than after.
