@@ -141,10 +141,7 @@ const MANIFEST = [
   // photographs (declared in content.js); these three are freely-licensed
   // stock for cuisines we have no in-house photography of. Licences are
   // recorded in content.cuisines and credited in the footer where required.
-  { from: 'stock/cuisine-japanese.jpg', to: 'cuisine/cuisine-japanese.webp', width: 420, aspect: [1, 1], quality: 74 },
   { from: 'stock/cuisine-chinese.jpg', to: 'cuisine/cuisine-chinese.webp', width: 420, aspect: [1, 1], quality: 74 },
-  { from: 'stock/cuisine-american.jpg', to: 'cuisine/cuisine-american.webp', width: 420, aspect: [1, 1], quality: 74 },
-  { from: 'stock/cuisine-mexican.jpg', to: 'cuisine/cuisine-mexican.webp', width: 420, aspect: [1, 1], quality: 76 },
 
   // Open Graph / Twitter card — 1.91:1 is what the platforms crop to.
   { from: '12.jpg', to: 'magicomeal-corporate-catering-mumbai-og.webp', width: 1200, aspect: [1200, 630] },

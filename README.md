@@ -82,15 +82,12 @@ Almost every photo on the page is Magicomeal's own, supplied by you — client
 cafeterias in service, the central kitchen, the production line, the team, a
 school lunch, festival menus.
 
-Five images are not, and it is worth keeping that list short and honest,
+Two images are not, and it is worth keeping that list short and honest,
 because the page's whole position is that its claims can be checked:
 
 | Image | Provenance |
 | --- | --- |
-| `assets/img/cuisine/cuisine-chinese.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
-| `assets/img/cuisine/cuisine-japanese.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
-| `assets/img/cuisine/cuisine-mexican.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer |
-| `assets/img/cuisine/cuisine-american.webp` | Wikimedia Commons, public domain |
+| `assets/img/cuisine/cuisine-chinese.webp` | Wikimedia Commons, CC BY-SA 4.0 — credited in the footer. Used by the Asian slice |
 | `assets/img/corporate-client-manager-and-chef-handshake.webp` | **AI-generated.** Not a photograph of Magicomeal staff or a real site |
 
 The handshake sits on the "One Contract, One Contact" card. Its alt text
@@ -98,13 +95,16 @@ describes what is depicted without asserting that it documents real people,
 and its filename carries neither `magicomeal-` nor a place name, so nothing
 about it claims to be documentary.
 
-**The three CC BY-SA images must stay credited for as long as they are
+**The one remaining CC BY-SA image must stay credited for as long as it is
 used.** The footer carries that credit in a collapsed "Image credits"
-disclosure — one line until someone opens it, rather than three lines of
-small print. It renders only for cuisines that carry a `credit` field, so
-replacing those three slices with Magicomeal's own photography removes the
-whole block automatically. Deleting the credit while keeping the images is
-the one thing that is not an option.
+disclosure - a single line until someone opens it. The block renders only
+for cuisines that carry a `credit` field, so giving the Asian slice a
+Magicomeal photograph removes it entirely, with no code change. Deleting
+the credit while keeping the image is the one thing that is not an option.
+
+The Low GI Meals slice has no photograph at all and falls back to its icon.
+Nothing in the library honestly reads as low glycaemic index, and putting a
+white-rice or bread dish there would misdescribe the offering.
 
 Replacing the handshake with a real photograph of a client meeting would be
 a straight upgrade whenever one exists.

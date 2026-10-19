@@ -280,6 +280,15 @@ module.exports = function render(config, assets) {
       '<rect x="4" y="12" width="16" height="7" rx="3.2"/><path d="M4.4 12c1-3.4 4-5.2 7.6-5.2S18.6 8.6 19.6 12Z" opacity=".72"/>',
     taco:
       '<path d="M2.5 19a9.5 9.5 0 0 1 19 0Z"/><path d="M6 19a6 6 0 0 1 12 0Z" fill="#f7ecd8"/>',
+    // Used by Healthy Bowls and Low GI Meals. Only Low GI actually draws it:
+    // Healthy Bowls has a photograph, and the icon is the fallback for a
+    // slice that does not.
+    bowl:
+      '<path d="M3 11h18a9 9 0 0 1-18 0Z"/><path d="M7.5 8.6c1.3-2.1 3-3.1 4.5-3.1s3.2 1 4.5 3.1" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/><circle cx="9.3" cy="9.6" r="1" fill="#f7ecd8"/><circle cx="12" cy="9.2" r="1" fill="#f7ecd8"/><circle cx="14.7" cy="9.6" r="1" fill="#f7ecd8"/>',
+    // Regional Meals: a banana-leaf thali. Present so the slice still draws
+    // something if its photograph is ever removed.
+    leafmeal:
+      '<path d="M2.5 14c3.5-3.6 15.5-3.6 19 0-3.5 3.6-15.5 3.6-19 0Z"/><circle cx="8" cy="14" r="1.7" fill="#f7ecd8"/><circle cx="12" cy="14" r="1.7" fill="#f7ecd8"/><circle cx="16" cy="14" r="1.7" fill="#f7ecd8"/>',
     burger:
       '<path d="M3 8.5c0-3 4-5.5 9-5.5s9 2.5 9 5.5Z"/><rect x="3" y="10.4" width="18" height="2.6" rx="1.3"/><path d="M3 15.5h18c0 3-4 5-9 5s-9-2-9-5Z"/>',
   };

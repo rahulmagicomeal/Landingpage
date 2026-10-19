@@ -770,6 +770,14 @@ module.exports = {
       source: "Magicomeal's own photograph",
     },
     {
+      name: 'Asian',
+      icon: 'noodles',
+      dough: '#f5e8d2',
+      image: '/assets/img/cuisine/cuisine-chinese.webp',
+      source: 'Wikimedia Commons',
+      credit: 'Asian slice: “Chicken Chow mein 1” via Wikimedia Commons, CC BY-SA 4.0',
+    },
+    {
       name: 'Continental',
       icon: 'croissant',
       dough: '#efdcbb',
@@ -777,35 +785,34 @@ module.exports = {
       source: "Magicomeal's own photograph",
     },
     {
-      name: 'Chinese',
-      icon: 'noodles',
-      dough: '#f5e8d2',
-      image: '/assets/img/cuisine/cuisine-chinese.webp',
-      source: 'Wikimedia Commons',
-      credit: 'Chinese slice: “Chicken Chow mein 1” via Wikimedia Commons, CC BY-SA 4.0',
+      name: 'Healthy Bowls',
+      icon: 'bowl',
+      dough: '#eee4c8',
+      // Magicomeal's own: the crudités and Som Tum salad platter, with the
+      // Magicomeal dish cards visible in frame.
+      image: '/assets/img/gallery/magicomeal-event-salad-buffet-mumbai.webp',
+      source: "Magicomeal's own photograph",
     },
     {
-      name: 'Japanese',
-      icon: 'nigiri',
-      dough: '#ecd8b4',
-      image: '/assets/img/cuisine/cuisine-japanese.webp',
-      source: 'Wikimedia Commons',
-      credit: 'Japanese slice: “Sushi mini set 01” via Wikimedia Commons, CC BY-SA 4.0',
-    },
-    {
-      name: 'Mexican',
-      icon: 'taco',
+      name: 'Regional Meals',
+      icon: 'leafmeal',
       dough: '#f1e0c2',
-      image: '/assets/img/cuisine/cuisine-mexican.webp',
-      source: 'Wikimedia Commons',
-      credit: 'Mexican slice: “Tacos al pastor con piña” via Wikimedia Commons, CC BY-SA 4.0',
+      // Magicomeal's own: the Onam sadya spread on a banana leaf. Chosen over
+      // the wider dining-room shot of the same event, which is unreadable at
+      // the size of a wheel slice.
+      image: '/assets/img/magicomeal-festival-menu-spread-mumbai.webp',
+      source: "Magicomeal's own photograph",
     },
     {
-      name: 'American',
-      icon: 'burger',
+      name: 'Low GI Meals',
+      icon: 'bowl',
       dough: '#e9d4ae',
-      image: '/assets/img/cuisine/cuisine-american.webp',
-      source: 'Wikimedia Commons, public domain',
+      // No photograph yet. There is nothing in the library that honestly
+      // reads as low glycaemic index — millets, whole grains, legumes — and
+      // putting a white-rice or bread dish here would misdescribe the
+      // offering. The slice falls back to its icon until a real photograph
+      // exists; add `image` and it switches over with no other change.
+      source: 'No photograph yet — renders the icon fallback',
     },
   ],
   cuisineWheel: {
